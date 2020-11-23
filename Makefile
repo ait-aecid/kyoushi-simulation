@@ -66,8 +66,8 @@ check-pylint:  ## Check for code smells using pylint.
 	@poetry run pylint $(PY_SRC)
 
 check-safety:  ## Check for vulnerabilities in dependencies using safety.
-	@poetry run pip freeze 2>/dev/null | \
-		grep -v cr_kyoushi.simulation | \
+	@poetry show --no-dev |  \
+		awk '{printf"%s==%s\n",$$1,$$2}' | \
 		poetry run safety check --stdin --full-report 2>/dev/null
 
 # linting/formating

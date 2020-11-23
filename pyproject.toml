@@ -14,7 +14,6 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6.1"
 click = "^7.1.2"
-safety = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -28,6 +27,7 @@ pytest-sugar = "^0.9.4"
 pytest-mock = "^3.3.1"
 isort = "^5.6.4"
 pylint = "^2.6.0"
+safety = "^1.9.0"
 
 [tool.isort]
 profile = "black"
