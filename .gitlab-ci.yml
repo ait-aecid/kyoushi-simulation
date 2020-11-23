@@ -31,6 +31,7 @@ stages:
   <<: *install-deps
   stage: tests
   script: make test
+  coverage: '/TOTAL\s+\d+\s+\d+\s+(\d{1,2}\%)/'
   artifacts:
     reports:
       cobertura: coverage.xml
