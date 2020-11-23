@@ -6,7 +6,7 @@
 # Copyright (c) 2018 Sébastien Eustace
 
 RELEASE := $$(sed -n -E "s/__version__ = '(.+)'/\1/p" src/cr_kyoushi/simulation/__version__.py)
-PY_SRC := src/ tests/
+PY_SRC := src/cr_kyoushi tests/
 
 # lists all available targets
 list:
@@ -54,7 +54,7 @@ tox:
 	@tox
 
 # quality checks
-check: check-black check-flake8 check-isort check-safety  ## Check it all!
+check: check-black check-flake8 check-isort check-mypy check-safety  ## Check it all!
 
 check-black:  ## Check if code is formatted nicely using black.
 	@poetry run black --check $(PY_SRC)
@@ -64,6 +64,9 @@ check-flake8:  ## Check for general warnings in code using flake8.
 
 check-isort:  ## Check if imports are correctly ordered using isort.
 	@poetry run isort -c $(PY_SRC)
+
+check-mypy: ## check mypi typing
+	@poetry run mypy $(PY_SRC)
 
 check-pylint:  ## Check for code smells using pylint.
 	@poetry run pylint $(PY_SRC)
