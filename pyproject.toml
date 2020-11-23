@@ -3,6 +3,10 @@ name = "cr-kyoushi-simulation"
 version = "0.1.0"
 description = ""
 authors = ["Maximilian Frank <maximilian.frank@ait.ac.at>"]
+license = "MIT"
+readme = 'README.md'  # Markdown files are supported
+repository = "https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation"
+homepage = "https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation"
 packages = [
   { include = "cr_kyoushi", from = "src" }
 ]
