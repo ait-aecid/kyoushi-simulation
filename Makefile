@@ -32,7 +32,7 @@ setup: setup-python
 test:
 	@poetry run pytest --cov=src --cov-config .coveragerc --cov-report xml --cov-report term tests/ -sq
 
-test-ci:
+test-html:
 	@poetry run pytest --cov=src --cov-config .coveragerc --cov-report html --cov-report term tests/ -sq
 
 release: build
