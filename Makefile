@@ -60,7 +60,7 @@ check-flake8:  ## Check for general warnings in code using flake8.
 	@poetry run flake8 $(PY_SRC)
 
 check-isort:  ## Check if imports are correctly ordered using isort.
-	@poetry run isort -c -rc $(PY_SRC)
+	@poetry run isort -c $(PY_SRC)
 
 check-pylint:  ## Check for code smells using pylint.
 	@poetry run pylint $(PY_SRC)
@@ -77,4 +77,4 @@ lint-black:  ## Lint the code using black.
 	@poetry run black $(PY_SRC)
 
 lint-isort:  ## Sort the imports using isort.
-	@poetry run isort -y -rc $(PY_SRC)
+	@poetry run isort $(PY_SRC)
