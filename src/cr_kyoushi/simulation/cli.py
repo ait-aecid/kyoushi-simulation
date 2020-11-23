@@ -55,13 +55,6 @@ def cli(info: Info, verbose: int):
 
 
 @cli.command()
-@pass_info
-def hello(_: Info):
-    """Say 'hello' to the nice people."""
-    click.echo("{{cookiecutter.cli_name}} says 'hello'")
-
-
-@cli.command()
 def version():
     """Get the library version."""
     click.echo(click.style(f"{__version__}", bold=True))
