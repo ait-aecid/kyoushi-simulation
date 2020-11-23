@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
+
 import click
-from .__init__ import __version__
+
+from . import __version__
+
 
 LOGGING_LEVELS = {
     0: logging.NOTSET,
