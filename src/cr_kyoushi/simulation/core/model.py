@@ -32,20 +32,20 @@ class Weekday(IntEnum):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, int, "Weekday"]):
-        if isinstance(v, Weekday):
-
-            return v.value
-        elif isinstance(v, int):
-            if v in cls.lookup().values():
-                return v
-            else:
-                raise ValueError("invalid integer weekday")
-        else:
-            try:
-                return cls.lookup()[v.upper()]
-            except KeyError:
-                raise ValueError("invalid string weekday")
+    def validate(cls, val: Union[str, int, "Weekday"]):
+        # check enum input
+        if isinstance(val, Weekday):
+            return val.value
+        # check int weekday input
+        if isinstance(val, int):
+            if val in cls.lookup().values():
+                return val
+            raise ValueError("invalid integer weekday")
+        # check str weekday input
+        try:
+            return cls.lookup()[val.upper()]
+        except KeyError as key_error:
+            raise ValueError("invalid string weekday") from key_error
 
 
 class TimePeriod(BaseModel):
@@ -55,8 +55,8 @@ class TimePeriod(BaseModel):
     def in_period(self, to_check: time) -> bool:
         if self.start_time <= self.end_time:
             return self.start_time <= to_check and self.end_time > to_check
-        else:
-            return self.start_time <= to_check or self.end_time > to_check
+        # start > end means our time period is between two days
+        return self.start_time <= to_check or self.end_time > to_check
 
 
 class WeekdayActivePeriod(BaseModel):

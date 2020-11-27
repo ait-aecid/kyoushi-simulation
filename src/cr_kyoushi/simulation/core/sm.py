@@ -56,11 +56,13 @@ class Statemachine:
                 self.current_state, self.context
             )
             logging.info("Moved to new state %s", self.current_state)
-        except errors.TransitionExecutionError as te:
-            logging.warning("Encountered a transition error: %s", te)
-            if te.fallback_state:
-                logging.warning("Recovering to state '%s'", te.fallback_state)
-            self.current_state = te.fallback_state
+        except errors.TransitionExecutionError as transition_error:
+            logging.warning("Encountered a transition error: %s", transition_error)
+            if transition_error.fallback_state:
+                logging.warning(
+                    "Recovering to state '%s'", transition_error.fallback_state
+                )
+            self.current_state = transition_error.fallback_state
 
     def _execute_step(self):
         assert self.current_state is not None
@@ -72,13 +74,13 @@ class Statemachine:
             else:
                 logging.info("Empty transition received state machine will end")
                 self.current_state = None
-        except Exception as e:
+        except Exception as err:
             logging.error(
                 "State machine failed in state:'%s' and transition:%r",
                 self.current_state,
                 self.current_transition,
             )
-            logging.error("Exception: %s", e)
+            logging.error("Exception: %s", err)
 
             # try to recover from error by restarting state machine
             self.errors += 1

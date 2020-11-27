@@ -84,7 +84,8 @@ class ProbabilisticState(State):
                 # we allow definition in 0-1 or 0-100 format
                 if self.weights[-1] != 1 and self.weights[-1] != 100:
                     raise ValueError(
-                        "Probabilities are uneven, sum of weights must be either 1 or 100, but got {self.weights[-1]}!"
+                        f"Probabilities are uneven, sum of weights must \
+                            be either 1 or 100, but got {self.weights[-1]}!"
                     )
 
             # check that transitions are unique
@@ -96,5 +97,4 @@ class ProbabilisticState(State):
     def next(self, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
             return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
-        else:
-            return None
+        return None
