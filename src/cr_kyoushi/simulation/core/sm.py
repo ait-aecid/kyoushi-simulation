@@ -38,26 +38,28 @@ class Statemachine:
         self.errors = 0
 
     def setup_context(self) -> None:
-        ...
+        pass
 
     def destroy_context(self) -> None:
-        ...
+        pass
 
     def _execute_transition(self):
         assert self.current_state is not None
         assert self.current_transition is not None
         try:
             logging.info(
-                f"Executing transition {self.current_state} -> {self.current_transition}"
+                "Executing transition %s -> %s",
+                self.current_state,
+                self.current_transition,
             )
             self.current_state = self.current_transition.execute(
                 self.current_state, self.context
             )
-            logging.info(f"Moved to new state {self.current_state}")
+            logging.info("Moved to new state %s", self.current_state)
         except errors.TransitionExecutionError as te:
-            logging.warning(f"Encountered a transition error: {te}")
+            logging.warning("Encountered a transition error: %s", te)
             if te.fallback_state:
-                logging.warning(f"Recovering to state '{te.fallback_state}'")
+                logging.warning("Recovering to state '%s'", te.fallback_state)
             self.current_state = te.fallback_state
 
     def _execute_step(self):
@@ -72,16 +74,20 @@ class Statemachine:
                 self.current_state = None
         except Exception as e:
             logging.error(
-                f"State machine failed in state:'{self.current_state}' and transition:{self.current_transition!r}"
+                "State machine failed in state:'%s' and transition:%r",
+                self.current_state,
+                self.current_transition,
             )
-            logging.error(f"Exception: {e}")
+            logging.error("Exception: %s", e)
 
             # try to recover from error by restarting state machine
             self.errors += 1
             if self.max_errors > self.errors:
                 self.destroy_context()
                 logging.warning(
-                    f"Trying to recover from exception in state:'{self.current_state}' and transition:{self.current_transition!r}"
+                    "Trying to recover from exception in state:'%s' and transition:%r",
+                    self.current_state,
+                    self.current_transition,
                 )
                 self.setup_context()
                 self.current_state = self.initial_state
