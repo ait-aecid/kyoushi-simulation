@@ -13,56 +13,11 @@ from typing import List
 from typing import Optional
 
 from . import errors
+from .model import ActivePeriod
 from .model import Config
 from .model import Context
-
-
-class Transition(metaclass=ABCMeta):
-    """The Transition class describes a transition from one state into another"""
-
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        ...
-
-    @property
-    @abstractmethod
-    def target(self) -> Optional[str]:
-        ...
-
-    @abstractmethod
-    def execute(self, current_state: str, context: Context) -> Optional[str]:
-        ...
-
-    def __str__(self):
-        return f"name='{self.name}' -> target={self.target}"
-
-    def __repr__(self):
-        return f"{self.name}(name='{self.name}', target={self.target})"
-
-
-class State(metaclass=ABCMeta):
-    """A State contains various transitions to other states"""
-
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        ...
-
-    @property
-    @abstractmethod
-    def transitions(self) -> List[Transition]:
-        ...
-
-    @abstractmethod
-    def next(self, context: Context) -> Optional[Transition]:
-        ...
-
-    def __str__(self):
-        return f"name='{self.name}' transitions={self.transitions}"
-
-    def __repr__(self):
-        return f"{self.name}(name='{self.name}', transitions={self.transitions})"
+from .states import State
+from .transitions import Transition
 
 
 class Statemachine:
@@ -150,6 +105,26 @@ class Statemachine:
         # clean up state machine
         self.destroy_context()
         logging.info("State machine finished")
+
+
+class HumanStatemachine(Statemachine):
+    """
+    A human state machine extends normal state machine behavior by introducting
+    an active time period. Outside of the configured active time period
+    the human state machine will idle its execution. Additionally upon leaving the
+    active time period the state machine will reset to the initial state.
+    This includes destrying and recreating the context.
+    """
+
+    def __init__(
+        self,
+        initial_state: str,
+        states: List[State],
+        active_period: ActivePeriod,
+        max_errors: int = 0,
+    ):
+        super().__init__(initial_state, states, max_errors=max_errors)
+        self.active_period = active_period
 
 
 class StatemachineFactory(metaclass=ABCMeta):

@@ -1,5 +1,7 @@
 import random
 
+from abc import ABCMeta
+from abc import abstractmethod
 from itertools import accumulate
 from typing import List
 from typing import Optional
@@ -7,9 +9,32 @@ from typing import Sequence
 from typing import Union
 
 from .model import Context
-from .sm import State
-from .sm import Transition
+from .transitions import Transition
 from .util import elements_unique
+
+
+class State(metaclass=ABCMeta):
+    """A State contains various transitions to other states"""
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        ...
+
+    @property
+    @abstractmethod
+    def transitions(self) -> List[Transition]:
+        ...
+
+    @abstractmethod
+    def next(self, context: Context) -> Optional[Transition]:
+        ...
+
+    def __str__(self):
+        return f"name='{self.name}' transitions={self.transitions}"
+
+    def __repr__(self):
+        return f"{self.name}(name='{self.name}', transitions={self.transitions})"
 
 
 class ProbabilisticState(State):

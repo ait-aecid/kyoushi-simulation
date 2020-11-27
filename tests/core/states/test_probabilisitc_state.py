@@ -7,8 +7,8 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.core.sm import Transition
 from cr_kyoushi.simulation.core.states import ProbabilisticState
+from cr_kyoushi.simulation.core.transitions import Transition
 
 
 @pytest.fixture()

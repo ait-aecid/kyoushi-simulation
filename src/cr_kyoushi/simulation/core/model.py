@@ -1,21 +1,14 @@
 from datetime import datetime
 from datetime import time
 from enum import IntEnum
-from typing import TYPE_CHECKING
 from typing import Any
 from typing import Dict
-from typing import Generator
 from typing import Optional
 from typing import Set
 from typing import Union
 
 from pydantic import BaseModel
 
-
-if TYPE_CHECKING:
-    from pydantic.typing import AnyCallable
-
-    CallableGenerator = Generator[AnyCallable, None, None]
 
 Config = Dict[str, Any]
 Context = Dict[str, Any]
