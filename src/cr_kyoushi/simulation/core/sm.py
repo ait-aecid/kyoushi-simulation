@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Statemachine core module
+"""State machine core module
 
 This module contains all core class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
@@ -8,14 +8,13 @@ import logging
 
 from abc import ABCMeta
 from abc import abstractmethod
-from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
 
-
-Config = Dict[str, Any]
-Context = Dict[str, Any]
+from . import errors
+from .model import Config
+from .model import Context
 
 
 class Transition(metaclass=ABCMeta):
@@ -66,41 +65,19 @@ class State(metaclass=ABCMeta):
         return f"{self.name}(name='{self.name}', transitions={self.transitions})"
 
 
-class TransitionExecutionError(Exception):
-    """Base class for errors that occur during state transitions"""
-
-    def __init__(
-        self,
-        message: str,
-        cause: Optional[Exception] = None,
-        fallback_state: Optional[str] = None,
-    ):
-        super().__init__(message)
-        self.cause = cause
-        self.fallback_state = fallback_state
-
-    def __str__(self):
-        ret = f"message: '{super().__str__()}'"
-        if self.cause:
-            ret += f" cause: {self.cause}"
-        return ret
-
-
 class Statemachine:
-    """The Statemachine implements state control and transition logic"""
+    """The State machine implements state control and transition logic"""
 
     def __init__(
         self,
         initial_state: str,
         states: List[State],
-        config: Config = {},
         max_errors: int = 0,
     ):
         self.initial_state = initial_state
         self.current_state: Optional[str] = initial_state
         self.current_transition: Optional[Transition] = None
         self.states: Dict[str, State] = {state.name: state for state in states}
-        self.config = config
         self.context: Context = {}
         self.max_errors = max_errors
         self.errors = 0
@@ -122,7 +99,7 @@ class Statemachine:
                 self.current_state, self.context
             )
             logging.info(f"Moved to new state {self.current_state}")
-        except TransitionExecutionError as te:
+        except errors.TransitionExecutionError as te:
             logging.warning(f"Encountered a transition error: {te}")
             if te.fallback_state:
                 logging.warning(f"Recovering to state '{te.fallback_state}'")
@@ -140,7 +117,7 @@ class Statemachine:
                 self.current_state = None
         except Exception as e:
             logging.error(
-                f"Statemachine failed in state:'{self.current_state}' and transition:{self.current_transition!r}"
+                f"State machine failed in state:'{self.current_state}' and transition:{self.current_transition!r}"
             )
             logging.error(f"Exception: {e}")
 
@@ -156,18 +133,23 @@ class Statemachine:
             else:
                 self.current_state = None
 
-    def run(self) -> None:
-        # prepare state machine before start
-        logging.info("Starting statemachine")
-        self.setup_context()
-
+    def _execute_machine(self):
         # state machine run main loop
         while self.current_state:
             self._execute_step()
 
+    def run(self) -> None:
+        # prepare state machine before start
+        logging.info("Starting state machine")
+        self.setup_context()
+
+        # execute the state machine
+        logging.info("Entering state machine execution")
+        self._execute_machine()
+
         # clean up state machine
         self.destroy_context()
-        logging.info("Statemachine finished")
+        logging.info("State machine finished")
 
 
 class StatemachineFactory(metaclass=ABCMeta):

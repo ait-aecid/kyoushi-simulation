@@ -3,10 +3,10 @@ from typing import Optional
 
 import pytest
 
+from cr_kyoushi.simulation.core.errors import TransitionExecutionError
 from cr_kyoushi.simulation.core.sm import Context
 from cr_kyoushi.simulation.core.sm import State
 from cr_kyoushi.simulation.core.sm import Transition
-from cr_kyoushi.simulation.core.sm import TransitionExecutionError
 
 
 class TransitionStub(Transition):

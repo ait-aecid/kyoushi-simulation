@@ -6,7 +6,7 @@ from typing import Optional
 from typing import Sequence
 from typing import Union
 
-from .sm import Context
+from .model import Context
 from .sm import State
 from .sm import Transition
 from .util import elements_unique

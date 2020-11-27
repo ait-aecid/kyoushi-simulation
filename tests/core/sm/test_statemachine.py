@@ -37,7 +37,6 @@ def test_sequential_sm_execution_stops(
     sm = Statemachine(
         initial_state=state1.name,
         states=three_sequential_states,
-        config={},
     )
     sm.run()
 
@@ -82,7 +81,6 @@ def test_sequential_sm_execution_with_empty_transition(
     sm = Statemachine(
         initial_state=state1.name,
         states=empty_transition,
-        config={},
     )
     sm.run()
 
@@ -128,7 +126,6 @@ def test_sequential_sm_execution(
     sm = Statemachine(
         initial_state=state1.name,
         states=three_sequential_states,
-        config={},
     )
 
     execute_transition_spy = mocker.spy(sm, "_execute_transition")
@@ -226,7 +223,6 @@ def test_sequential_sm_execution_with_failing_state(
     sm = Statemachine(
         initial_state=state1.name,
         states=second_transition_fails,
-        config={},
     )
 
     sm.run()
@@ -275,7 +271,6 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     sm = Statemachine(
         initial_state=state1.name,
         states=second_transition_fails,
-        config={},
         max_errors=3,
     )
 
@@ -437,7 +432,6 @@ def test_sequential_sm_execution_with_transition_error(
     sm = Statemachine(
         initial_state=state1.name,
         states=second_transition_error_fallback,
-        config={},
     )
 
     sm.run()
