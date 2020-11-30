@@ -6,16 +6,18 @@ Cyber Range Kyoushi simulation machines.
 """
 import logging
 
-from abc import ABCMeta
+from abc import ABC
 from abc import abstractmethod
 from typing import Dict
+from typing import Generic
 from typing import List
 from typing import Optional
+from typing import Type
 
 from . import errors
 from .model import ActivePeriod
-from .model import Config
 from .model import Context
+from .model import StatemachineConfig
 from .states import State
 from .transitions import Transition
 
@@ -135,7 +137,7 @@ class HumanStatemachine(Statemachine):
         self.active_period = active_period
 
 
-class StatemachineFactory(metaclass=ABCMeta):
+class StatemachineFactory(ABC, Generic[StatemachineConfig]):
     """Abstract class definition for factories generating state machines"""
 
     @property
@@ -143,6 +145,11 @@ class StatemachineFactory(metaclass=ABCMeta):
     def name(self) -> str:
         ...
 
+    @property
     @abstractmethod
-    def get_statemachine(self, config: Config) -> Statemachine:
+    def config_class(self) -> Type[StatemachineConfig]:
+        ...
+
+    @abstractmethod
+    def build(self, config: StatemachineConfig) -> Statemachine:
         ...

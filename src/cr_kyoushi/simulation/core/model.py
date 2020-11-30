@@ -1,17 +1,35 @@
+import re
+
 from datetime import datetime
 from datetime import time
 from enum import IntEnum
 from typing import Any
 from typing import Dict
+from typing import Generic
+from typing import List
 from typing import Optional
+from typing import Pattern
 from typing import Set
+from typing import TypeVar
 from typing import Union
 
 from pydantic import BaseModel
+from pydantic.generics import GenericModel
 
 
-Config = Dict[str, Any]
-Context = Dict[str, Any]
+StatemachineConfig = TypeVar("StatemachineConfig")
+
+Context = Union[BaseModel, Dict[str, Any]]
+
+
+class PluginConfig(BaseModel):
+    include_names: List[Pattern] = [re.compile(r".*")]
+    exclude_names: List[Pattern] = []
+
+
+class Config(GenericModel, Generic[StatemachineConfig]):
+    plugin: PluginConfig = PluginConfig()
+    sm: StatemachineConfig
 
 
 class Weekday(IntEnum):
