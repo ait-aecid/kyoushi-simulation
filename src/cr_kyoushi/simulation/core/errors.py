@@ -1,4 +1,9 @@
 from typing import Optional
+from typing import Type
+
+from click import ClickException
+from pydantic import ValidationError
+from pydantic.error_wrappers import display_errors
 
 
 class TransitionExecutionError(Exception):
@@ -19,3 +24,24 @@ class TransitionExecutionError(Exception):
         if self.cause:
             ret += f" cause: {self.cause}"
         return ret
+
+
+class ConfigValidationError(ClickException):
+    def __init__(self, cause: ValidationError):
+        formated_errors = display_errors(cause.errors())
+        super().__init__(
+            f"Failed to validate the configuration file.\n{formated_errors}"
+        )
+        self.__cause__ = cause
+
+
+class StatemachineFactoryLoadError(ClickException):
+    def __init__(self, factory_name: str):
+        super().__init__(message=f"Failed to load sm factory: '{factory_name}'")
+
+
+class StatemachineFactoryTypeError(ClickException):
+    def __init__(self, factory_type: Type):
+        super().__init__(
+            message=f"Failed to load sm factory plugin got invalid type: '{factory_type}'"
+        )
