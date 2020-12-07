@@ -22,6 +22,9 @@ from .states import State
 from .transitions import Transition
 
 
+__all__ = ["Statemachine", "StatemachineFactory"]
+
+
 class Statemachine:
     """The State machine implements state control and transition logic"""
 

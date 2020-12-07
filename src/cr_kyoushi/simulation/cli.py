@@ -23,6 +23,8 @@ except ImportError:
     # need to use backport for python < 3.8
     from importlib_metadata import EntryPoint
 
+__all__ = ["CliPath", "Info", "cli", "version", "sm", "sm_list", "sm_run"]
+
 
 LOGGING_LEVELS = {
     0: logging.NOTSET,

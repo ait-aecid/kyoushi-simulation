@@ -13,6 +13,9 @@ from .transitions import Transition
 from .util import elements_unique
 
 
+__all__ = ["State", "ProbabilisticState"]
+
+
 class State(metaclass=ABCMeta):
     """A State contains various transitions to other states"""
 

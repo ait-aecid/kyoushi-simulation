@@ -9,6 +9,9 @@ from typing import Any
 from typing import List
 
 
+__all__ = ["version_info", "elements_unique"]
+
+
 def version_info() -> str:
     """Returns formatted version information about the package.
 
