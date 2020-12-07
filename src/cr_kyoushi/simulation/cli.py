@@ -10,7 +10,6 @@ from typing import Optional
 
 import click
 
-from . import __version__
 from . import plugins
 from .config import load_config
 from .config import load_config_file
@@ -85,7 +84,9 @@ def cli(info: Info, verbose: int):
 @cli.command()
 def version():
     """Get the library version."""
-    click.echo(click.style(f"{__version__}", bold=True))
+    from .util import version_info
+
+    click.echo(version_info())
 
 
 @cli.group()
