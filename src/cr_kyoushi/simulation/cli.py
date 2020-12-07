@@ -25,6 +25,8 @@ except ImportError:
 
 __all__ = ["CliPath", "Info", "cli", "version", "sm", "sm_list", "sm_run"]
 
+logger = logging.getLogger("cr_kyoushi.simulation")
+
 
 class CliPath(click.Path):
     """A Click path argument that returns a pathlib Path, not a string"""
@@ -57,7 +59,6 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @pass_info
 def cli(info: Info, verbose: int):
     """Run Cyber Range Kyoushi Simulation."""
-    logger = logging.getLogger("cr_kyoushi.simulation")
     handler = logging.StreamHandler()
     handler.setFormatter(
         logging.Formatter(
@@ -123,13 +124,27 @@ def sm_list(info: Info):
     "-f",
     type=str,
     required=True,
-    help="The state machine factory to use",
+    help="""
+        The state machine factory to use.
+        This can be either the name of a statemachine factory entrypoint plugin or
+        the path to a python file containing a statemachine factory.
+        """,
 )
 def sm_run(info: Info, sm_factory: str):
     """Execute a state machine."""
     assert info.available_factories is not None
     assert info.config_raw is not None
+
+    factory = None
+
+    # get factory
     factory = plugins.get_factory(info.available_factories, sm_factory)
     StatemachineConfig = factory.config_class
-    print(repr(factory))
-    print(repr(load_config(info.config_raw, StatemachineConfig)))
+
+    # load state machine config and build machine
+    config = load_config(info.config_raw, StatemachineConfig)
+    logger.debug("Loaded config %s", config)
+    machine = factory.build(config)
+
+    # execute machine
+    machine.run()

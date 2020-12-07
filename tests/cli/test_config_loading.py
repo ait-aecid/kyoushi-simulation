@@ -25,11 +25,11 @@ def config_class():
     return TestConfig
 
 
-def test_given_no_config_return_empty_dict():
+def test_given_no_config_return_empty_dicts():
     path = Path(f"{FILE_DIR}/DOES_NOT_EXIST.yml")
     assert path.exists() is False
     cfg = config.load_config_file(path)
-    assert cfg == {}
+    assert cfg == {"plugin": {}, "sm": {}}
 
 
 def test_given_config_return_correct_dict():

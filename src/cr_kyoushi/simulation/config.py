@@ -17,7 +17,7 @@ def load_config_file(config_path: Path) -> Dict[str, Any]:
     yaml = YAML(typ="safe")
     if config_path.exists():
         return yaml.load(config_path)
-    return {}
+    return {"plugin": {}, "sm": {}}
 
 
 def load_config(config_raw: Dict[str, Any], sm_config_type) -> Config:

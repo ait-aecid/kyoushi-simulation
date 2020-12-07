@@ -1,3 +1,5 @@
+import os
+
 from typing import List
 
 import pytest
@@ -16,6 +18,9 @@ try:
 except ImportError:
     # need to use backport for python < 3.8
     from importlib_metadata import EntryPoint
+
+
+FILE_DIR = os.path.dirname(__file__)
 
 
 @pytest.fixture()
@@ -206,3 +211,39 @@ def test_get_factory_with_invalid_ep_name(mocker: MockFixture):
 
     with pytest.raises(errors.StatemachineFactoryLoadError):
         plugins.get_factory(factory_eps, "InvalidName")
+
+
+def test_load_plugin_from_file():
+    factory = plugins.get_factory({}, FILE_DIR + "/plugin_file_check.py")
+    assert factory.name == "TestFactory"
+    assert factory.config_class.__name__ == "TestStatemachineConfig"
+
+    config_fields = factory.config_class.__fields__
+
+    # verify correct config class
+    assert "example_field" in config_fields
+    assert config_fields["example_field"].type_ == str
+    assert config_fields["example_field"].required is False
+    assert config_fields["example_field"].default == "example"
+
+    # load empty default config
+    config = factory.config_class.parse_obj({})
+    assert config.example_field == "example"
+
+    machine = factory.build(config)
+
+    # verify that the statemachine was loaded correctly
+    assert type(machine).__name__ == "Statemachine"
+    assert machine.initial_state == "initial"
+    # check initial state
+    assert machine.states["initial"].name == "initial"
+    assert machine.states["initial"].transitions[0].name == "initial_transition"
+    assert machine.states["initial"].transitions[0].target == "end"
+    # check endstate
+    assert machine.states["end"].name == "end"
+    assert len(machine.states["end"].transitions) == 0
+
+
+def test_load_plugin_from_non_existent_file():
+    with pytest.raises(errors.StatemachineFactoryLoadError):
+        plugins.get_factory({}, FILE_DIR + "/DOES_NOT_EXIST.py")
