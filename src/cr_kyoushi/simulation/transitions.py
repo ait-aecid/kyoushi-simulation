@@ -5,6 +5,9 @@ from typing import Optional
 from .model import Context
 
 
+__all__ = ["Transition"]
+
+
 class Transition(metaclass=ABCMeta):
     """The Transition class describes a transition from one state into another"""
 

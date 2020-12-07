@@ -1,23 +1,30 @@
 # -*- coding: utf-8 -*-
-"""State machine core module
+"""State machine module
 
-This module contains all core class and function defintions for creating and defining
+This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
 import logging
 
-from abc import ABCMeta
+from abc import ABC
 from abc import abstractmethod
 from typing import Dict
+from typing import Generic
 from typing import List
 from typing import Optional
+from typing import Type
 
 from . import errors
 from .model import ActivePeriod
-from .model import Config
 from .model import Context
+from .model import StatemachineConfig
 from .states import State
 from .transitions import Transition
+
+
+__all__ = ["Statemachine", "StatemachineFactory"]
+
+logger = logging.getLogger("cr_kyoushi.simulation")
 
 
 class Statemachine:
@@ -47,7 +54,7 @@ class Statemachine:
         assert self.current_state is not None
         assert self.current_transition is not None
         try:
-            logging.info(
+            logger.info(
                 "Executing transition %s -> %s",
                 self.current_state,
                 self.current_transition,
@@ -55,11 +62,11 @@ class Statemachine:
             self.current_state = self.current_transition.execute(
                 self.current_state, self.context
             )
-            logging.info("Moved to new state %s", self.current_state)
+            logger.info("Moved to new state %s", self.current_state)
         except errors.TransitionExecutionError as transition_error:
-            logging.warning("Encountered a transition error: %s", transition_error)
+            logger.warning("Encountered a transition error: %s", transition_error)
             if transition_error.fallback_state:
-                logging.warning(
+                logger.warning(
                     "Recovering to state '%s'", transition_error.fallback_state
                 )
             self.current_state = transition_error.fallback_state
@@ -72,21 +79,21 @@ class Statemachine:
             if self.current_transition:
                 self._execute_transition()
             else:
-                logging.info("Empty transition received state machine will end")
+                logger.info("Empty transition received state machine will end")
                 self.current_state = None
         except Exception as err:
-            logging.error(
+            logger.error(
                 "State machine failed in state:'%s' and transition:%r",
                 self.current_state,
                 self.current_transition,
             )
-            logging.error("Exception: %s", err)
+            logger.error("Exception: %s", err)
 
             # try to recover from error by restarting state machine
             self.errors += 1
             if self.max_errors > self.errors:
                 self.destroy_context()
-                logging.warning(
+                logger.warning(
                     "Trying to recover from exception in state:'%s' and transition:%r",
                     self.current_state,
                     self.current_transition,
@@ -103,16 +110,16 @@ class Statemachine:
 
     def run(self) -> None:
         # prepare state machine before start
-        logging.info("Starting state machine")
+        logger.info("Starting state machine")
         self.setup_context()
 
         # execute the state machine
-        logging.info("Entering state machine execution")
+        logger.info("Entering state machine execution")
         self._execute_machine()
 
         # clean up state machine
         self.destroy_context()
-        logging.info("State machine finished")
+        logger.info("State machine finished")
 
 
 class HumanStatemachine(Statemachine):
@@ -135,7 +142,7 @@ class HumanStatemachine(Statemachine):
         self.active_period = active_period
 
 
-class StatemachineFactory(metaclass=ABCMeta):
+class StatemachineFactory(ABC, Generic[StatemachineConfig]):
     """Abstract class definition for factories generating state machines"""
 
     @property
@@ -143,6 +150,11 @@ class StatemachineFactory(metaclass=ABCMeta):
     def name(self) -> str:
         ...
 
+    @property
     @abstractmethod
-    def get_statemachine(self, config: Config) -> Statemachine:
+    def config_class(self) -> Type[StatemachineConfig]:
+        ...
+
+    @abstractmethod
+    def build(self, config: StatemachineConfig) -> Statemachine:
         ...

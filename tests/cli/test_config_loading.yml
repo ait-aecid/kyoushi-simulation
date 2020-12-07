@@ -1,0 +1,10 @@
+plugin:
+  include_names:
+    - test.*
+sm:
+  activity_period:
+    week_days:
+      - monday
+    time_period:
+        start_time: "00:00"
+        end_time: "01:00"

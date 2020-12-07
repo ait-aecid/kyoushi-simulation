@@ -49,10 +49,6 @@ publish:
 wheel:
 	@poetry build -v
 
-# run tests against all supported python versions
-tox:
-	@tox
-
 # quality checks
 check: check-black check-flake8 check-isort check-mypy check-safety  ## Check it all!
 

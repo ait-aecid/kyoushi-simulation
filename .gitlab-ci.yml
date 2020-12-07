@@ -24,7 +24,7 @@ stages:
 
 .quality-template: &quality
   <<: *install-deps
-  image: python:3.6
+  image: python:3.7
   stage: quality
 
 .test-template: &test
@@ -65,10 +65,6 @@ check-safety:
   script: make check-safety
 
 # Tests jobs ------------------------
-
-python3.6:
-  <<: *test
-  image: python:3.6
 
 python3.7:
   <<: *test
