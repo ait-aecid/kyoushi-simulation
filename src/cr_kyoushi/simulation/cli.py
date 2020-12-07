@@ -58,7 +58,13 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 def cli(info: Info, verbose: int):
     """Run Cyber Range Kyoushi Simulation."""
     logger = logging.getLogger("cr_kyoushi.simulation")
-    logger.addHandler(logging.StreamHandler())
+    handler = logging.StreamHandler()
+    handler.setFormatter(
+        logging.Formatter(
+            "[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
+        )
+    )
+    logger.addHandler(handler)
     # Use the verbosity count to determine the logging level...
     if verbose > 0:
         logger.setLevel(logging.DEBUG)
