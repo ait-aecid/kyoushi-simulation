@@ -214,9 +214,9 @@ def test_get_factory_with_invalid_ep_name(mocker: MockFixture):
 
 
 def test_load_plugin_from_file():
-    factory = plugins.get_factory({}, FILE_DIR + "/plugin_file_check.py")
+    factory = plugins.get_factory({}, FILE_DIR + "/conftest.py")
     assert factory.name == "TestFactory"
-    assert factory.config_class.__name__ == "TestStatemachineConfig"
+    assert factory.config_class.__name__ == "ExampleStatemachineConfig"
 
     config_fields = factory.config_class.__fields__
 

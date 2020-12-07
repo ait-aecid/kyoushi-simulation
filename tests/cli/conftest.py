@@ -10,11 +10,11 @@ from cr_kyoushi.simulation import transitions
 logger = logging.getLogger("cr_kyoushi.simulation")
 
 
-class TestStatemachineConfig(BaseModel):
+class ExampleStatemachineConfig(BaseModel):
     example_field: str = "example"
 
 
-class TestTransition(transitions.Transition):
+class BasicTransition(transitions.Transition):
     @property
     def name(self) -> str:
         return self._name
@@ -34,17 +34,17 @@ class TestTransition(transitions.Transition):
         return self._target
 
 
-class StatemachineFactory(sm.StatemachineFactory, TestStatemachineConfig):
+class StatemachineFactory(sm.StatemachineFactory, ExampleStatemachineConfig):
     @property
     def name(self) -> str:
         return "TestFactory"
 
     @property
     def config_class(self):
-        return TestStatemachineConfig
+        return ExampleStatemachineConfig
 
-    def build(self, config: TestStatemachineConfig):
-        initial_transition = TestTransition(name="initial_transition", target="end")
+    def build(self, config: ExampleStatemachineConfig):
+        initial_transition = BasicTransition(name="initial_transition", target="end")
         initial_state = states.ProbabilisticState(
             "initial", [initial_transition], [1.0]
         )
