@@ -50,7 +50,7 @@ def test_sm_base_function(mocker: MockFixture):
     get_factories.return_value = factory_eps
 
     runner = CliRunner()
-    result = runner.invoke(cli.sm, ["-c", "test.yml", "list"], obj=info_obj)
+    result = runner.invoke(cli.cli, ["-c", "test.yml", "list"], obj=info_obj)
 
     # verify info is properly set
     assert info_obj.config_path == Path("test.yml")

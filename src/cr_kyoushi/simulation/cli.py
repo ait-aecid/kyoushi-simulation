@@ -23,7 +23,7 @@ except ImportError:
     # need to use backport for python < 3.8
     from importlib_metadata import EntryPoint
 
-__all__ = ["CliPath", "Info", "cli", "version", "sm", "sm_list", "sm_run"]
+__all__ = ["CliPath", "Info", "cli", "version", "sm_list", "sm_run"]
 
 logger = logging.getLogger("cr_kyoushi.simulation")
 
@@ -52,13 +52,7 @@ class Info:
 pass_info = click.make_pass_decorator(Info, ensure=True)
 
 
-# Change the options to below to suit the actual options for your task (or
-# tasks).
-@click.group()
-@click.option("--verbose", "-v", count=True, help="Enable verbose output.")
-@pass_info
-def cli(info: Info, verbose: int):
-    """Run Cyber Range Kyoushi Simulation."""
+def __setup_logging(info: Info, verbose: int) -> None:
     handler = logging.StreamHandler()
     handler.setFormatter(
         logging.Formatter(
@@ -80,16 +74,10 @@ def cli(info: Info, verbose: int):
     info.verbose = verbose
 
 
-@cli.command()
-def version():
-    """Get the library version."""
-    from .util import version_info
-
-    click.echo(version_info())
-
-
-@cli.group()
-@pass_info
+# Change the options to below to suit the actual options for your task (or
+# tasks).
+@click.group()
+@click.option("--verbose", "-v", count=True, help="Enable verbose output.")
 @click.option(
     "--config",
     "-c",
@@ -98,14 +86,27 @@ def version():
     show_default=True,
     help="The state machine configuration file",
 )
-def sm(info: Info, config: Path):
+@pass_info
+def cli(info: Info, verbose: int, config: Path):
+    """Run Cyber Range Kyoushi Simulation."""
+    __setup_logging(info, verbose)
+
     info.config_path = config
     info.config_raw = load_config_file(info.config_path)
     info.plugin_config = load_plugin_config(info.config_raw)
     info.available_factories = plugins.get_factories(info.plugin_config)
 
 
-@sm.command(name="list")
+@cli.command()
+@pass_info
+def version(info: Info):
+    """Get the library version."""
+    from .util import version_info
+
+    click.echo(version_info(cli_info=info))
+
+
+@cli.command(name="list")
 @pass_info
 def sm_list(info: Info):
     """List available state machine factories."""
@@ -117,10 +118,10 @@ def sm_list(info: Info):
         )
 
 
-@sm.command(name="run")
+@cli.command(name="run")
 @pass_info
 @click.option(
-    "--sm-factory",
+    "--factory",
     "-f",
     type=str,
     required=True,
@@ -130,21 +131,19 @@ def sm_list(info: Info):
         the path to a python file containing a statemachine factory.
         """,
 )
-def sm_run(info: Info, sm_factory: str):
+def sm_run(info: Info, factory: str):
     """Execute a state machine."""
     assert info.available_factories is not None
     assert info.config_raw is not None
 
-    factory = None
-
     # get factory
-    factory = plugins.get_factory(info.available_factories, sm_factory)
-    StatemachineConfig = factory.config_class
+    factory_obj = plugins.get_factory(info.available_factories, factory)
+    StatemachineConfig = factory_obj.config_class
 
     # load state machine config and build machine
     config = load_config(info.config_raw, StatemachineConfig)
     logger.debug("Loaded config %s", config)
-    machine = factory.build(config)
+    machine = factory_obj.build(config)
 
     # execute machine
     machine.run()

@@ -1,6 +1,8 @@
 import logging
 import re
 
+from pathlib import Path
+
 from click.testing import CliRunner
 
 from cr_kyoushi.simulation import __version__
@@ -10,11 +12,15 @@ from cr_kyoushi.simulation.cli import version
 
 
 def test_version_command():
+    info = Info()
+    info.config_path = Path("./test.yml")
+
     runner = CliRunner()
-    result = runner.invoke(version)
+    result = runner.invoke(version, obj=info)
     assert result.exit_code == 0
     output_lines = result.output.split("\n")
     assert re.match(r".*: " + __version__, output_lines[0])
+    assert re.match(r".*: " + str(info.config_path.absolute()), output_lines[1])
 
 
 def test_verbose_switch_default_to_info():
