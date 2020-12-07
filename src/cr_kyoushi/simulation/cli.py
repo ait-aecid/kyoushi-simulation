@@ -26,15 +26,6 @@ except ImportError:
 __all__ = ["CliPath", "Info", "cli", "version", "sm", "sm_list", "sm_run"]
 
 
-LOGGING_LEVELS = {
-    0: logging.NOTSET,
-    1: logging.ERROR,
-    2: logging.WARN,
-    3: logging.INFO,
-    4: logging.DEBUG,
-}  #: a mapping of `verbose` option counts to logging levels
-
-
 class CliPath(click.Path):
     """A Click path argument that returns a pathlib Path, not a string"""
 
@@ -66,20 +57,19 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @pass_info
 def cli(info: Info, verbose: int):
     """Run Cyber Range Kyoushi Simulation."""
+    logger = logging.getLogger("cr_kyoushi.simulation")
+    logger.addHandler(logging.StreamHandler())
     # Use the verbosity count to determine the logging level...
     if verbose > 0:
-        logging.basicConfig(
-            level=LOGGING_LEVELS[verbose]
-            if verbose in LOGGING_LEVELS
-            else logging.DEBUG
-        )
+        logger.setLevel(logging.DEBUG)
         click.echo(
             click.style(
-                f"Verbose logging is enabled. "
-                f"(LEVEL={logging.getLogger().getEffectiveLevel()})",
+                f"Verbose logging is enabled. " f"(LEVEL={logger.getEffectiveLevel()})",
                 fg="yellow",
             )
         )
+    else:
+        logger.setLevel(logging.INFO)
     info.verbose = verbose
 
 
