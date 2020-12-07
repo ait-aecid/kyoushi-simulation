@@ -1,10 +1,15 @@
 from pathlib import Path
+from typing import Any
+from typing import Dict
 
 from click.testing import CliRunner
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation import cli
 from cr_kyoushi.simulation import model
+
+from .conftest import ExampleStatemachineConfig
+from .conftest import StatemachineFactory
 
 
 try:
@@ -56,3 +61,56 @@ def test_sm_base_function(mocker: MockFixture):
     # verify set entry points are in the output
     assert "FactoryName" in result.output
     assert "test.module:TestFactory" in result.output
+
+
+def test_sm_run(mocker: MockFixture):
+    raw_config: Dict[str, Any] = {
+        "plugin": {},
+        "sm": {},
+    }
+
+    ep_test = mocker.Mock(EntryPoint)
+    ep_test.name = "FactoryName"
+    ep_test.module = "test.module"
+    ep_test.attr = "TestFactory"
+
+    factory_eps = {"test": StatemachineFactory}
+    factory_obj = StatemachineFactory()
+    config_obj = ExampleStatemachineConfig()
+
+    # mock factory functions
+    machine_obj = factory_obj.build(ExampleStatemachineConfig())
+    machine_mock = mocker.Mock(wraps=machine_obj)
+
+    factory_mock = mocker.Mock(wraps=factory_obj)
+    factory_mock.build.return_value = machine_mock
+    # need to attach mock value to type object since it is a property
+    type(factory_mock).config_class = mocker.PropertyMock(
+        return_value=ExampleStatemachineConfig
+    )
+
+    # mock load functions
+    get_factory = mocker.patch("cr_kyoushi.simulation.cli.plugins.get_factory")
+    get_factory.return_value = factory_mock
+    load_config = mocker.patch("cr_kyoushi.simulation.cli.load_config")
+    load_config.return_value = config_obj
+
+    # setup input info obj
+    info_obj = cli.Info()
+    info_obj.config_path = "test.yml"
+    info_obj.config_raw = raw_config
+    info_obj.available_factories = factory_eps
+
+    runner = CliRunner()
+    result = runner.invoke(cli.sm_run, ["-f", "test"], obj=info_obj)
+
+    # verify  that the program exited correctly
+    assert result.exit_code == 0
+
+    # verify that factory was loaded correctly
+    get_factory.assert_called_once_with(factory_eps, "test")
+    load_config.assert_called_once_with(raw_config, ExampleStatemachineConfig)
+
+    # verify that machine was built and run correctly
+    factory_mock.build.assert_called_once_with(config_obj)
+    machine_mock.run.assert_called_once()
