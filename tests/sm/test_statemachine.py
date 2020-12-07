@@ -2,8 +2,8 @@ from typing import List
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.core.sm import Statemachine
-from cr_kyoushi.simulation.core.states import State
+from cr_kyoushi.simulation.sm import Statemachine
+from cr_kyoushi.simulation.states import State
 
 
 def test_sequential_sm_execution_stops(

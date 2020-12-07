@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""State machine core module
+"""State machine module
 
-This module contains all core class and function defintions for creating and defining
+This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
 import logging

@@ -2,7 +2,7 @@ from typing import Dict
 from typing import List
 from typing import Type
 
-from .. import __sm_factory_entrypoint__
+from . import __sm_factory_entrypoint__
 from .errors import StatemachineFactoryLoadError
 from .errors import StatemachineFactoryTypeError
 from .model import PluginConfig

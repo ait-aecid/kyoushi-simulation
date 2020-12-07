@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from cr_kyoushi.simulation.core.model import ActivePeriod
-from cr_kyoushi.simulation.core.model import ComplexActivePeriod
-from cr_kyoushi.simulation.core.model import SimpleActivePeriod
-from cr_kyoushi.simulation.core.model import TimePeriod
-from cr_kyoushi.simulation.core.model import WeekdayActivePeriod
+from cr_kyoushi.simulation.model import ActivePeriod
+from cr_kyoushi.simulation.model import ComplexActivePeriod
+from cr_kyoushi.simulation.model import SimpleActivePeriod
+from cr_kyoushi.simulation.model import TimePeriod
+from cr_kyoushi.simulation.model import WeekdayActivePeriod
 
 
 def test_activity_period_parsing():

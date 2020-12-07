@@ -3,7 +3,7 @@ import pytest
 from pydantic import BaseModel
 from pydantic import ValidationError
 
-from cr_kyoushi.simulation.core.model import Weekday
+from cr_kyoushi.simulation.model import Weekday
 
 
 class WeekdayTestModel(BaseModel):

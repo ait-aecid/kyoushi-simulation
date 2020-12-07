@@ -1,6 +1,6 @@
 from datetime import time
 
-from cr_kyoushi.simulation.core.model import TimePeriod
+from cr_kyoushi.simulation.model import TimePeriod
 
 
 def test_time_period_in_period_start_le_end():

@@ -11,11 +11,11 @@ from typing import Optional
 import click
 
 from . import __version__
-from .core import plugins
-from .core.config import load_config
-from .core.config import load_config_file
-from .core.config import load_plugin_config
-from .core.model import PluginConfig
+from . import plugins
+from .config import load_config
+from .config import load_config_file
+from .config import load_plugin_config
+from .model import PluginConfig
 
 
 try:
