@@ -40,8 +40,6 @@ def test_complex_weekday_period_parsing():
 
     assert len(raw_obj.__root__.week_days) == 2
     assert len(dict_obj.__root__.week_days) == 2
-    print(raw_obj)
-    print(dict_obj)
 
 
 def test_simple_week_days_set_validation():
