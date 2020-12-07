@@ -60,7 +60,6 @@ def get_factory(
                     StatemachineFactory
                 ] = factory_plugin.StatemachineFactory  # type: ignore
             else:
-                print("raising")
                 raise StatemachineFactoryLoadError(sm_name)
 
         # try to load from entrypoint
