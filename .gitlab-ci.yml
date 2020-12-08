@@ -86,10 +86,9 @@ gitlab-package:
   - poetry --version
   - poetry config virtualenvs.in-project true
   - poetry config repositories.gitlab https://git-service.ait.ac.at/api/v4/projects/${CI_PROJECT_ID}/packages/pypi
-  - poetry config http-basic.gitlab username gitlab-ci-token
-  - poetry config http-basic.gitlab password ${CI_JOB_TOKEN}
   - poetry install -vv
   - poetry build
-  script: poetry publish -r gitlab
+  # need to use inline username and password since config would use an extra file for basic auth credentials
+  script: poetry publish -r gitlab -u gitlab-ci-token -p ${CI_JOB_TOKEN}
   only:
     - tags
