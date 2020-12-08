@@ -12,6 +12,7 @@ cache:
 stages:
   - quality
   - tests
+  - publish
 
 # Jobs templates ------------------
 
@@ -41,6 +42,7 @@ stages:
   only:
     - master
     - merge_requests
+    - tags
 
 # Quality jobs ----------------------
 
@@ -73,3 +75,21 @@ python3.7:
 python3.8:
   <<: *test
   image: python:3.8
+
+# Publish jobs ----------------------
+
+gitlab-package:
+  image: python:3.7
+  stage: publish
+  before_script:
+  - pip install poetry
+  - poetry --version
+  - poetry config virtualenvs.in-project true
+  - poetry config repositories.gitlab https://git-service.ait.ac.at/api/v4/projects/${CI_PROJECT_ID}/packages/pypi
+  - poetry config http-basic.gitlab username gitlab-ci-token
+  - poetry config http-basic.gitlab password ${CI_JOB_TOKEN}
+  - poetry install -vv
+  - poetry build
+  script: poetry publish -r gitlab
+  only:
+    - tags
