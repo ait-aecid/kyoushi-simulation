@@ -20,14 +20,16 @@ class State(metaclass=ABCMeta):
     """A State contains various transitions to other states"""
 
     @property
-    @abstractmethod
     def name(self) -> str:
-        ...
+        return self._name
 
     @property
-    @abstractmethod
     def transitions(self) -> List[Transition]:
-        ...
+        return self._transitions
+
+    def __init__(self, name: str, transitions: List[Transition]):
+        self._name = name
+        self._transitions = transitions
 
     @abstractmethod
     def next(self, context: Context) -> Optional[Transition]:
@@ -40,16 +42,19 @@ class State(metaclass=ABCMeta):
         return f"{self.name}(name='{self.name}', transitions={self.transitions})"
 
 
+class SequentialState(State):
+    """Simple sequential state only having one possible transition"""
+
+    def __init__(self, name, transition):
+        super().__init__(name, [transition])
+        self.__transition = transition
+
+    def next(self, context: Context) -> Transition:
+        return self.__transition
+
+
 class ProbabilisticState(State):
     """A state that uses a propability table to select its successor"""
-
-    @property
-    def name(self) -> str:
-        return self.__name
-
-    @property
-    def transitions(self) -> List[Transition]:
-        return self.__transitions
 
     @property
     def weights(self) -> Sequence[float]:
@@ -62,9 +67,9 @@ class ProbabilisticState(State):
         weights: Sequence[Union[int, float]],
         allow_uneven_probabilites: bool = False,
     ):
-        self.__name = name
-        # convert back to list to conform to interface
-        self.__transitions = list(transitions)
+        # initial base properties
+        super().__init__(name, transitions)
+
         # convert weights to cumulative weights
         self.__weights = list(accumulate(weights))
 
