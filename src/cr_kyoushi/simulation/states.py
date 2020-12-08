@@ -13,7 +13,13 @@ from .transitions import Transition
 from .util import elements_unique
 
 
-__all__ = ["State", "ProbabilisticState"]
+__all__ = [
+    "State",
+    "SequentialState",
+    "FinalState",
+    "ProbabilisticState",
+    "EquallyRandomState",
+]
 
 
 class State(metaclass=ABCMeta):
@@ -49,8 +55,18 @@ class SequentialState(State):
         super().__init__(name, [transition])
         self.__transition = transition
 
-    def next(self, context: Context) -> Transition:
+    def next(self, context: Context) -> Optional[Transition]:
         return self.__transition
+
+
+class FinalState(State):
+    """State with not further transitions which can be used as final state of a state machine"""
+
+    def __init__(self, name: str):
+        super().__init__(name, [])
+
+    def next(self, context: Context) -> Optional[Transition]:
+        return None
 
 
 class ProbabilisticState(State):
@@ -106,3 +122,14 @@ class ProbabilisticState(State):
         if len(self.transitions) > 0:
             return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
         return None
+
+
+class EquallyRandomState(ProbabilisticState):
+    """Special type of probabilistic state using an equal random distribution for all transitions"""
+
+    def __init__(self, name: str, transitions: List[Transition]):
+        # create even random distribution
+        probability = 1.0 / len(transitions)
+        weights = [probability for i in range(0, len(transitions))]
+        # initialize using super
+        super().__init__(name, transitions, weights)
