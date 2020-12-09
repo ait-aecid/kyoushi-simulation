@@ -3,6 +3,7 @@ import random
 from abc import ABCMeta
 from abc import abstractmethod
 from itertools import accumulate
+from itertools import cycle
 from typing import List
 from typing import Optional
 from typing import Sequence
@@ -17,6 +18,7 @@ __all__ = [
     "State",
     "SequentialState",
     "FinalState",
+    "RoundRobinState",
     "ProbabilisticState",
     "EquallyRandomState",
 ]
@@ -67,6 +69,18 @@ class FinalState(State):
 
     def next(self, context: Context) -> Optional[Transition]:
         return None
+
+
+class RoundRobinState(State):
+    def __init__(self, name: str, transitions: List[Transition]):
+        super().__init__(name, transitions)
+        self.transition_cycle = cycle(transitions)
+
+    def next(self, context: Context) -> Optional[Transition]:
+        try:
+            return next(self.transition_cycle)
+        except StopIteration:
+            return None
 
 
 class ProbabilisticState(State):
