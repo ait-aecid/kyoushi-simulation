@@ -173,7 +173,7 @@ def test_next_probabilities_float(four_mocked_transitions: List[Transition]):
         t3_name: 0,
         t4_name: 0,
     }
-    observations = 100000
+    observations = 250000
 
     for i in range(0, observations):
         observed_transition = state.next(context=empty_context)
@@ -215,7 +215,7 @@ def test_next_probabilities_int(four_mocked_transitions: List[Transition]):
         t3_name: 0,
         t4_name: 0,
     }
-    observations = 100000
+    observations = 250000
 
     for i in range(0, observations):
         observed_transition = state.next(context=empty_context)
@@ -264,7 +264,7 @@ def test_equally_random_next_probabilities(four_mocked_transitions: List[Transit
         t3_name: 0,
         t4_name: 0,
     }
-    observations = 100000
+    observations = 250000
 
     for i in range(0, observations):
         observed_transition = state.next(context=empty_context)

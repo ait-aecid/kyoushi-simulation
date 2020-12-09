@@ -27,7 +27,7 @@ class BasicTransition(transitions.Transition):
         self._name = name
         self._target = target
 
-    def execute(self, current_state, context):
+    def execute_transition(self, current_state, context):
         logger.debug(
             "executing %s -- %s --> %s", current_state, self._name, self._target
         )

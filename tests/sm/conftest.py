@@ -11,12 +11,12 @@ from cr_kyoushi.simulation.transitions import Transition
 
 
 class TransitionStub(Transition):
-    def execute(self, current_state: str, context: Context):
+    def execute_transition(self, current_state: str, context: Context):
         return self.target
 
 
 class ExceptionTransitionStub(Transition):
-    def execute(self, current_state: str, context: Context):
+    def execute_transition(self, current_state: str, context: Context):
         raise Exception("Impossible transition")
 
 
@@ -32,7 +32,7 @@ class FallbackTransitionStub(Transition):
         self.fallback_state = fallback_state
         self.cause = cause
 
-    def execute(self, current_state: str, context: Context):
+    def execute_transition(self, current_state: str, context: Context):
         raise TransitionExecutionError(
             message="Transition failed!",
             cause=self.cause,

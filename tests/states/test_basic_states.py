@@ -6,7 +6,7 @@ class NoneTransition(transitions.Transition):
     def __init__(self, name, target=None, asd=None):
         super().__init__(name, target=target)
 
-    def execute(self, current_state: str, context):
+    def execute_transition(self, current_state: str, context):
         return self.target
 
 
