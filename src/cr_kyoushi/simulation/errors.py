@@ -11,6 +11,7 @@ __all__ = [
     "ConfigValidationError",
     "StatemachineFactoryLoadError",
     "StatemachineFactoryTypeError",
+    "SkipSectionError",
 ]
 
 
@@ -53,3 +54,7 @@ class StatemachineFactoryTypeError(ClickException):
         super().__init__(
             message=f"Failed to load sm factory plugin got invalid type: '{factory_type}'"
         )
+
+
+class SkipSectionError(KeyboardInterrupt):
+    pass

@@ -6,7 +6,7 @@ from .model import Context
 from .util import sleep
 
 
-__all__ = ["Transition"]
+__all__ = ["Transition", "DelayedTransition"]
 
 
 class Transition(metaclass=ABCMeta):

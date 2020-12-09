@@ -15,12 +15,14 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import List
 
+from .errors import SkipSectionError
+
 
 if TYPE_CHECKING:
     from .cli import Info
 
 
-__all__ = ["version_info", "elements_unique", "sleep"]
+__all__ = ["version_info", "elements_unique", "skip_on_interrupt", "sleep"]
 
 logger = logging.getLogger("cr_kyoushi.simulation")
 
@@ -55,10 +57,6 @@ def version_info(cli_info: Info) -> str:
 def elements_unique(to_check: List[Any]) -> bool:
     seen = set()
     return not any(i in seen or seen.add(i) for i in to_check)  # type: ignore
-
-
-class SkipSectionError(KeyboardInterrupt):
-    pass
 
 
 def skip_on_interrupt_sig_handler(signum, frame):
