@@ -3,6 +3,7 @@ import random
 from abc import ABCMeta
 from abc import abstractmethod
 from itertools import accumulate
+from itertools import cycle
 from typing import List
 from typing import Optional
 from typing import Sequence
@@ -13,21 +14,30 @@ from .transitions import Transition
 from .util import elements_unique
 
 
-__all__ = ["State", "ProbabilisticState"]
+__all__ = [
+    "State",
+    "SequentialState",
+    "FinalState",
+    "RoundRobinState",
+    "ProbabilisticState",
+    "EquallyRandomState",
+]
 
 
 class State(metaclass=ABCMeta):
     """A State contains various transitions to other states"""
 
     @property
-    @abstractmethod
     def name(self) -> str:
-        ...
+        return self._name
 
     @property
-    @abstractmethod
     def transitions(self) -> List[Transition]:
-        ...
+        return self._transitions
+
+    def __init__(self, name: str, transitions: List[Transition]):
+        self._name = name
+        self._transitions = transitions
 
     @abstractmethod
     def next(self, context: Context) -> Optional[Transition]:
@@ -40,16 +50,41 @@ class State(metaclass=ABCMeta):
         return f"{self.name}(name='{self.name}', transitions={self.transitions})"
 
 
+class SequentialState(State):
+    """Simple sequential state only having one possible transition"""
+
+    def __init__(self, name: str, transition: Transition):
+        super().__init__(name, [transition])
+        self.__transition = transition
+
+    def next(self, context: Context) -> Optional[Transition]:
+        return self.__transition
+
+
+class FinalState(State):
+    """State with not further transitions which can be used as final state of a state machine"""
+
+    def __init__(self, name: str):
+        super().__init__(name, [])
+
+    def next(self, context: Context) -> Optional[Transition]:
+        return None
+
+
+class RoundRobinState(State):
+    def __init__(self, name: str, transitions: List[Transition]):
+        super().__init__(name, transitions)
+        self.transition_cycle = cycle(transitions)
+
+    def next(self, context: Context) -> Optional[Transition]:
+        try:
+            return next(self.transition_cycle)
+        except StopIteration:
+            return None
+
+
 class ProbabilisticState(State):
     """A state that uses a propability table to select its successor"""
-
-    @property
-    def name(self) -> str:
-        return self.__name
-
-    @property
-    def transitions(self) -> List[Transition]:
-        return self.__transitions
 
     @property
     def weights(self) -> Sequence[float]:
@@ -62,9 +97,9 @@ class ProbabilisticState(State):
         weights: Sequence[Union[int, float]],
         allow_uneven_probabilites: bool = False,
     ):
-        self.__name = name
-        # convert back to list to conform to interface
-        self.__transitions = list(transitions)
+        # initial base properties
+        super().__init__(name, transitions)
+
         # convert weights to cumulative weights
         self.__weights = list(accumulate(weights))
 
@@ -101,3 +136,14 @@ class ProbabilisticState(State):
         if len(self.transitions) > 0:
             return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
         return None
+
+
+class EquallyRandomState(ProbabilisticState):
+    """Special type of probabilistic state using an equal random distribution for all transitions"""
+
+    def __init__(self, name: str, transitions: List[Transition]):
+        # create even random distribution
+        probability = 1.0 / len(transitions)
+        weights = [probability for i in range(0, len(transitions))]
+        # initialize using super
+        super().__init__(name, transitions, weights)
