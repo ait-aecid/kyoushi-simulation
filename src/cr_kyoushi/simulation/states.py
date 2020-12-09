@@ -51,7 +51,7 @@ class State(metaclass=ABCMeta):
 class SequentialState(State):
     """Simple sequential state only having one possible transition"""
 
-    def __init__(self, name, transition):
+    def __init__(self, name: str, transition: Transition):
         super().__init__(name, [transition])
         self.__transition = transition
 
