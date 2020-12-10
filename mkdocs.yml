@@ -5,6 +5,8 @@ strict: true
 
 theme:
   name: 'material'
+  logo: images/cr_icon.svg
+  favicon: images/favicon.ico
   palette:
     scheme: ait
 
