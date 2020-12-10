@@ -37,6 +37,7 @@ StatemachineConfig = TypeVar("StatemachineConfig")
 Context = Union[BaseModel, Dict[str, Any]]
 """
     Contexts are used to store the state machine execution context.
+
     They can either be a custom defined pydantic model or `Dict[str, Any]`.
 """
 
@@ -50,11 +51,14 @@ class PluginConfig(BaseModel):
     )
     exclude_names: List[Pattern] = Field(
         [],
-        description="A list of regular expressions used to define which plugins to explicitly exclude.",
+        description="A list of regular expressions used to define \
+        which plugins to explicitly exclude.",
     )
 
 
 class Config(GenericModel, Generic[StatemachineConfig]):
+    """Cyber Range Kyoushi Simulation configuration options"""
+
     plugin: PluginConfig = Field(
         PluginConfig(), description="The plugin system configuration"
     )
@@ -66,6 +70,7 @@ class Config(GenericModel, Generic[StatemachineConfig]):
 class Weekday(IntEnum):
     """
     Enumeration for representing the days of the week.
+
     Weekdays are represented as the integers 0-6 and can
     be constructed from either their int representations or
     their english names.
@@ -89,6 +94,17 @@ class Weekday(IntEnum):
 
     @classmethod
     def validate(cls, val: Union[str, int, "Weekday"]):
+        """Parses and validates `Weekday` input in either `str`, `int` or `Enum` encoding.
+
+        Args:
+            val: The encoded input week day
+
+        Raises:
+            ValueError: if the given input is not a valid weekday
+
+        Returns:
+            [int]: `int` encoded week day
+        """
         # check enum input
         if isinstance(val, Weekday):
             return val.value
@@ -138,7 +154,9 @@ class WeekdayActivePeriod(BaseModel):
 
     def in_active_period(self, to_check: datetime) -> bool:
         """Checks wether the given datetime is within the scope of this active period.
-           This will be True if the week day matches and given time of the day is within the time period.
+
+           This will be True if the week day matches and given time of the day is
+           within the time period.
 
         Args:
             to_check (datetime): The datetime to check
@@ -159,7 +177,9 @@ class WeekdayActivePeriod(BaseModel):
 
 class ComplexActivePeriod(BaseModel):
     """
-    A `ComplexActivePeriod` is defined by a set of [`WeekdayActivePeriod`][cr_kyoushi.simulation.model.WeekdayActivePeriod].
+    A `ComplexActivePeriod` is defined by a set of
+    [`WeekdayActivePeriod`][cr_kyoushi.simulation.model.WeekdayActivePeriod].
+
     This makes it possible to configure active times for each week day separately.
     """
 
@@ -169,6 +189,7 @@ class ComplexActivePeriod(BaseModel):
 
     def in_active_period(self, to_check: datetime) -> bool:
         """Checks wether the given datetime is within this active period.
+
            This is `True` if the datetime is within the scope of **one** of
            the [`WeekdayActivePeriods`][cr_kyoushi.simulation.model.WeekdayActivePeriod].
 
@@ -190,11 +211,13 @@ class SimpleActivePeriod(BaseModel):
 
     week_days: Set[Weekday] = Field(description="A set of active week days.")
     time_period: Optional[TimePeriod] = Field(
-        description="The daylie active time period (if this is not set the whole days are considered active)."
+        description="The daylie active time period \
+        (if this is not set the whole days are considered active)."
     )
 
     def in_active_period(self, to_check: datetime) -> bool:
         """Checks wether the given datetime is within this active period.
+
            This is `True` if the datetime matches **one** of the active week days
            and the active time period.
 
@@ -211,7 +234,25 @@ class SimpleActivePeriod(BaseModel):
 
 
 class ActivePeriod(BaseModel):
+    """Active period union type.
+
+    This class can be used in pydantic models to allow
+    loading of [`ComplexActivePeriod`][cr_kyoushi.simulation.model.ComplexActivePeriod]
+    or [`SimpleActivePeriod`][cr_kyoushi.simulation.model.SimpleActivePeriod].
+    """
+
     __root__: Union[ComplexActivePeriod, SimpleActivePeriod]
 
     def in_active_period(self, to_check: datetime) -> bool:
+        """Checks wether the given datetime is within this active period.
+
+        The actual check is delegated to the underlying sub types own
+        checking logic.
+
+        Args:
+            to_check (datetime): The datetime to check
+
+        Returns:
+            bool: `True` if inside the active period `False` otherwise
+        """
         return self.__root__.in_active_period(to_check)
