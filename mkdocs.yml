@@ -24,15 +24,18 @@ nav:
 - License: license.md
 
 markdown_extensions:
+    - admonition
     - mkdocs-click
     - markdown_include.include
     - pymdownx.emoji
     - pymdownx.magiclink
-    - pymdownx.superfences
+    - pymdownx.highlight
     - pymdownx.tabbed
     - pymdownx.tasklist
+    - pymdownx.extra
     - toc:
         permalink: true
+
 
 
 plugins:
