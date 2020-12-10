@@ -10,3 +10,9 @@
     --md-accent-bg-color--light:         hsla(0, 0%, 100%, 0.7);
 
 }
+
+div.doc-contents:not(.first) {
+    padding-left: 25px;
+    border-left: 4px solid rgba(230, 230, 230);
+    margin-bottom: 80px;
+}

@@ -57,8 +57,12 @@ plugins:
     default_handler: python
     handlers:
       python:
+        setup_commands:
+            - import sys
+            - sys.path.append("docs")
+        selection:
+            new_path_syntax: yes
         rendering:
           show_source: true
-    custom_templates: templates
     watch:
       - src/cr_kyoushi/simulation
