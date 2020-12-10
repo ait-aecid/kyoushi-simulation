@@ -5,7 +5,11 @@ strict: true
 
 theme:
   name: 'material'
-#  custom_dir: 'docs/theme'
+  palette:
+    scheme: ait
+
+extra_css:
+  - stylesheets/extra.css
 
 repo_name: kyoushi/simulation
 repo_url: https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation
