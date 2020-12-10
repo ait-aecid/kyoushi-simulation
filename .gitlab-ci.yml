@@ -92,3 +92,19 @@ gitlab-package:
   script: poetry publish -r gitlab -u gitlab-ci-token -p ${CI_JOB_TOKEN}
   only:
     - tags
+
+pages:
+  stage: publish
+  image:
+    name: squidfunk/mkdocs-material
+    entrypoint:
+      - ""
+  script:
+    - mkdocs build
+    - mv site public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week
+#  only:
+#    - master
