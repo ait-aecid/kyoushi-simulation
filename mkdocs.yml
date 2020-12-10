@@ -19,6 +19,21 @@ nav:
     - State Machine: reference/sm.md
     - Utility Functions: reference/util.md
     - Exceptions: reference/errors.md
+- CLI Reference: cli.md
+- Contributing: contributing.md
+- License: license.md
+
+markdown_extensions:
+    - mkdocs-click
+    - markdown_include.include
+    - pymdownx.emoji
+    - pymdownx.magiclink
+    - pymdownx.superfences
+    - pymdownx.tabbed
+    - pymdownx.tasklist
+    - toc:
+        permalink: 
+
 
 plugins:
 - search
