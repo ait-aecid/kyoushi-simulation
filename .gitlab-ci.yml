@@ -94,13 +94,11 @@ gitlab-package:
     - tags
 
 pages:
+  <<: *install-deps
+  image: python:3.7
   stage: publish
-  image:
-    name: squidfunk/mkdocs-material
-    entrypoint:
-      - ""
   script:
-    - mkdocs build
+    - poetry run mkdocs build
     - mv site public
   artifacts:
     paths:
