@@ -35,6 +35,7 @@ autoflake = "^1.4"
 mkdocs = "^1.1.2"
 mkdocs-material = "^6.1.7"
 mkdocs-exclude = "^1.0.2"
+mkdocstrings = "^0.13.6"
 
 [tool.isort]
 profile = "black"

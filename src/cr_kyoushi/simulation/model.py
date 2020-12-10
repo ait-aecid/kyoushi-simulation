@@ -14,6 +14,7 @@ from typing import TypeVar
 from typing import Union
 
 from pydantic import BaseModel
+from pydantic import Field
 from pydantic.generics import GenericModel
 
 
@@ -80,8 +81,8 @@ class Weekday(IntEnum):
 
 
 class TimePeriod(BaseModel):
-    start_time: time
-    end_time: time
+    start_time: time = Field(description="The start time of the period")
+    end_time: time = Field(description="The end time of the period")
 
     def in_period(self, to_check: time) -> bool:
         if self.start_time <= self.end_time:
@@ -102,7 +103,7 @@ class WeekdayActivePeriod(BaseModel):
     def __hash__(self):
         return hash(self.week_day)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.__class__ == other.__class__ and self.week_day == other.week_day
 
 

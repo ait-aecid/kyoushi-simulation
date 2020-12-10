@@ -12,6 +12,13 @@ repo_url: https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation
 
 nav:
 - Overview: index.md
+- Code Reference:
+    - Models: reference/model.md
+    - States: reference/states.md
+    - Transitions: reference/transitions.md
+    - State Machine: reference/sm.md
+    - Utility Functions: reference/util.md
+    - Exceptions: reference/errors.md
 
 plugins:
 - search
@@ -20,3 +27,12 @@ plugins:
     - _build/*
     - build/*
     - examples/*
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        rendering:
+          show_source: true
+    custom_templates: templates
+    watch:
+      - src/cr_kyoushi/simulation
