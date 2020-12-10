@@ -29,18 +29,42 @@ class State(metaclass=ABCMeta):
 
     @property
     def name(self) -> str:
+        """The name of the state instance (names must be uniq within a state machine)."""
         return self._name
 
     @property
     def transitions(self) -> List[Transition]:
+        """
+        List of all possible [`transitions`][cr_kyoushi.simulation.transitions.Transition]
+        originating from this state
+        """
         return self._transitions
 
     def __init__(self, name: str, transitions: List[Transition]):
+        """
+        Args:
+            name (str): The state name
+            transitions (List[Transition]): List of possible transitions
+        """
         self._name = name
         self._transitions = transitions
 
     @abstractmethod
     def next(self, context: Context) -> Optional[Transition]:
+        """Selects the next state transition.
+
+           The selection logic depends on the state implementation. It might
+           rely on the state machine `context` and/or execution environment
+           information to select transitions based on complex conditions.
+
+        Args:
+            context (Context): State machine context which can be used for complex selection logic
+
+        Returns:
+            The selected [`Transition`][cr_kyoushi.simulation.transitions.Transition]
+            or None if no transition is available.
+
+        """
         ...
 
     def __str__(self):
@@ -54,6 +78,11 @@ class SequentialState(State):
     """Simple sequential state only having one possible transition"""
 
     def __init__(self, name: str, transition: Transition):
+        """
+        Args:
+            name: The state name
+            transition: The target transition
+        """
         super().__init__(name, [transition])
         self.__transition = transition
 
@@ -65,6 +94,10 @@ class FinalState(State):
     """State with not further transitions which can be used as final state of a state machine"""
 
     def __init__(self, name: str):
+        """
+        Args:
+            name: The state name
+        """
         super().__init__(name, [])
 
     def next(self, context: Context) -> Optional[Transition]:
@@ -73,6 +106,11 @@ class FinalState(State):
 
 class RoundRobinState(State):
     def __init__(self, name: str, transitions: List[Transition]):
+        """
+        Args:
+            name (str): The state name
+            transitions (List[Transition]): List of transitions to cycle through
+        """
         super().__init__(name, transitions)
         self.transition_cycle = cycle(transitions)
 
@@ -88,6 +126,7 @@ class ProbabilisticState(State):
 
     @property
     def weights(self) -> Sequence[float]:
+        """The cumulative weights assigned to the transitions."""
         return self.__weights
 
     def __init__(
@@ -97,6 +136,21 @@ class ProbabilisticState(State):
         weights: Sequence[Union[int, float]],
         allow_uneven_probabilites: bool = False,
     ):
+        """
+        Args:
+            name: The state name
+            transitions: The list of transitions
+            weights: The list of weights to assign to the transitions in probability notation.
+            allow_uneven_probabilites: By default only even propabilities are allowed (those that sum to 1 or 100).
+                                       You can disable this by setting this flag to `True`, but note that uneven
+                                       probabilities are harder to interpret users of your state machine.
+
+        !!! note
+            Probability form weights are automatically converted to cumulative weights
+            to be more efficient with random selection functions (e.g.,
+            [`random.choices`](https://docs.python.org/3/library/random.html#random.choices))
+
+        """
         # initial base properties
         super().__init__(name, transitions)
 
@@ -142,6 +196,11 @@ class EquallyRandomState(ProbabilisticState):
     """Special type of probabilistic state using an equal random distribution for all transitions"""
 
     def __init__(self, name: str, transitions: List[Transition]):
+        """
+        Args:
+            name: The state name
+            transitions: The list of transitions
+        """
         # create even random distribution
         probability = 1.0 / len(transitions)
         weights = [probability for i in range(0, len(transitions))]
