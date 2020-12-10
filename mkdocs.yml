@@ -1,0 +1,22 @@
+site_name: Cyber Range Kyoushi Simulation
+
+site_description: State machine based actor simulation framework for cyber range testbeds.
+strict: true
+
+theme:
+  name: 'material'
+#  custom_dir: 'docs/theme'
+
+repo_name: kyoushi/simulation
+repo_url: https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation
+
+nav:
+- Overview: index.md
+
+plugins:
+- search
+- exclude:
+    glob:
+    - _build/*
+    - build/*
+    - examples/*
