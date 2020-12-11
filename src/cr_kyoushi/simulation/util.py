@@ -30,8 +30,7 @@ logger = logging.getLogger("cr_kyoushi.simulation")
 def version_info(cli_info: Info) -> str:
     """Returns formatted version information about the package.
 
-    Adapted from Pydantic see:
-    https://github.com/samuelcolvin/pydantic/blob/master/pydantic/version.py
+    Adapted from Pydantic see:https://github.com/samuelcolvin/pydantic/blob/master/pydantic/version.py
     """
     import platform
     import sys
@@ -84,6 +83,7 @@ def skip_on_interrupt(sig=signal.SIGINT, sig_handler=skip_on_interrupt_sig_handl
 
 
 def sleep(sleep_time: float) -> None:
+    """Skipable sleep function"""
     with skip_on_interrupt():
         logger.debug("Going to sleep for %d", sleep_time)
         time.sleep(sleep_time)

@@ -34,7 +34,8 @@ class Transition(metaclass=ABCMeta):
     def execute(self, current_state: str, context: Context) -> Optional[str]:
         """Transition execution function called by the state machine.
 
-        The default behavior is to directly call `execute_transition(...)`
+        The default behavior is to directly call
+        [`execute_transition(...)`][cr_kyoushi.simulation.transitions.Transition.execute_transition]
 
         !!! Info
             This function can be overridden or extended to change **how**
@@ -60,7 +61,8 @@ class Transition(metaclass=ABCMeta):
         """Executes the transition functionality
 
         This must be implemented by concret transition classes.
-        The function is called indirectly by `execution(...)`.
+        The function is called indirectly by
+        [`execution(...)`][cr_kyoushi.simulation.transitions.Transition.execute].
 
         Args:
             current_state: The calling states name
@@ -117,7 +119,7 @@ class DelayedTransition(Transition):
         Delayed transition execution sleeps before and after executing the transition.
 
         Both delays can be configured during initialization.
-        The delays use a special `sleep` function that registers a `SIGINT`
+        The delays use a special [`sleep`][cr_kyoushi.simulation.util.sleep] function that registers a `SIGINT`
         signal handler to make it possible to interrupt and skip the sleep
         phase.
 

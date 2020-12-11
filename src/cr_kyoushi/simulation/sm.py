@@ -33,7 +33,7 @@ class Statemachine:
     This class implements basic state machine execution, i.e., execution
     starts at the configured initial state and continues until a end state
     (i.e., a state without outgoing transitions) is reached. A state machine
-    can be started by calling the `run()` function.
+    can be started by calling the [`run()`][cr_kyoushi.simulation.sm.Statemachine.run] function.
 
     !!! Note
         You can also execute a state machine step wise using `_execute_step()`
@@ -42,8 +42,10 @@ class Statemachine:
         after the state machine is finished.
 
     Default state machine behavior can be extended or modified by creating
-    a sub class and overriding the state machine functions `_execute_machine()`,
-    `_execute_step()`, `_execute_transition()`, etc.
+    a sub class and overriding the state machine functions
+    [`_execute_machine()`][cr_kyoushi.simulation.sm.Statemachine._execute_machine],
+    [`_execute_step()`][cr_kyoushi.simulation.sm.Statemachine._execute_step],
+    [`_execute_transition()`][cr_kyoushi.simulation.sm.Statemachine._execute_transition], etc.
     """
 
     @property

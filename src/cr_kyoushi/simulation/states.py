@@ -54,8 +54,8 @@ class State(metaclass=ABCMeta):
         """Selects the next state transition.
 
            The selection logic depends on the state implementation. It might
-           rely on the state machine `context` and/or execution environment
-           information to select transitions based on complex conditions.
+           rely on the [`state machine context`][cr_kyoushi.simulation.sm.Statemachine.context]
+           and/or execution environment information to select transitions based on complex conditions.
 
         Args:
             context (Context): State machine context which can be used for complex selection logic
