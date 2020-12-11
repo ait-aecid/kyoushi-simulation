@@ -4,6 +4,7 @@ from abc import ABCMeta
 from abc import abstractmethod
 from itertools import accumulate
 from itertools import cycle
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Sequence
@@ -11,7 +12,6 @@ from typing import Union
 
 from .model import Context
 from .transitions import Transition
-from .util import elements_unique
 
 
 __all__ = [
@@ -38,6 +38,14 @@ class State(metaclass=ABCMeta):
         List of all possible [`transitions`][cr_kyoushi.simulation.transitions.Transition]
         originating from this state
         """
+        return list(self._transitions.values())
+
+    @property
+    def transitions_map(self) -> Dict[str, Transition]:
+        """
+        List of all possible [`transitions`][cr_kyoushi.simulation.transitions.Transition]
+        originating from this state
+        """
         return self._transitions
 
     def __init__(self, name: str, transitions: List[Transition]):
@@ -45,9 +53,15 @@ class State(metaclass=ABCMeta):
         Args:
             name (str): The state name
             transitions (List[Transition]): List of possible transitions
+
+        Raises:
+            ValueError: If there are transitions with duplicate names
         """
         self._name = name
-        self._transitions = transitions
+        self._transitions = {t.name: t for t in transitions}
+
+        if len(self._transitions) < len(transitions):
+            raise ValueError("Transition names must be unique")
 
     @abstractmethod
     def next(self, context: Context) -> Optional[Transition]:
@@ -82,7 +96,13 @@ class SequentialState(State):
         Args:
             name: The state name
             transition: The target transition
+
+        Raises:
+            ValueError: If transition is None
         """
+        if transition is None:
+            raise ValueError("Transition must not be None")
+
         super().__init__(name, [transition])
         self.__transition = transition
 
@@ -110,6 +130,9 @@ class RoundRobinState(State):
         Args:
             name (str): The state name
             transitions (List[Transition]): List of transitions to cycle through
+
+        Raises:
+            ValueError: If there are transitions with duplicate names
         """
         super().__init__(name, transitions)
         self.transition_cycle = cycle(transitions)
@@ -144,6 +167,11 @@ class ProbabilisticState(State):
             allow_uneven_probabilites: By default only even propabilities are allowed (those that sum to 1 or 100).
                                        You can disable this by setting this flag to `True`, but note that uneven
                                        probabilities are harder to interpret users of your state machine.
+
+        Raises:
+            ValueError: If there are transitions with duplicate names
+            ValueError: If the weights and transitions list lengths do not match
+            ValueError: If the given weights are uneven, but `allow_uneven_probabilites` is `False`
 
         !!! note
             Probability form weights are automatically converted to cumulative weights
@@ -180,12 +208,6 @@ class ProbabilisticState(State):
                             be either 1 or 100, but got {self.weights[-1]}!"
                     )
 
-            # check that transitions are unique
-            if not elements_unique(self.transitions):
-                raise ValueError(
-                    "The transition list must not contain duplicate elements!"
-                )
-
     def next(self, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
             return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
@@ -200,6 +222,9 @@ class EquallyRandomState(ProbabilisticState):
         Args:
             name: The state name
             transitions: The list of transitions
+
+        Raises:
+            ValueError: If there are transitions with duplicate names
         """
         # create even random distribution
         probability = 1.0 / len(transitions)

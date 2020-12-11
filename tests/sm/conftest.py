@@ -5,6 +5,7 @@ import pytest
 
 from cr_kyoushi.simulation.errors import TransitionExecutionError
 from cr_kyoushi.simulation.model import Context
+from cr_kyoushi.simulation.states import FinalState
 from cr_kyoushi.simulation.states import SequentialState
 from cr_kyoushi.simulation.states import State
 from cr_kyoushi.simulation.transitions import Transition
@@ -47,7 +48,7 @@ def empty_transition() -> List[State]:
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
-    state3 = SequentialState("state3", None)
+    state3 = FinalState("state3")
 
     return [state1, state2, state3]
 
