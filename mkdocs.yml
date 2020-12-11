@@ -43,6 +43,7 @@ markdown_extensions:
     - pymdownx.tabbed
     - pymdownx.tasklist
     - pymdownx.extra
+    - pymdownx.details
     - toc:
         permalink: true
         toc_depth: 3
