@@ -15,7 +15,6 @@ from typing import Optional
 from typing import Type
 
 from . import errors
-from .model import ActivePeriod
 from .model import Context
 from .model import StatemachineConfig
 from .states import State
@@ -28,7 +27,35 @@ logger = logging.getLogger("cr_kyoushi.simulation")
 
 
 class Statemachine:
-    """The State machine implements state control and transition logic"""
+    """
+    Implements state control and transition logic
+
+    This class implements basic state machine execution, i.e., execution
+    starts at the configured initial state and continues until a end state
+    (i.e., a state without outgoing transitions) is reached. A state machine
+    can be started by calling the [`run()`][cr_kyoushi.simulation.sm.Statemachine.run] function.
+
+    !!! Note
+        You can also execute a state machine step wise using `_execute_step()`
+        function manually. If you choose to do so be care full to remember to call
+        `setup_context()` before you start execution and `destroy_context()`
+        after the state machine is finished.
+
+    Default state machine behavior can be extended or modified by creating
+    a sub class and overriding the state machine functions
+    [`_execute_machine()`][cr_kyoushi.simulation.sm.Statemachine._execute_machine],
+    [`_execute_step()`][cr_kyoushi.simulation.sm.Statemachine._execute_step],
+    [`_execute_transition()`][cr_kyoushi.simulation.sm.Statemachine._execute_transition], etc.
+    """
+
+    @property
+    def context(self) -> Context:
+        """The state machine execution context object."""
+        return self._context
+
+    @context.setter
+    def context(self, new_value: Context):
+        self._context = new_value
 
     def __init__(
         self,
@@ -36,6 +63,14 @@ class Statemachine:
         states: List[State],
         max_errors: int = 0,
     ):
+        """
+        Args:
+            initial_state: The name of the initial state
+            states: List of all states the state machine can enter
+            max_errors: Maximum amount of errors the state machine is allowed to encounter
+                        before it stops trying to recover by reseting to the initial state.
+
+        """
         self.initial_state = initial_state
         self.current_state: Optional[str] = initial_state
         self.current_transition: Optional[Transition] = None
@@ -45,12 +80,34 @@ class Statemachine:
         self.errors = 0
 
     def setup_context(self) -> None:
-        pass
+        """Initialize and setup the state machine execution context
+
+        ??? Note
+            Override this function if your state machine needs run some
+            logic or set `Context` information before it can be executed.
+        """
 
     def destroy_context(self) -> None:
-        pass
+        """Destroy and clean up the state machine execution context
+
+        ??? Note
+            Override or extend this function if your state machine needs run some
+            logic or free `Context` information after it has finished executing.
+        """
 
     def _execute_transition(self):
+        """Execute the current transition.
+
+        The current transition is executed and the current state is
+        updated on successful executions. This function also handles
+        [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]
+        and sets the state machines current state to the errors fallback state.
+
+        ??? Note
+            Override or extend this if you want to change how transitions are executed
+            or how [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]
+            are handled.
+        """
         assert self.current_state is not None
         assert self.current_transition is not None
         try:
@@ -72,6 +129,17 @@ class Statemachine:
             self.current_state = transition_error.fallback_state
 
     def _execute_step(self):
+        """Execute a single state machine step.
+
+        This function delegates transition execution to `_execute_transition()`.
+        All pre and post execution tasks such as retrieving the transition
+        from the current state before the transition and handeling unexpected
+        errors encountered during transition execution.
+
+        ??? Note
+            Override or extend this function if you whish to change pre-, post-execution
+            and handling of all unexpected errors.
+        """
         assert self.current_state is not None
         try:
             self.current_transition = self.states[self.current_state].next(self.context)
@@ -104,11 +172,26 @@ class Statemachine:
                 self.current_state = None
 
     def _execute_machine(self):
+        """State machine main execution loop.
+
+        This function executes state machine steps in a loop
+        until a end state is reached (i.e., current state is `None`).
+
+        ??? Note
+            Override or extends this if you whish to change how your
+            state machine does continues execution.
+        """
         # state machine run main loop
         while self.current_state:
             self._execute_step()
 
     def run(self) -> None:
+        """Starts the state machine execution.
+
+        The state machine execution context is setup before
+        executing the state machine main loop and destroyed again
+        after the main loop ends.
+        """
         # prepare state machine before start
         logger.info("Starting state machine")
         self.setup_context()
@@ -122,39 +205,49 @@ class Statemachine:
         logger.info("State machine finished")
 
 
-class HumanStatemachine(Statemachine):
-    """
-    A human state machine extends normal state machine behavior by introducting
-    an active time period. Outside of the configured active time period
-    the human state machine will idle its execution. Additionally upon leaving the
-    active time period the state machine will reset to the initial state.
-    This includes destrying and recreating the context.
-    """
-
-    def __init__(
-        self,
-        initial_state: str,
-        states: List[State],
-        active_period: ActivePeriod,
-        max_errors: int = 0,
-    ):
-        super().__init__(initial_state, states, max_errors=max_errors)
-        self.active_period = active_period
-
-
 class StatemachineFactory(ABC, Generic[StatemachineConfig]):
-    """Abstract class definition for factories generating state machines"""
+    """Abstract class definition for factories generating state machines
+
+    State machine factories are used by the CLI system to load dynamically load
+    state machines from [entrypoints](https://packaging.python.org/specifications/entry-points/)
+    or python files.
+
+    A state machine factory must have a **name** and a **config class**.
+    """
 
     @property
     @abstractmethod
     def name(self) -> str:
-        ...
+        """The name of the state machine factory."""
 
     @property
     @abstractmethod
     def config_class(self) -> Type[StatemachineConfig]:
-        ...
+        """The config class to use for the state machine.
+
+        You can use the configuration class to define all required
+        and optional configuration options for your state machine.
+        e.g., to make it possible for users of your state machine to configure
+        the probabilities for [`ProbabilisticStates`][cr_kyoushi.simulation.states.ProbabilisticState].
+
+        The CLI system dynamically loads and validates configuration for your
+        state machine based on the config class.
+        [Pydantic](https://pydantic-docs.helpmanual.io/) is used for this so it is
+        recommended to define your config class must be a pydantic model or any other field type
+        pydantic can handle.
+        """
 
     @abstractmethod
     def build(self, config: StatemachineConfig) -> Statemachine:
-        ...
+        """Builds the state machine instance.
+
+        The build function must also create and initialize all states and transitions
+        required by the state machine. This is called by the CLI system to create
+        the state machine before executing it.
+
+        Args:
+            config: Configuration for your state machine.
+
+        Returns:
+            Statemachine: Statemachine instances created based on the given configuration.
+        """

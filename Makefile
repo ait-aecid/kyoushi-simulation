@@ -8,6 +8,8 @@
 RELEASE := $$(sed -n -E "s/__version__ = '(.+)'/\1/p" src/cr_kyoushi/simulation/__version__.py)
 PY_SRC := src/cr_kyoushi tests/
 
+.PHONY: docs
+
 # lists all available targets
 list:
 	@sh -c "$(MAKE) -p no_targets__ | \
@@ -17,13 +19,16 @@ list:
 # required for list
 no_targets__:
 
-clean:
+clean: clean-docs
 	@rm -rf build dist .eggs *.egg-info
 	@rm -rf .benchmarks .coverage coverage.xml htmlcov report.xml .tox
 	@find . -type d -name '.mypy_cache' -exec rm -rf {} +
 	@find . -type d -name '__pycache__' -exec rm -rf {} +
 	@find . -type d -name '*pytest_cache*' -exec rm -rf {} +
 	@find . -type f -name "*.py[co]" -exec rm -rf {} +
+
+clean-docs:
+	@rm -rf site
 
 # install all dependencies
 setup: setup-python
@@ -80,3 +85,14 @@ lint-black:  ## Lint the code using black.
 
 lint-isort:  ## Sort the imports using isort.
 	@poetry run isort $(PY_SRC)
+
+# documentation commands
+
+docs:
+	@poetry run mkdocs build
+
+docs-offline:
+	@poetry run mkdocs build --no-directory-urls
+
+docs-serve:
+	@poetry run mkdocs serve

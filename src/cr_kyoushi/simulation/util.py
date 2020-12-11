@@ -11,8 +11,10 @@ import signal
 import time
 
 from contextlib import contextmanager
+from types import FrameType
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import Callable
 from typing import List
 
 from .errors import SkipSectionError
@@ -28,10 +30,10 @@ logger = logging.getLogger("cr_kyoushi.simulation")
 
 
 def version_info(cli_info: Info) -> str:
-    """Returns formatted version information about the package.
+    """Returns formatted version information about the `cr_kyoushi.simulation package`.
 
-    Adapted from Pydantic see:
-    https://github.com/samuelcolvin/pydantic/blob/master/pydantic/version.py
+    Adapted from
+    [Pydantic version.py](https://github.com/samuelcolvin/pydantic/blob/master/pydantic/version.py)
     """
     import platform
     import sys
@@ -55,17 +57,54 @@ def version_info(cli_info: Info) -> str:
 
 
 def elements_unique(to_check: List[Any]) -> bool:
+    """Utility function to check if elements in a list are uniq.
+
+    Args:
+        to_check: The list to check
+
+    Returns:
+        `True` if the list contains no duplicates `False` otherwise.
+    """
     seen = set()
     return not any(i in seen or seen.add(i) for i in to_check)  # type: ignore
 
 
-def skip_on_interrupt_sig_handler(signum, frame):
+def skip_on_interrupt_sig_handler(signum: signal.Signals, frame: FrameType):
+    """Simple signal handler that just raises a
+    [`SkipSectionError`][cr_kyoushi.simulation.errors.SkipSectionError]
+    when it receives a interrupt signal.
+
+    Raises:
+        SkipSectionError: To indicate the current section should be skipped
+    """
     logger.debug("Received interrupt raising skip section error")
     raise SkipSectionError()
 
 
 @contextmanager
-def skip_on_interrupt(sig=signal.SIGINT, sig_handler=skip_on_interrupt_sig_handler):
+def skip_on_interrupt(
+    sig: signal.Signals = signal.SIGINT,
+    sig_handler: Callable[
+        [signal.Signals, FrameType], None
+    ] = skip_on_interrupt_sig_handler,
+):
+    """Context manager for creating skipable code sections.
+
+    Args:
+        sig: The signal that should indicate a skip request.
+        sig_handler: The skip on signal handler to use.
+
+    Example:
+        ```python
+            # start of the skipable section
+            with skip_on_interrupt():
+                ...
+                long_running_task()
+                ...
+            # after a skip we resume here
+            ...
+        ```
+    """
     try:
         original_handler = signal.getsignal(sig)
         signal.signal(sig, sig_handler)
@@ -84,6 +123,19 @@ def skip_on_interrupt(sig=signal.SIGINT, sig_handler=skip_on_interrupt_sig_handl
 
 
 def sleep(sleep_time: float) -> None:
+    """Skipable sleep function
+
+    This function utilizes the
+    [`skip_on_interrupt`][cr_kyoushi.simulation.util.skip_on_interrupt]
+    context manager to implement a skipable sleep.
+
+    `SIGINT` is used used as skip signal. For CLI applications
+    simply press ++ctrl+c++ to skip to interrupt the sleep.
+
+    !!! Note
+        If you wish to send the `SIGINT` signal to the main process press
+         ++ctrl+c++ twice.
+    """
     with skip_on_interrupt():
         logger.debug("Going to sleep for %d", sleep_time)
         time.sleep(sleep_time)

@@ -22,6 +22,7 @@ repos:
     rev: v0.790
     hooks:
     -   id: mypy
+        additional_dependencies: [pydantic]
 
 - repo: https://github.com/timothycrosley/isort
   rev: 5.4.2

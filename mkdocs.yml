@@ -1,0 +1,72 @@
+site_name: Cyber Range Kyoushi Simulation
+
+site_description: State machine based actor simulation framework for cyber range testbeds.
+strict: true
+
+theme:
+  name: 'material'
+  logo: images/cr_icon.svg
+  favicon: images/favicon.ico
+  palette:
+    scheme: ait
+
+extra_css:
+  - stylesheets/extra.css
+
+repo_name: kyoushi/simulation
+repo_url: https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation
+# need to set manually since we use a private gitlab instance
+edit_uri: edit/master/docs/
+
+nav:
+- Overview: index.md
+- Code Reference:
+    - Models: reference/model.md
+    - States: reference/states.md
+    - Transitions: reference/transitions.md
+    - State Machine: reference/sm.md
+    - Utility Functions: reference/util.md
+    - Exceptions: reference/errors.md
+- CLI Reference: cli.md
+- Contributing: contributing.md
+- License: license.md
+
+markdown_extensions:
+    - admonition
+    - mkdocs-click
+    - markdown_include.include
+    - pymdownx.emoji
+    - pymdownx.magiclink
+    - pymdownx.highlight
+    - pymdownx.inlinehilite
+    - pymdownx.keys
+    - pymdownx.tabbed
+    - pymdownx.tasklist
+    - pymdownx.extra
+    - pymdownx.details
+    - toc:
+        permalink: true
+        toc_depth: 3
+
+
+
+plugins:
+- search
+- exclude:
+    glob:
+    - _build/*
+    - build/*
+    - examples/*
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        selection:
+            new_path_syntax: yes
+            filters:
+              - "!^_[^_]"
+              - "!^__class__"
+        rendering:
+          show_source: true
+    watch:
+      - src/cr_kyoushi/simulation
