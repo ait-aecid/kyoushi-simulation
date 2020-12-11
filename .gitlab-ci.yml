@@ -103,10 +103,11 @@ pages:
     # make extra copy of docs for viewing offline (without a server)
     - make docs-offline
     - mv site offline-docs
+    - tar -zcf offline-docs.tar.gz offline-docs
   artifacts:
     paths:
       - public
-      - offline-docs
+      - offline-docs.tar.gz
     expire_in: 1 week
   only:
     - master
