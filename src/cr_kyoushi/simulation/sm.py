@@ -15,7 +15,6 @@ from typing import Optional
 from typing import Type
 
 from . import errors
-from .model import ActivePeriod
 from .model import Context
 from .model import StatemachineConfig
 from .states import State
@@ -120,26 +119,6 @@ class Statemachine:
         # clean up state machine
         self.destroy_context()
         logger.info("State machine finished")
-
-
-class HumanStatemachine(Statemachine):
-    """
-    A human state machine extends normal state machine behavior by introducting
-    an active time period. Outside of the configured active time period
-    the human state machine will idle its execution. Additionally upon leaving the
-    active time period the state machine will reset to the initial state.
-    This includes destrying and recreating the context.
-    """
-
-    def __init__(
-        self,
-        initial_state: str,
-        states: List[State],
-        active_period: ActivePeriod,
-        max_errors: int = 0,
-    ):
-        super().__init__(initial_state, states, max_errors=max_errors)
-        self.active_period = active_period
 
 
 class StatemachineFactory(ABC, Generic[StatemachineConfig]):
