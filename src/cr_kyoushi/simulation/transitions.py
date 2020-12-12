@@ -1,6 +1,6 @@
-from abc import ABCMeta
-from abc import abstractmethod
 from typing import Optional
+
+from typing_extensions import Protocol
 
 from .model import Context
 from .util import sleep
@@ -9,7 +9,20 @@ from .util import sleep
 __all__ = ["Transition", "DelayedTransition"]
 
 
-class Transition(metaclass=ABCMeta):
+class ContextFunction(Protocol):
+    def __call__(self, current_state: str, context: Context):
+        """
+
+        Args:
+            current_state: The calling states name
+            context: The state machine context
+
+        Raises:
+            TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
+        """
+
+
+class Transition:
     """Abstract base Transition class describes a transition from one state into another"""
 
     @property
@@ -22,30 +35,43 @@ class Transition(metaclass=ABCMeta):
         """The target state of the transition"""
         return self._target
 
-    def __init__(self, name: str, target: Optional[str] = None):
+    @property
+    def transition_function(self) -> ContextFunction:
+        """The transition function"""
+        return self._transition_function
+
+    def __init__(
+        self,
+        name: str,
+        transition_function: ContextFunction,
+        target: Optional[str] = None,
+    ):
         """
         Args:
             name: The transition name
             target: The target state
+            transition_function: The transition function to call upon execution
         """
         self._name = name
+        self._transition_function = transition_function
         self._target = target
 
     def execute(self, current_state: str, context: Context) -> Optional[str]:
         """Transition execution function called by the state machine.
 
-        The default behavior is to directly call
-        [`execute_transition(...)`][cr_kyoushi.simulation.transitions.Transition.execute_transition]
+        The default behavior is to directly call the configured
+        [`transition_function`][cr_kyoushi.simulation.transitions.Transition.transition_function]
+
 
         !!! Info
             This function can be overridden or extended to change **how**
             transitions are executed. Actual transition implementations
-            should be done via `execute_transition`.
+            should be done via the supplied
+            [`transition_function`][cr_kyoushi.simulation.transitions.Transition.transition_function].
 
         !!! Warning
             Don't forget to call `#!python super().execute(current_state, context)`
-            or `#!python execute_transition(current_state, context)` and capture the
-            return value, if you override this function.
+            or `#!python self.transition_function(current_state, context)`.
 
         Args:
             current_state: The calling states name
@@ -53,25 +79,12 @@ class Transition(metaclass=ABCMeta):
 
         Returns:
             The state the machine has moved to
+
+        Raises:
+            TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
         """
-        return self.execute_transition(current_state, context)
-
-    @abstractmethod
-    def execute_transition(self, current_state: str, context: Context) -> Optional[str]:
-        """Executes the transition functionality
-
-        This must be implemented by concret transition classes.
-        The function is called indirectly by
-        [`execution(...)`][cr_kyoushi.simulation.transitions.Transition.execute].
-
-        Args:
-            current_state: The calling states name
-            context: The state machine context
-
-        Returns:
-            The state the machine has moved to
-        """
-        ...
+        self.transition_function(current_state, context)
+        return self.target
 
     def __str__(self):
         return f"name='{self.name}' -> target={self.target}"
@@ -99,6 +112,7 @@ class DelayedTransition(Transition):
     def __init__(
         self,
         name: str,
+        transition_function: ContextFunction,
         target: Optional[str] = None,
         delay_before: float = 0.0,
         delay_after: float = 0.0,
@@ -106,11 +120,12 @@ class DelayedTransition(Transition):
         """
         Args:
             name: The transition name
+            transition_function: The transition function to call upon execution
             target: The target state
             delay_before: The pre execution delay to configure
             delay_after: The post execution delay to configure
         """
-        super().__init__(name, target)
+        super().__init__(name, transition_function, target)
         self._delay_before = delay_before
         self._delay_after = delay_after
 
@@ -133,6 +148,9 @@ class DelayedTransition(Transition):
 
         Returns:
             The state the machine has moved to
+
+        Raises:
+            TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
         """
         sleep(self.delay_before)
         next_state = super().execute(current_state, context)
