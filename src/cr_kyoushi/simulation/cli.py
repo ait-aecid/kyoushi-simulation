@@ -143,7 +143,7 @@ def sm_run(info: Info, factory: str):
     # load state machine config and build machine
     config = load_config(info.config_raw, StatemachineConfig)
     logger.debug("Loaded config %s", config)
-    machine = factory_obj.build(config)
+    machine = factory_obj.build(config.sm)
 
     # execute machine
     machine.run()
