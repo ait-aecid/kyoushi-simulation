@@ -1,39 +1,15 @@
 from typing import List
-from typing import Optional
 
 import pytest
 
-from cr_kyoushi.simulation.errors import TransitionExecutionError
-from cr_kyoushi.simulation.model import Context
 from cr_kyoushi.simulation.states import FinalState
 from cr_kyoushi.simulation.states import SequentialState
 from cr_kyoushi.simulation.states import State
 from cr_kyoushi.simulation.transitions import Transition
 
-
-def noop(current_state: str, context: Context):
-    pass
-
-
-def exception_function_stub(current_state: str, context: Context):
-    raise Exception("Impossible transition")
-
-
-class FallbackFunctionStub:
-    def __init__(
-        self,
-        fallback_state: Optional[str] = None,
-        cause: Optional[Exception] = None,
-    ):
-        self.fallback_state = fallback_state
-        self.cause = cause
-
-    def __call__(self, current_state: str, context: Context):
-        raise TransitionExecutionError(
-            message="Transition failed!",
-            cause=self.cause,
-            fallback_state=self.fallback_state,
-        )
+from ..fixtures.transitions import FallbackFunctionStub
+from ..fixtures.transitions import exception_function_stub
+from ..fixtures.transitions import noop
 
 
 @pytest.fixture(scope="module")

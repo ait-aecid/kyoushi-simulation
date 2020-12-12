@@ -5,15 +5,9 @@ from typing import Tuple
 import pytest
 
 from cr_kyoushi.simulation import states
-from cr_kyoushi.simulation import transitions
+from cr_kyoushi.simulation.transitions import Transition
 
-
-class NoneTransition(transitions.Transition):
-    def __init__(self, name, target=None, asd=None):
-        super().__init__(name, target=target)
-
-    def execute_transition(self, current_state: str, context):
-        return self.target
+from ..fixtures.transitions import noop
 
 
 class StubState(states.State):
@@ -22,35 +16,29 @@ class StubState(states.State):
 
 
 @pytest.fixture()
-def none_transitions() -> Tuple[
-    NoneTransition, NoneTransition, NoneTransition, NoneTransition
-]:
-    t1 = NoneTransition(name="t1", target="t2")
-    t2 = NoneTransition(name="t2", target="t3")
-    t3 = NoneTransition(name="t3", target="t4")
-    t4 = NoneTransition(name="t4", target=None)
+def noop_transitions() -> Tuple[Transition, Transition, Transition, Transition]:
+    t1 = Transition(name="t1", transition_function=noop, target="t2")
+    t2 = Transition(name="t2", transition_function=noop, target="t3")
+    t3 = Transition(name="t3", transition_function=noop, target="t4")
+    t4 = Transition(name="t4", transition_function=noop, target=None)
     return (t1, t2, t3, t4)
 
 
 def test_transition_map_init(
-    none_transitions: Tuple[
-        NoneTransition, NoneTransition, NoneTransition, NoneTransition
-    ]
+    noop_transitions: Tuple[Transition, Transition, Transition, Transition]
 ):
-    (t1, t2, t3, t4) = none_transitions
+    (t1, t2, t3, t4) = noop_transitions
     state = StubState("stub", [t1, t2, t3, t4])
 
     expected_dict = {t1.name: t1, t2.name: t2, t3.name: t3, t4.name: t4}
-    assert state.transitions == list(none_transitions)
+    assert state.transitions == list(noop_transitions)
     assert state.transitions_map == expected_dict
 
 
 def test_non_unique_transitions_fail(
-    none_transitions: Tuple[
-        NoneTransition, NoneTransition, NoneTransition, NoneTransition
-    ]
+    noop_transitions: Tuple[Transition, Transition, Transition, Transition]
 ):
-    (t1, t2, t3, t4) = none_transitions
+    (t1, t2, t3, t4) = noop_transitions
 
     # should raise error sind transition 1 is present twice
     with pytest.raises(ValueError):
@@ -66,7 +54,7 @@ def test_sequential_given_no_transition_raises_error():
 
 
 def test_sequential_state_given_transition_returns_it():
-    abc = NoneTransition(name="none", target=None)
+    abc = Transition(name="none", transition_function=noop, target=None)
     seq = states.SequentialState("test", abc)
 
     # check transition property
@@ -90,8 +78,8 @@ def test_final_state_has_no_transition():
     assert final.next({"dummy": "context"}) is None
 
 
-def test_round_robin_loops(none_transitions):
-    (t1, t2, t3, t4) = none_transitions
+def test_round_robin_loops(noop_transitions):
+    (t1, t2, t3, t4) = noop_transitions
 
     transitions_list = [t1, t2, t3, t4]
 

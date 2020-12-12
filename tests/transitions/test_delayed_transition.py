@@ -2,14 +2,13 @@ import time
 
 from cr_kyoushi.simulation import transitions
 
-
-class NoopDelayedTransition(transitions.DelayedTransition):
-    def execute_transition(self, current_state, context):
-        return self.target
+from ..fixtures.transitions import noop
 
 
 def test_delayed_transition_init():
-    transition = NoopDelayedTransition("test", delay_before=2, delay_after=4)
+    transition = transitions.DelayedTransition(
+        "test", noop, delay_before=2, delay_after=4
+    )
 
     assert transition.name == "test"
     assert transition.target is None
@@ -20,7 +19,7 @@ def test_delayed_transition_init():
 def test_delayed_transition_delay_before():
     precission = 0.01
     expected_wait = 1
-    transition = NoopDelayedTransition("test", delay_before=expected_wait)
+    transition = transitions.DelayedTransition("test", noop, delay_before=expected_wait)
 
     # execute and time sleep
     start_seconds = time.time()
@@ -36,7 +35,7 @@ def test_delayed_transition_delay_before():
 def test_delayed_transition_delay_after():
     precission = 0.01
     expected_wait = 1
-    transition = NoopDelayedTransition("test", delay_after=expected_wait)
+    transition = transitions.DelayedTransition("test", noop, delay_after=expected_wait)
 
     # execute and time sleep
     start_seconds = time.time()
@@ -53,7 +52,9 @@ def test_delayed_transition_delay_both():
     precission = 0.01
     expected_wait = 2
     wait = 1
-    transition = NoopDelayedTransition("test", delay_before=wait, delay_after=wait)
+    transition = transitions.DelayedTransition(
+        "test", noop, delay_before=wait, delay_after=wait
+    )
 
     # execute and time sleep
     start_seconds = time.time()
