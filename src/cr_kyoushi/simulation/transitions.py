@@ -10,7 +10,7 @@ __all__ = ["Transition", "DelayedTransition"]
 
 
 class ContextFunction(Protocol):
-    def __call__(self, current_state: str, context: Context):
+    def __call__(self, current_state: str, context: Context, target: Optional[str]):
         """
 
         Args:
@@ -83,7 +83,7 @@ class Transition:
         Raises:
             TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
         """
-        self.transition_function(current_state, context)
+        self.transition_function(current_state, context, self.target)
         return self.target
 
     def __str__(self):
