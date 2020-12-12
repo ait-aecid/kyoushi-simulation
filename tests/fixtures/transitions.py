@@ -1,11 +1,22 @@
+import logging
+
 from typing import Optional
 
 from cr_kyoushi.simulation.errors import TransitionExecutionError
 from cr_kyoushi.simulation.model import Context
 
 
+logger = logging.getLogger("cr_kyoushi.simulation")
+
+
 def noop(current_state: str, context: Context, target: Optional[str] = None):
     pass
+
+
+def debug_transition(
+    self, current_state: str, context: Context, target: Optional[str] = None
+):
+    logger.debug("executing %s -- %s --> %s", current_state, self._name, self._target)
 
 
 def exception_function_stub(
