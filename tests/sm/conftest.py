@@ -11,29 +11,24 @@ from cr_kyoushi.simulation.states import State
 from cr_kyoushi.simulation.transitions import Transition
 
 
-class TransitionStub(Transition):
-    def execute_transition(self, current_state: str, context: Context):
-        return self.target
+def noop(current_state: str, context: Context):
+    pass
 
 
-class ExceptionTransitionStub(Transition):
-    def execute_transition(self, current_state: str, context: Context):
-        raise Exception("Impossible transition")
+def exception_function_stub(current_state: str, context: Context):
+    raise Exception("Impossible transition")
 
 
-class FallbackTransitionStub(Transition):
+class FallbackFunctionStub:
     def __init__(
         self,
-        name: str,
-        target: Optional[str],
         fallback_state: Optional[str] = None,
         cause: Optional[Exception] = None,
     ):
-        super().__init__(name, target)
         self.fallback_state = fallback_state
         self.cause = cause
 
-    def execute_transition(self, current_state: str, context: Context):
+    def __call__(self, current_state: str, context: Context):
         raise TransitionExecutionError(
             message="Transition failed!",
             cause=self.cause,
@@ -43,8 +38,8 @@ class FallbackTransitionStub(Transition):
 
 @pytest.fixture(scope="module")
 def empty_transition() -> List[State]:
-    transition1 = TransitionStub("move from 1 to 2", "state2")
-    transition2 = TransitionStub("move from 2 to 3", "state3")
+    transition1 = Transition("move from 1 to 2", noop, "state2")
+    transition2 = Transition("move from 2 to 3", noop, "state3")
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -55,9 +50,9 @@ def empty_transition() -> List[State]:
 
 @pytest.fixture(scope="module")
 def three_sequential_states() -> List[State]:
-    transition1 = TransitionStub("move from 1 to 2", "state2")
-    transition2 = TransitionStub("move from 2 to 3", "state3")
-    transition3 = TransitionStub("move from 3 to end", None)
+    transition1 = Transition("move from 1 to 2", noop, "state2")
+    transition2 = Transition("move from 2 to 3", noop, "state3")
+    transition3 = Transition("move from 3 to end", noop, None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -68,9 +63,11 @@ def three_sequential_states() -> List[State]:
 
 @pytest.fixture(scope="module")
 def second_transition_fails() -> List[State]:
-    transition1 = TransitionStub("move from 1 to 2", "state2")
-    transition2 = ExceptionTransitionStub("fail to move from 2 to 3", "state3")
-    transition3 = TransitionStub("move from 3 to end", None)
+    transition1 = Transition("move from 1 to 2", noop, "state2")
+    transition2 = Transition(
+        "fail to move from 2 to 3", exception_function_stub, "state3"
+    )
+    transition3 = Transition("move from 3 to end", noop, None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -81,15 +78,15 @@ def second_transition_fails() -> List[State]:
 
 @pytest.fixture(scope="module")
 def second_transition_error_fallback() -> List[State]:
-    transition1 = TransitionStub("move from 1 to 2", "state2")
-    transition2 = FallbackTransitionStub(
-        "fail to move from 2 to 3",
-        "state3",
+    fallback_function = FallbackFunctionStub(
         fallback_state="fallback",
         cause=Exception("Failed"),
     )
-    transition3 = TransitionStub("move from 3 to end", None)
-    fallback_transition = TransitionStub("move from fallback to end", None)
+
+    transition1 = Transition("move from 1 to 2", noop, "state2")
+    transition2 = Transition("fail to move from 2 to 3", fallback_function, "state3")
+    transition3 = Transition("move from 3 to end", noop, None)
+    fallback_transition = Transition("move from fallback to end", noop, None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
