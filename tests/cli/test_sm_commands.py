@@ -104,9 +104,6 @@ def test_sm_run(mocker: MockFixture):
     runner = CliRunner()
     result = runner.invoke(cli.sm_run, ["-f", "test"], obj=info_obj)
 
-    print(result.output)
-    print(result.exception)
-
     # verify  that the program exited correctly
     assert result.exit_code == 0
 

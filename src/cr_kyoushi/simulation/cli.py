@@ -61,6 +61,8 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 def __setup_logging(info: Info, verbose: int) -> None:
     # Use the verbosity count to determine the logging level...
     if verbose > 0:
+        # ensure only our loggers are configured
+        logger.handlers.clear()
         handler = logging.StreamHandler()
         handler.setFormatter(
             logging.Formatter(
@@ -71,6 +73,7 @@ def __setup_logging(info: Info, verbose: int) -> None:
         highest_logging_level = max(LOGGING_LEVELS.keys())
         level = min(verbose, highest_logging_level)
         logger.setLevel(LOGGING_LEVELS[level])
+
         click.echo(
             click.style(
                 f"Verbose logging is enabled. " f"(LEVEL={logger.getEffectiveLevel()})",
