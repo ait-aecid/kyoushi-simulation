@@ -9,7 +9,7 @@ from .util import sleep
 __all__ = ["Transition", "DelayedTransition"]
 
 
-class ContextFunction(Protocol):
+class TransitionFunction(Protocol):
     def __call__(self, current_state: str, context: Context, target: Optional[str]):
         """
 
@@ -36,14 +36,14 @@ class Transition:
         return self._target
 
     @property
-    def transition_function(self) -> ContextFunction:
+    def transition_function(self) -> TransitionFunction:
         """The transition function"""
         return self._transition_function
 
     def __init__(
         self,
         name: str,
-        transition_function: ContextFunction,
+        transition_function: TransitionFunction,
         target: Optional[str] = None,
     ):
         """
@@ -112,7 +112,7 @@ class DelayedTransition(Transition):
     def __init__(
         self,
         name: str,
-        transition_function: ContextFunction,
+        transition_function: TransitionFunction,
         target: Optional[str] = None,
         delay_before: float = 0.0,
         delay_after: float = 0.0,
