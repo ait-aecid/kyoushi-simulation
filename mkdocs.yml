@@ -79,3 +79,4 @@ plugins:
           show_source: true
     watch:
       - src/cr_kyoushi/simulation
+- macros:
