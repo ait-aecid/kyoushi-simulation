@@ -38,7 +38,6 @@ class Weather(str, Enum):
             try:
                 enum_v = Weather(val.upper())
             except ValueError:
-                # Weather.type_ should be an enum, so will be iterable
                 raise EnumMemberError(enum_values=list(Weather))
             return enum_v
         raise EnumMemberError(enum_values=list(Weather))
@@ -57,7 +56,7 @@ class TravelerConfig(BaseModel):
 
     @validator("cities")
     def validate_cities(cls, v: Dict[StrictStr, Weather]):
-        assert len(v) > 0, "too few cities, must at least know 1 city"
+        assert len(v) > 0, "too few cities, must at least have 1 city"
         return v
 
     @validator("desired_weather")
@@ -69,114 +68,97 @@ class TravelerConfig(BaseModel):
         return v
 
 
-class HelloTransition(transitions.Transition):
-    def __init__(
-        self,
-        name: str,
-        traveler_name: StrictStr,
-        desired_weather: Weather,
-        target: Optional[str],
-    ):
-        super().__init__(name, target)
+class SayHello:
+    def __init__(self, traveler_name: StrictStr, desired_weather: Weather):
         self.traveler_name = traveler_name
         self.desired_weather = desired_weather
 
-    def execute_transition(self, current_state: str, context: TravelerContext):
+    def __call__(
+        self,
+        current_state: str,
+        context: TravelerContext,
+        target: Optional[str],
+    ):
         print(
             f"Hi I am {self.traveler_name}. "
             + f"I like to travel to cities that have {self.desired_weather} weather."
         )
-        return self.target
 
 
-class SelectCityTransition(transitions.DelayedTransition):
-    """Transition that randomly selects a city from the configured list"""
+class SelectRandomCity:
+    """Transition function that randomly selects a city from the configured list"""
 
-    def __init__(
-        self,
-        name: str,
-        cities: List[str],
-        target: Optional[str] = None,
-        delay_before: float = 0.0,
-        delay_after: float = 0.0,
-    ):
-        super().__init__(
-            name, target=target, delay_before=delay_before, delay_after=delay_after
-        )
+    def __init__(self, cities: List[str]):
         self.cities = cities
 
-    def execute_transition(self, current_state: str, context: TravelerContext):
+    def __call__(
+        self,
+        current_state: str,
+        context: TravelerContext,
+        target: Optional[str],
+    ):
         context.chosen_city = StrictStr(random.choice(self.cities))
         print(f"Maybe I will travel to somewhere in {context.chosen_city}.")
-        return self.target
 
 
-class CheckWeatherTransition(transitions.DelayedTransition):
-    def __init__(
-        self,
-        name: str,
-        weather_map: Dict[StrictStr, Weather],
-        target: Optional[str] = None,
-        delay_before: float = 0.0,
-        delay_after: float = 0.0,
-    ):
-        super().__init__(
-            name, target=target, delay_before=delay_before, delay_after=delay_after
-        )
+class CheckWeatherMap:
+    def __init__(self, weather_map: Dict[StrictStr, Weather]):
         self.weather_map = weather_map
 
-    def execute_transition(self, current_state: str, context: TravelerContext):
+    def __call__(
+        self,
+        current_state: str,
+        context: TravelerContext,
+        target: Optional[str],
+    ):
         context.weather = self.weather_map[StrictStr(context.chosen_city)]
         print(f"The weather is {context.weather} in {context.chosen_city}")
-        return self.target
 
 
-class GotoCityTransition(transitions.DelayedTransition):
-    def execute_transition(self, current_state: str, context: TravelerContext):
-        print(f"The weather is ok so I am going to {context.chosen_city} now ...")
-        return self.target
+def goto_city_transition(
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
+    print(f"The weather is ok so I am going to {context.chosen_city} now ...")
 
 
-class DoNotGoTransition(transitions.DelayedTransition):
-    def execute_transition(self, current_state: str, context: TravelerContext):
-        print(
-            f"I don't like the weather in {context.chosen_city} so I am not going ..."
-        )
-        context.chosen_city = None
-        context.weather = None
-        return self.target
+def do_not_go_transition(
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
+    print(f"I don't like the weather in {context.chosen_city} so I am not going ...")
+    context.chosen_city = None
+    context.weather = None
 
 
-class ArriveTransition(transitions.Transition):
-    def execute_transition(self, current_state: str, context: TravelerContext):
-        print(
-            f"I have arrived in {context.chosen_city} the weather is {context.weather} just how I like it."
-        )
-        context.current_location = context.chosen_city
-        context.chosen_city = None
-        context.weather = None
-        return self.target
+def arrive_transition(
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
+    print(
+        f"I have arrived in {context.chosen_city} the weather is {context.weather} just how I like it."
+    )
+    context.current_location = context.chosen_city
+    context.chosen_city = None
+    context.weather = None
 
 
-class GoingToSleepTransition(transitions.DelayedTransition):
-    def __init__(
-        self,
-        name: str,
-        traveler_name: StrictStr,
-        target: Optional[str] = None,
-        delay_before: float = 0.0,
-        delay_after: float = 0.0,
-    ):
-        super().__init__(
-            name, target=target, delay_before=delay_before, delay_after=delay_after
-        )
+class SleepInCity:
+    def __init__(self, traveler_name: StrictStr):
         self.traveler_name = traveler_name
 
-    def execute_transition(self, current_state: str, context: TravelerContext):
+    def __call__(
+        self,
+        current_state: str,
+        context: TravelerContext,
+        target: Optional[str],
+    ):
         print(f"I {self.traveler_name} have travelled enough for now.")
         print(f"I am going to sleep in {context.current_location} ...")
         print("... zzzZZZzz ...")
-        return self.target
 
 
 class DecidingState(states.State):
@@ -198,7 +180,7 @@ class DecidingState(states.State):
         return self.not_going
 
 
-class WeatherStatemachine(sm.Statemachine):
+class TravelerStatemachine(sm.Statemachine):
     def setup_context(self):
         self.context = TravelerContext()
 
@@ -206,7 +188,7 @@ class WeatherStatemachine(sm.Statemachine):
 class StatemachineFactory(sm.StatemachineFactory):
     @property
     def name(self) -> str:
-        return "WeatherStatemachineFactory"
+        return "TravelerStatemachineFactory"
 
     @property
     def config_class(self):
@@ -214,38 +196,72 @@ class StatemachineFactory(sm.StatemachineFactory):
 
     def build(self, config: TravelerConfig):
 
-        hello = HelloTransition(
-            name="hello",
+        # Stateful transition functions init
+        # ----------------------------------
+
+        say_hello = SayHello(
             traveler_name=config.traveler,
             desired_weather=config.desired_weather,
+        )
+
+        select_random_city = SelectRandomCity(cities=list(config.cities.keys()))
+
+        check_weather_on_map = CheckWeatherMap(weather_map=config.cities)
+
+        sleep_in_city = SleepInCity(traveler_name=config.traveler)
+
+        # Transitions
+        # ----------------------------------
+
+        hello = transitions.Transition(
+            name="hello",
+            transition_function=say_hello,
             target="selecting_city",
         )
 
-        select_city = SelectCityTransition(
-            "select_city",
-            cities=list(config.cities.keys()),
+        select_city = transitions.DelayedTransition(
+            name="select_city",
+            transition_function=select_random_city,
             target="researching",
             delay_after=3,
         )
-        check_weather = CheckWeatherTransition(
-            "check_weather",
-            weather_map=config.cities,
+
+        check_weather = transitions.DelayedTransition(
+            name="check_weather",
+            transition_function=check_weather_on_map,
             target="deciding",
             delay_before=1,
             delay_after=1,
         )
 
-        going_to_city = GotoCityTransition(
-            "going_to_city", target="traveling", delay_after=10
-        )
-        not_going = DoNotGoTransition(
-            "not_going", target="selecting_city", delay_before=2
-        )
-        arrive_in_city = ArriveTransition("arrive", "in_city")
-        going_to_sleep = GoingToSleepTransition(
-            "going_to_sleep", config.traveler, target="sleeping", delay_before=3.5
+        going_to_city = transitions.DelayedTransition(
+            name="going_to_city",
+            transition_function=goto_city_transition,
+            target="traveling",
+            delay_after=10,
         )
 
+        not_going = transitions.DelayedTransition(
+            name="not_going",
+            transition_function=do_not_go_transition,
+            target="selecting_city",
+            delay_before=2,
+        )
+        arrive_in_city = transitions.Transition(
+            name="arrive",
+            transition_function=arrive_transition,
+            target="in_city",
+        )
+
+        going_to_sleep = transitions.DelayedTransition(
+            name="going_to_sleep",
+            transition_function=sleep_in_city,
+            target="sleeping",
+            delay_before=3.5,
+        )
+
+        # States
+        # ----------------------------------
         initial = states.SequentialState("initial", hello)
         selecting_city = states.SequentialState("selecting_city", select_city)
         researching = states.SequentialState("researching", check_weather)
@@ -259,10 +275,10 @@ class StatemachineFactory(sm.StatemachineFactory):
         in_city = states.ProbabilisticState(
             "in_city", [going_to_sleep, select_city], [0.3, 0.7]
         )
-
         sleeping = states.FinalState("sleeping")
 
-        return WeatherStatemachine(
+        # Initialize the state machine
+        return TravelerStatemachine(
             "initial",
             [
                 initial,
