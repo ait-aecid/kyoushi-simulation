@@ -1,15 +1,22 @@
 # Traveler Example
+{% macro image_url(url) %}
+{%- if config.site_url|length -%}
+{{ config.site_url }}{{ url }}
+{%- else -%}
+{{ fix_url(url) }}
+{%- endif -%}
+{% endmacro %}
+
+{% set image_prefix = config.site_url if config.site_url|length else "" %}
 
 !!! Hint
     See the [examples directory]({{ config.repo_url }}/-/tree/master/examples) for full code examples of state machine definitions.
 
-
-
 This example implements the following basic state machine that simulates a choosy traveler. The traveler in this example likes to travel to various cities, but only if the current weather there is the weather they like. Also sometimes the traveler gets tired and will go to sleep in the city they are currently in.
 
 <figure>
-  <a data-fancybox="gallery" href="/images/traveler.svg">
-  <img src="/images/traveler.svg" alt="Traveler state machine" />
+  <a data-fancybox="gallery" href="{{ image_url("images/traveler.svg") }}">
+  <img src="{{ image_url("images/traveler.svg") }}" alt="Traveler state machine" />
   <figcaption>Traveler state machine</figcaption>
   </a>
 </figure>
@@ -486,6 +493,6 @@ To run the example state machine you can simply use the Cyber Range Kyoushi CLI.
 $ cd examples/traveler
 $ cr-kyoushi-sim -c config.yml run -f traveler.py
 ```
-<a data-fancybox="gallery" href="/images/traveler-demo.gif">
-![Traveler State Machine Demo](/images/traveler-demo.gif)
+<a data-fancybox="gallery" href="{{ image_url("images/traveler-demo.gif") }}">
+<img src="{{ image_url("images/traveler-demo.gif") }}" alt="Traveler State Machine Demo" />
 </a>
