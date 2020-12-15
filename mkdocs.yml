@@ -79,4 +79,6 @@ plugins:
           show_source: true
     watch:
       - src/cr_kyoushi/simulation
+      - README.md
+      - CONTRIBUTING.md
 - macros:
