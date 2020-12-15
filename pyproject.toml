@@ -39,6 +39,7 @@ mkdocstrings = "^0.13.6"
 mkdocs-click = "^0.2.0"
 markdown-include = "^0.6.0"
 pymdown-extensions = "^8.0.1"
+mkdocs-macros-plugin = "^0.5.0"
 
 [tool.isort]
 profile = "black"

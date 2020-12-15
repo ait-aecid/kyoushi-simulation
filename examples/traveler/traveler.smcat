@@ -1,0 +1,23 @@
+user {
+  initial,
+  selecting_city,
+  researching,
+  deciding,
+  traveling,
+  in_city,
+  sleeping,
+  ^weather: Like the weather?,
+  final;
+
+  initial => selecting_city:  hello;
+  selecting_city => researching: select_city;
+  researching => deciding: check_weather;
+  deciding => ^weather;
+  ^weather => traveling: [yes] going_to_city;
+  ^weather => selecting_city: [no] not_going;
+  traveling => in_city: arrive;
+  in_city => sleeping:  going_to_sleep(0.3);
+  in_city => selecting_city: select_city(0.7);
+  sleeping => final;
+
+};

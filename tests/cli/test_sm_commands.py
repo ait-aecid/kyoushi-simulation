@@ -76,7 +76,7 @@ def test_sm_run(mocker: MockFixture):
 
     factory_eps = {"test": StatemachineFactory}
     factory_obj = StatemachineFactory()
-    config_obj = ExampleStatemachineConfig()
+    config_obj = model.Config[ExampleStatemachineConfig].parse_obj(raw_config)
 
     # mock factory functions
     machine_obj = factory_obj.build(ExampleStatemachineConfig())
@@ -112,5 +112,5 @@ def test_sm_run(mocker: MockFixture):
     load_config.assert_called_once_with(raw_config, ExampleStatemachineConfig)
 
     # verify that machine was built and run correctly
-    factory_mock.build.assert_called_once_with(config_obj)
+    factory_mock.build.assert_called_once_with(config_obj.sm)
     machine_mock.run.assert_called_once()

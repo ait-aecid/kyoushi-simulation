@@ -23,23 +23,36 @@ def test_version_command():
     assert re.match(r".*: " + str(info.config_path.absolute()), output_lines[1])
 
 
-def test_verbose_switch_default_to_info():
+def test_verbose_switch_default_to_no_handler():
     info_obj = Info()
     runner = CliRunner()
     result = runner.invoke(cli, ["version"], obj=info_obj)
     assert result.exit_code == 0
     assert info_obj.verbose == 0
 
-    assert logging.getLogger("cr_kyoushi.simulation").level == logging.INFO
+    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 0
 
 
-def test_verbose_switch_once_to_debug():
+def test_verbose_switch_once_to_info():
     info_obj = Info()
     runner = CliRunner()
     result = runner.invoke(cli, ["-v", "version"], obj=info_obj)
     assert result.exit_code == 0
     assert info_obj.verbose == 1
 
+    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 1
+    assert logging.getLogger("cr_kyoushi.simulation").level == logging.INFO
+
+
+def test_verbose_switch_twice_to_debug():
+    info_obj = Info()
+    runner = CliRunner()
+    result = runner.invoke(cli, ["-vv", "version"], obj=info_obj)
+
+    assert result.exit_code == 0
+    assert info_obj.verbose == 2
+
+    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 1
     assert logging.getLogger("cr_kyoushi.simulation").level == logging.DEBUG
 
 

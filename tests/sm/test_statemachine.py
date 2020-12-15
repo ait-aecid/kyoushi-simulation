@@ -67,7 +67,6 @@ def test_sequential_sm_execution_with_empty_transition(
     transition2 = state2.transitions[0]
 
     state3 = empty_transition[2]
-    transition3 = state3.transitions[0]
 
     # state spy setup
     state1_spy = mocker.spy(state1, "next")
@@ -84,6 +83,9 @@ def test_sequential_sm_execution_with_empty_transition(
     )
     sm.run()
 
+    # check that the last state has no transitions
+    assert len(state3.transitions) == 0
+
     # check that each states next is only called once
     assert state1_spy.call_count == 1
     assert state2_spy.call_count == 1
@@ -92,7 +94,6 @@ def test_sequential_sm_execution_with_empty_transition(
     # check that each transition is only executed once
     assert transition1_spy.call_count == 1
     assert transition2_spy.call_count == 1
-    assert transition3 is None
 
 
 def test_sequential_sm_execution(

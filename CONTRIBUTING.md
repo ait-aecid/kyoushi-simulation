@@ -70,3 +70,27 @@ $ make test-html
 ```
 
 The HTML coverage report is created in `htmlcov` and can be navigated by opening the `index.html` file.
+
+
+## Build & View Documentation
+
+This project uses [MkDocs](https://www.mkdocs.org/) for documentation. If you wish to view or edit the docs
+you can start a live server by running:
+
+```bash
+$ mkdocs serve
+```
+
+The live server will automatically detect changes and refresh the documentation.
+
+We also provide convenience `make` targets for building the documentation and starting the live server:
+
+```bash
+# build the distributable documentation site
+$ make docs
+# build a offline viewable documentation site, without web server simply open the index file
+# (Note that the search function is disabled with this)
+$ make docs-offline
+# start the mkdocs live server
+$ make docs-serve
+```
