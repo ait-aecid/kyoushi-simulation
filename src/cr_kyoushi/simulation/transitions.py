@@ -8,7 +8,7 @@ from .model import Context
 from .util import sleep
 
 
-__all__ = ["Transition", "DelayedTransition"]
+__all__ = ["Transition", "DelayedTransition", "transition", "delayed_transition"]
 
 
 class TransitionFunction(Protocol):
