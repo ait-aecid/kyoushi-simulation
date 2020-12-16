@@ -14,8 +14,8 @@ from ..fixtures.transitions import noop
 
 @pytest.fixture(scope="module")
 def empty_transition() -> List[State]:
-    transition1 = Transition("move from 1 to 2", noop, "state2")
-    transition2 = Transition("move from 2 to 3", noop, "state3")
+    transition1 = Transition(noop, "move from 1 to 2", "state2")
+    transition2 = Transition(noop, "move from 2 to 3", "state3")
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -26,9 +26,9 @@ def empty_transition() -> List[State]:
 
 @pytest.fixture(scope="module")
 def three_sequential_states() -> List[State]:
-    transition1 = Transition("move from 1 to 2", noop, "state2")
-    transition2 = Transition("move from 2 to 3", noop, "state3")
-    transition3 = Transition("move from 3 to end", noop, None)
+    transition1 = Transition(noop, "move from 1 to 2", "state2")
+    transition2 = Transition(noop, "move from 2 to 3", "state3")
+    transition3 = Transition(noop, "move from 3 to end", None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -39,11 +39,11 @@ def three_sequential_states() -> List[State]:
 
 @pytest.fixture(scope="module")
 def second_transition_fails() -> List[State]:
-    transition1 = Transition("move from 1 to 2", noop, "state2")
+    transition1 = Transition(noop, "move from 1 to 2", "state2")
     transition2 = Transition(
-        "fail to move from 2 to 3", exception_function_stub, "state3"
+        exception_function_stub, "fail to move from 2 to 3", "state3"
     )
-    transition3 = Transition("move from 3 to end", noop, None)
+    transition3 = Transition(noop, "move from 3 to end", None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)
@@ -59,10 +59,10 @@ def second_transition_error_fallback() -> List[State]:
         cause=Exception("Failed"),
     )
 
-    transition1 = Transition("move from 1 to 2", noop, "state2")
-    transition2 = Transition("fail to move from 2 to 3", fallback_function, "state3")
-    transition3 = Transition("move from 3 to end", noop, None)
-    fallback_transition = Transition("move from fallback to end", noop, None)
+    transition1 = Transition(noop, "move from 1 to 2", "state2")
+    transition2 = Transition(fallback_function, "fail to move from 2 to 3", "state3")
+    transition3 = Transition(noop, "move from 3 to end", None)
+    fallback_transition = Transition(noop, "move from fallback to end", None)
 
     state1 = SequentialState("state1", transition1)
     state2 = SequentialState("state2", transition2)

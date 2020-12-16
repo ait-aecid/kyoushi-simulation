@@ -7,7 +7,7 @@ from ..fixtures.transitions import noop
 
 def test_delayed_transition_init():
     transition = transitions.DelayedTransition(
-        "test", noop, delay_before=2, delay_after=4
+        noop, "test", delay_before=2, delay_after=4
     )
 
     assert transition.name == "test"
@@ -19,7 +19,7 @@ def test_delayed_transition_init():
 def test_delayed_transition_delay_before():
     precission = 0.01
     expected_wait = 1
-    transition = transitions.DelayedTransition("test", noop, delay_before=expected_wait)
+    transition = transitions.DelayedTransition(noop, "test", delay_before=expected_wait)
 
     # execute and time sleep
     start_seconds = time.time()
@@ -35,7 +35,7 @@ def test_delayed_transition_delay_before():
 def test_delayed_transition_delay_after():
     precission = 0.01
     expected_wait = 1
-    transition = transitions.DelayedTransition("test", noop, delay_after=expected_wait)
+    transition = transitions.DelayedTransition(noop, "test", delay_after=expected_wait)
 
     # execute and time sleep
     start_seconds = time.time()
@@ -53,7 +53,7 @@ def test_delayed_transition_delay_both():
     expected_wait = 2
     wait = 1
     transition = transitions.DelayedTransition(
-        "test", noop, delay_before=wait, delay_after=wait
+        noop, "test", delay_before=wait, delay_after=wait
     )
 
     # execute and time sleep

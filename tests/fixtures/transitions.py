@@ -9,6 +9,13 @@ from cr_kyoushi.simulation.model import Context
 logger = logging.getLogger("cr_kyoushi.simulation")
 
 
+class Noop:
+    def __call__(
+        self, current_state: str, context: Context, target: Optional[str] = None
+    ):
+        pass
+
+
 def noop(current_state: str, context: Context, target: Optional[str] = None):
     pass
 
