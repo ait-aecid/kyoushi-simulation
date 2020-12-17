@@ -10,7 +10,7 @@
 {% set image_prefix = config.site_url if config.site_url|length else "" %}
 
 !!! Hint
-    See the [examples directory]({{ config.repo_url }}/-/tree/master/examples) for full code examples of state machine definitions.
+    See the [examples directory]({{ config.repo_url }}-/tree/master/examples/traveler) for the full code example.
 
 This example implements the following basic state machine that simulates a choosy traveler. The traveler in this example likes to travel to various cities, but only if the current weather there is the weather they like. Also sometimes the traveler gets tired and will go to sleep in the city they are currently in.
 

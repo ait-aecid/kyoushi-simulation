@@ -1,3 +1,4 @@
+import random
 import re
 
 from datetime import datetime
@@ -15,6 +16,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import validator
 from pydantic.generics import GenericModel
 
 
@@ -256,3 +258,39 @@ class ActivePeriod(BaseModel):
             bool: `True` if inside the active period `False` otherwise
         """
         return self.__root__.in_active_period(to_check)
+
+
+class ApproximateFloat(BaseModel):
+    """Approximate float value within a given open interval"""
+
+    min: float = Field(description="The lower boundary for the float value")
+    max: float = Field(description="The upper boundary for the float value")
+
+    @validator("max")
+    def validate_min_le_max(cls, v: float, values, **kwargs) -> float:
+        """Custom validator to ensure min <= max"""
+        assert values["min"] <= v, "Invalid boundaries must be min <= max"
+        return v
+
+    @classmethod
+    def convert(cls, value: float) -> "ApproximateFloat":
+        """Coerces a single float value to its ApproximateFloat equivalent.
+
+        i.e., value = min = max
+
+        Args:
+            value: The float value to convert
+
+        Returns:
+            `Approximate(min=value, max=value)`
+        """
+        return ApproximateFloat(min=value, max=value)
+
+    @property
+    def value(self) -> float:
+        """Gets a random float within the approximate float range
+
+        Returns:
+            A float x for which `min <= x <= max`
+        """
+        return random.uniform(self.min, self.max)

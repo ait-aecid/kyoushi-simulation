@@ -1,12 +1,16 @@
+from types import FunctionType
+from typing import Callable
 from typing import Optional
+from typing import Union
 
 from typing_extensions import Protocol
 
+from .model import ApproximateFloat
 from .model import Context
 from .util import sleep
 
 
-__all__ = ["Transition", "DelayedTransition"]
+__all__ = ["Transition", "DelayedTransition", "transition", "delayed_transition"]
 
 
 class TransitionFunction(Protocol):
@@ -42,8 +46,8 @@ class Transition:
 
     def __init__(
         self,
-        name: str,
         transition_function: TransitionFunction,
+        name: str = None,
         target: Optional[str] = None,
     ):
         """
@@ -52,6 +56,12 @@ class Transition:
             target: The target state
             transition_function: The transition function to call upon execution
         """
+        if name is None:
+            if isinstance(transition_function, FunctionType):
+                name = transition_function.__name__.lower()
+            else:
+                name = transition_function.__class__.__name__.lower()
+
         self._name = name
         self._transition_function = transition_function
         self._target = target
@@ -93,6 +103,47 @@ class Transition:
         return f"{self.name}(name='{self.name}', target={self.target})"
 
 
+def transition(
+    name: Optional[str] = None,
+    target: Optional[str] = None,
+) -> Callable[[TransitionFunction], Transition]:
+    """Transition decorator that can be used to turn a
+    [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction] into a
+    [`Transition`][cr_kyoushi.simulation.transitions.Transition].
+
+    Args:
+        name: The name of the transition
+        target: The target states name
+
+
+    Example:
+        ```python
+            @transition(name="example", target="next")
+            def example(current_state, context, target):
+                ...
+
+            # the above is equivalent to
+            def example_func(current_state, context, target):
+                ...
+
+            example = Transition(example_func, name="example", target="next")
+        ```
+
+    Returns:
+        A decorator that turns a [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction]
+        into a Transition initialized with the given args.
+    """
+
+    def decorator(func: TransitionFunction) -> Transition:
+        return Transition(
+            transition_function=func,
+            target=target,
+            name=name,
+        )
+
+    return decorator
+
+
 class DelayedTransition(Transition):
     """
     Abstract DelayedTransition allows configuring skipable
@@ -100,22 +151,22 @@ class DelayedTransition(Transition):
     """
 
     @property
-    def delay_before(self) -> float:
+    def delay_before(self) -> ApproximateFloat:
         """The amount of time in seconds to delay before execution"""
         return self._delay_before
 
     @property
-    def delay_after(self) -> float:
+    def delay_after(self) -> ApproximateFloat:
         """The amount of time in seconds to delay after execution"""
         return self._delay_after
 
     def __init__(
         self,
-        name: str,
         transition_function: TransitionFunction,
+        name: Optional[str] = None,
         target: Optional[str] = None,
-        delay_before: float = 0.0,
-        delay_after: float = 0.0,
+        delay_before: Union[ApproximateFloat, float] = 0.0,
+        delay_after: Union[ApproximateFloat, float] = 0.0,
     ):
         """
         Args:
@@ -125,7 +176,14 @@ class DelayedTransition(Transition):
             delay_before: The pre execution delay to configure
             delay_after: The post execution delay to configure
         """
-        super().__init__(name, transition_function, target)
+        super().__init__(transition_function, name, target)
+
+        if isinstance(delay_before, float):
+            delay_before = ApproximateFloat.convert(delay_before)
+
+        if isinstance(delay_after, float):
+            delay_after = ApproximateFloat.convert(delay_after)
+
         self._delay_before = delay_before
         self._delay_after = delay_after
 
@@ -156,3 +214,49 @@ class DelayedTransition(Transition):
         next_state = super().execute(current_state, context)
         sleep(self.delay_after)
         return next_state
+
+
+def delayed_transition(
+    name: Optional[str] = None,
+    target: Optional[str] = None,
+    delay_before: Union[ApproximateFloat, float] = 0.0,
+    delay_after: Union[ApproximateFloat, float] = 0.0,
+) -> Callable[[TransitionFunction], DelayedTransition]:
+    """Transition decorator that can be used to turn a
+    [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction] into a
+    [`DelayedTransition`][cr_kyoushi.simulation.transitions.DelayedTransition].
+
+    Args:
+        name: The name of the transition
+        target: The target states name
+        delay_before: The pre execution delay to configure
+        delay_after: The post execution delay to configure
+
+    Example:
+        ```python
+            @delayed_transition(name="example", target="next", delay_before=1.5)
+            def example(current_state, context, target):
+                ...
+
+            # the above is equivalent to
+            def example_func(current_state, context, target):
+                ...
+
+            example = DelayedTransition(example_func, name="example", target="next", delay_before=1.5)
+        ```
+
+    Returns:
+        A decorator that turns a [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction]
+        into a DelayedTransition initialized with the given args.
+    """
+
+    def decorator(func: TransitionFunction) -> DelayedTransition:
+        return DelayedTransition(
+            transition_function=func,
+            target=target,
+            name=name,
+            delay_before=delay_before,
+            delay_after=delay_after,
+        )
+
+    return decorator
