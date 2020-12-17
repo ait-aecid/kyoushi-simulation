@@ -26,8 +26,9 @@ edit_uri: edit/master/docs/
 
 nav:
 - Overview: index.md
-- Usage:
-    - Example: usage/example.md
+- Examples:
+    - Traveler: examples/traveler.md
+    - Decorated Traveler: examples/decorated_traveler.md
 - Code Reference:
     - Models: reference/model.md
     - States: reference/states.md
@@ -65,7 +66,6 @@ plugins:
     glob:
     - _build/*
     - build/*
-    - examples/*
 - mkdocstrings:
     default_handler: python
     handlers:
