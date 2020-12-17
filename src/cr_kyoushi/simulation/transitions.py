@@ -1,9 +1,11 @@
 from types import FunctionType
 from typing import Callable
 from typing import Optional
+from typing import Union
 
 from typing_extensions import Protocol
 
+from .model import ApproximateFloat
 from .model import Context
 from .util import sleep
 
@@ -149,12 +151,12 @@ class DelayedTransition(Transition):
     """
 
     @property
-    def delay_before(self) -> float:
+    def delay_before(self) -> ApproximateFloat:
         """The amount of time in seconds to delay before execution"""
         return self._delay_before
 
     @property
-    def delay_after(self) -> float:
+    def delay_after(self) -> ApproximateFloat:
         """The amount of time in seconds to delay after execution"""
         return self._delay_after
 
@@ -163,8 +165,8 @@ class DelayedTransition(Transition):
         transition_function: TransitionFunction,
         name: Optional[str] = None,
         target: Optional[str] = None,
-        delay_before: float = 0.0,
-        delay_after: float = 0.0,
+        delay_before: Union[ApproximateFloat, float] = 0.0,
+        delay_after: Union[ApproximateFloat, float] = 0.0,
     ):
         """
         Args:
@@ -175,6 +177,13 @@ class DelayedTransition(Transition):
             delay_after: The post execution delay to configure
         """
         super().__init__(transition_function, name, target)
+
+        if isinstance(delay_before, float):
+            delay_before = ApproximateFloat.convert(delay_before)
+
+        if isinstance(delay_after, float):
+            delay_after = ApproximateFloat.convert(delay_after)
+
         self._delay_before = delay_before
         self._delay_after = delay_after
 
@@ -210,8 +219,8 @@ class DelayedTransition(Transition):
 def delayed_transition(
     name: Optional[str] = None,
     target: Optional[str] = None,
-    delay_before: float = 0.0,
-    delay_after: float = 0.0,
+    delay_before: Union[ApproximateFloat, float] = 0.0,
+    delay_after: Union[ApproximateFloat, float] = 0.0,
 ) -> Callable[[TransitionFunction], DelayedTransition]:
     """Transition decorator that can be used to turn a
     [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction] into a

@@ -16,8 +16,10 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
 from typing import List
+from typing import Union
 
 from .errors import SkipSectionError
+from .model import ApproximateFloat
 
 
 if TYPE_CHECKING:
@@ -122,7 +124,7 @@ def skip_on_interrupt(
             signal.signal(sig, original_handler)
 
 
-def sleep(sleep_time: float) -> None:
+def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
     """Skipable sleep function
 
     This function utilizes the
@@ -136,7 +138,10 @@ def sleep(sleep_time: float) -> None:
         If you wish to send the `SIGINT` signal to the main process press
          ++ctrl+c++ twice.
     """
+    if isinstance(sleep_time, ApproximateFloat):
+        sleep_time = sleep_time.value
+
     with skip_on_interrupt():
-        logger.debug("Going to sleep for %d", sleep_time)
+        logger.debug("Going to sleep for %f", sleep_time)
         time.sleep(sleep_time)
-        logger.debug("Resuming execution after sleeping for %d", sleep_time)
+        logger.debug("Resuming execution after sleeping for %f", sleep_time)

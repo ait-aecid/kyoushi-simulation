@@ -151,7 +151,7 @@ class SayHello:
     ):
         print(
             f"Hi I am {self.traveler_name}. "
-            + f"I like to travel to cities that have {self.desired_weather} weather."
+            f"I like to travel to cities that have {self.desired_weather} weather."
         )
 
 
