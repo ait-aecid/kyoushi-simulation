@@ -31,6 +31,7 @@ __all__ = [
     "ComplexActivePeriod",
     "SimpleActivePeriod",
     "ActivePeriod",
+    "ApproximateFloat",
 ]
 
 StatemachineConfig = TypeVar("StatemachineConfig")
