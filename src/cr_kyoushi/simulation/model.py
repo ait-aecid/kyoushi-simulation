@@ -16,6 +16,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import validator
 from pydantic.generics import GenericModel
 
 
@@ -264,6 +265,12 @@ class ApproximateFloat(BaseModel):
 
     min: float = Field(description="The lower boundary for the float value")
     max: float = Field(description="The upper boundary for the float value")
+
+    @validator("max")
+    def validate_min_le_max(cls, v: float, values, **kwargs) -> float:
+        """Custom validator to ensure min <= max"""
+        assert values["min"] <= v, "Invalid boundaries must be min <= max"
+        return v
 
     @classmethod
     def convert(cls, value: float) -> "ApproximateFloat":
