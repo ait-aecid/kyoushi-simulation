@@ -208,12 +208,26 @@ class Statemachine:
 
 
 class StartEndTimeStatemachine(Statemachine):
+    """Special type of state machine that allows configuring a start and end time.
+
+    The main stat machine execution loop will only start execution once it is
+    the configured start time (starts immediately if none is configured). Similarly
+    the state machine will stop once the current time is the end time even if there
+    are still transitions left to execute. This is for example useful when you wish to
+    configure a state machine to only run for the duration of an experiment.
+
+    !!! Note
+        A state machine might end before its end time if it enters a final state.
+    """
+
     @property
     def start_time(self) -> Optional[datetime.datetime]:
+        """The `datetime` this state machine will start execution"""
         return self.__start_time
 
     @property
     def end_time(self) -> Optional[datetime.datetime]:
+        """The `datetime` this state machine will end"""
         return self.__end_time
 
     def __init__(
@@ -224,6 +238,19 @@ class StartEndTimeStatemachine(Statemachine):
         end_time: Optional[datetime.datetime] = None,
         max_errors: int = 0,
     ):
+        """
+        Args:
+            initial_state: The name of the initial state
+            states: List of all states the state machine can enter
+            start_time: The `datetime` this state machine should start execution
+            end_time: The `datetime` this state machine should end execution
+            max_errors: Maximum amount of errors the state machine is allowed to encounter
+                        before it stops trying to recover by reseting to the initial state.
+
+        !!! Note
+            If `state_time` or `end_time` are `None` then the state machine will
+            start or end execution normally.
+        """
         super().__init__(initial_state, states, max_errors=max_errors)
         self.__start_time = start_time
         self.__end_time = end_time
@@ -247,6 +274,11 @@ class StartEndTimeStatemachine(Statemachine):
             self._execute_step()
 
     def run(self):
+        """Starts the state machine execution.
+
+        This will only start the state machine execution
+        once the given start time is reached.
+        """
         # wait for start time before actually starting the machine
         if self.start_time is not None:
             sleep_until(self.start_time)
