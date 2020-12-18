@@ -4,6 +4,7 @@
 This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
+import datetime  # need import datetime like this so we can mock it
 import logging
 
 from abc import ABC
@@ -19,6 +20,7 @@ from .model import Context
 from .model import StatemachineConfig
 from .states import State
 from .transitions import Transition
+from .util import sleep_until
 
 
 __all__ = ["Statemachine", "StatemachineFactory"]
@@ -203,6 +205,52 @@ class Statemachine:
         # clean up state machine
         self.destroy_context()
         logger.info("State machine finished")
+
+
+class LimitedActiveStatemachine(Statemachine):
+    @property
+    def start_time(self) -> Optional[datetime.datetime]:
+        return self.__start_time
+
+    @property
+    def end_time(self) -> Optional[datetime.datetime]:
+        return self.__end_time
+
+    def __init__(
+        self,
+        initial_state: str,
+        states: List[State],
+        start_time: Optional[datetime.datetime] = None,
+        end_time: Optional[datetime.datetime] = None,
+        max_errors: int = 0,
+    ):
+        super().__init__(initial_state, states, max_errors=max_errors)
+        self.__start_time = start_time
+        self.__end_time = end_time
+
+    def _is_end_time(self) -> bool:
+        # if no end time was set then this is always false
+        if self.end_time is None:
+            return False
+        return self.end_time <= datetime.datetime.now()
+
+    def _execute_machine(self):
+        """State machine main execution loop.
+
+        This function executes state machine steps in a loop until either
+         - a end state is reached (i.e., current state is `None`)
+         - or the current time is >= `end_time`
+
+        """
+        # state machine run main loop
+        while self.current_state and not self._is_end_time():
+            self._execute_step()
+
+    def run(self):
+        # wait for start time before actually starting the machine
+        if self.start_time is not None:
+            sleep_until(self.start_time)
+        return super().run()
 
 
 class StatemachineFactory(ABC, Generic[StatemachineConfig]):

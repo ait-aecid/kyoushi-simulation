@@ -93,7 +93,6 @@ def test_wait_until(
 
         def mock_now(self):
             # just return the fake current time
-            print(self.current_time)
             return self.current_time
 
     mock_obj = SleepMock(start_time)
