@@ -4,12 +4,12 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.sm import LimitedActiveStatemachine
+from cr_kyoushi.simulation.sm import StartEndTimeStatemachine
 from cr_kyoushi.simulation.sm import Statemachine
 from cr_kyoushi.simulation.states import State
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution_stops(
     sm_class,
     mocker: MockFixture,
@@ -57,7 +57,7 @@ def test_sequential_sm_execution_stops(
     assert transition3_spy.call_count == 1
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution_with_empty_transition(
     sm_class,
     mocker: MockFixture,
@@ -105,7 +105,7 @@ def test_sequential_sm_execution_with_empty_transition(
     assert transition2_spy.call_count == 1
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution(
     sm_class,
     mocker: MockFixture,
@@ -205,7 +205,7 @@ def test_sequential_sm_execution(
     assert sm.current_state is None
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution_with_failing_state(
     sm_class,
     mocker: MockFixture,
@@ -256,7 +256,7 @@ def test_sequential_sm_execution_with_failing_state(
     assert transition3_spy.call_count == 0
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution_with_failing_state_recovery(
     sm_class,
     mocker: MockFixture,
@@ -414,7 +414,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert sm.current_state is None
 
 
-@pytest.mark.parametrize("sm_class", [Statemachine, LimitedActiveStatemachine])
+@pytest.mark.parametrize("sm_class", [Statemachine, StartEndTimeStatemachine])
 def test_sequential_sm_execution_with_transition_error(
     sm_class,
     mocker: MockFixture,

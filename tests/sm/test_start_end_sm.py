@@ -4,7 +4,7 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.sm import LimitedActiveStatemachine
+from cr_kyoushi.simulation.sm import StartEndTimeStatemachine
 
 
 class DateTimeMock:
@@ -69,14 +69,14 @@ def test_wait_for_start(
     exec_mock = mocker.Mock()
     exec_mock.return_value = None
     mocker.patch(
-        "cr_kyoushi.simulation.sm.LimitedActiveStatemachine._execute_machine",
+        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine._execute_machine",
         exec_mock,
     )
 
     mock_parent = mocker.Mock()
     mock_parent.m1, mock_parent.m2 = sleep_mock, exec_mock
 
-    sm = LimitedActiveStatemachine(
+    sm = StartEndTimeStatemachine(
         three_sequential_states[0].name,
         states=three_sequential_states,
         start_time=start_time,
@@ -103,7 +103,7 @@ def test_stop_on_end_time(mocker: MockFixture, monkeypatch):
     exec_mock = mocker.Mock()
     exec_mock.side_effect = fake_datetime.next
     mocker.patch(
-        "cr_kyoushi.simulation.sm.LimitedActiveStatemachine._execute_step",
+        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine._execute_step",
         exec_mock,
     )
 
@@ -115,7 +115,7 @@ def test_stop_on_end_time(mocker: MockFixture, monkeypatch):
     # (we have to do it like this as it is a builtin)
     monkeypatch.setattr(datetime, "datetime", datetime_mock)
 
-    sm = LimitedActiveStatemachine(
+    sm = StartEndTimeStatemachine(
         "mock-state",
         states=[],
         end_time=end_time,
@@ -144,7 +144,7 @@ def test_stop_on_end_state(three_sequential_states, mocker: MockFixture, monkeyp
     # (we have to do it like this as it is a builtin)
     monkeypatch.setattr(datetime, "datetime", datetime_mock)
 
-    sm = LimitedActiveStatemachine(
+    sm = StartEndTimeStatemachine(
         three_sequential_states[0].name,
         states=three_sequential_states,
         end_time=end_time,
@@ -155,6 +155,7 @@ def test_stop_on_end_state(three_sequential_states, mocker: MockFixture, monkeyp
 
     sm.run()
 
-    # assert that we only check 3 times since we end after the 3rd state
+    # assert that we only exec 3 times since we end after the 3rd state
     assert exec_step_spy.call_count == 3
-    assert datetime_mock.now.call_count == exec_step_spy.call_count
+    assert sm.current_state is None
+    assert sm._is_end_time() is False

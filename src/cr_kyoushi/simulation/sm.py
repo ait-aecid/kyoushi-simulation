@@ -207,7 +207,7 @@ class Statemachine:
         logger.info("State machine finished")
 
 
-class LimitedActiveStatemachine(Statemachine):
+class StartEndTimeStatemachine(Statemachine):
     @property
     def start_time(self) -> Optional[datetime.datetime]:
         return self.__start_time
