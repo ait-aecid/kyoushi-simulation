@@ -1,5 +1,7 @@
-import datetime
 import time
+
+from datetime import datetime
+from datetime import timedelta
 
 import pytest
 
@@ -70,11 +72,10 @@ def test_wait_until(
     min_sleep_amount,
     sleep_amount,
     mocker: MockFixture,
-    monkeypatch,
 ):
-    start_time = datetime.datetime.now()
+    start_time = datetime.now()
     # 15 seconds from now
-    end_time = start_time + datetime.timedelta(0, relative_endtime)
+    end_time = start_time + timedelta(0, relative_endtime)
 
     class SleepMock:
         """utility class for faking datetime.now() and sleep interaction"""
@@ -89,9 +90,9 @@ def test_wait_until(
                 amount = amount.value
             self.time_slept = amount + self.time_slept
             # simulate sleep by simply adding to the fake current time
-            self.current_time = self.current_time + datetime.timedelta(0, amount)
+            self.current_time = self.current_time + timedelta(0, amount)
 
-        def mock_now(self):
+        def mock_now(self, tz=None):
             # just return the fake current time
             return self.current_time
 
@@ -102,13 +103,10 @@ def test_wait_until(
     sleep_mock.side_effect = mock_obj.mock_sleep
     mocker.patch("cr_kyoushi.simulation.util.sleep", sleep_mock)
 
-    # create a mock datetime and replace the now function
-    datetime_mock = mocker.MagicMock(wraps=datetime.datetime)
-    datetime_mock.now.side_effect = mock_obj.mock_now
-
-    # replace datetime.datetime with out mock
-    # (we have to do it like this as it is a builtin)
-    monkeypatch.setattr(datetime, "datetime", datetime_mock)
+    # create a mock  and replace the now function
+    now_mock = mocker.Mock()
+    now_mock.side_effect = mock_obj.mock_now
+    mocker.patch("cr_kyoushi.simulation.util.now", now_mock)
 
     sleep_until(
         end_time,

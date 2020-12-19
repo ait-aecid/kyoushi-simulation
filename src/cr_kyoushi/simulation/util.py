@@ -6,13 +6,13 @@ and state transitions.
 """
 from __future__ import annotations
 
-# we must import datetime like this or we cannot mock it
-import datetime
 import logging
 import signal
 import time
 
 from contextlib import contextmanager
+from datetime import datetime
+from datetime import tzinfo
 from types import FrameType
 from typing import TYPE_CHECKING
 from typing import Any
@@ -127,6 +127,20 @@ def skip_on_interrupt(
             signal.signal(sig, original_handler)
 
 
+def now(tz: Optional[tzinfo] = None) -> datetime:
+    """Utility function for getting the current datetime.
+
+    For statemachine features that require the current time it is preferred
+    to use this function instead of `datetime.now()` directly.
+    This suggested because `datetime` is a builtin and a such cannot
+    easily be mocked during tests.
+
+    Args:
+        tz: Optionally the timezone to use
+    """
+    return datetime.now(tz)
+
+
 def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
     """Skipable sleep function
 
@@ -151,7 +165,7 @@ def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
 
 
 def sleep_until(
-    end_datetime: datetime.datetime,
+    end_datetime: datetime,
     min_sleep_amount: float = 0.1,
     sleep_amount: Optional[Union[float, ApproximateFloat]] = None,
 ):
@@ -173,7 +187,7 @@ def sleep_until(
     """
 
     while True:
-        diff = (end_datetime - datetime.datetime.now()).total_seconds()
+        diff = (end_datetime - now()).total_seconds()
 
         # stop waiting once its the end time or later
         if diff <= 0:

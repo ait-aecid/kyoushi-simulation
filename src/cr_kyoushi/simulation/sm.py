@@ -4,11 +4,11 @@
 This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
-import datetime  # need import datetime like this so we can mock it
 import logging
 
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 from typing import Dict
 from typing import Generic
 from typing import List
@@ -21,6 +21,7 @@ from .model import StatemachineConfig
 from .model import WorkSchedule
 from .states import State
 from .transitions import Transition
+from .util import now
 from .util import sleep_until
 
 
@@ -222,12 +223,12 @@ class StartEndTimeStatemachine(Statemachine):
     """
 
     @property
-    def start_time(self) -> Optional[datetime.datetime]:
+    def start_time(self) -> Optional[datetime]:
         """The `datetime` this state machine will start execution"""
         return self.__start_time
 
     @property
-    def end_time(self) -> Optional[datetime.datetime]:
+    def end_time(self) -> Optional[datetime]:
         """The `datetime` this state machine will end"""
         return self.__end_time
 
@@ -235,8 +236,8 @@ class StartEndTimeStatemachine(Statemachine):
         self,
         initial_state: str,
         states: List[State],
-        start_time: Optional[datetime.datetime] = None,
-        end_time: Optional[datetime.datetime] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
         max_errors: int = 0,
     ):
         """
@@ -260,7 +261,7 @@ class StartEndTimeStatemachine(Statemachine):
         # if no end time was set then this is always false
         if self.end_time is None:
             return False
-        return self.end_time <= datetime.datetime.now()
+        return self.end_time <= now()
 
     def _execute_machine(self):
         """State machine main execution loop.
@@ -307,8 +308,8 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         self,
         initial_state: str,
         states: List[State],
-        start_time: Optional[datetime.datetime] = None,
-        end_time: Optional[datetime.datetime] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
         work_schedule: Optional[WorkSchedule] = None,
         max_errors: int = 0,
     ):
@@ -341,8 +342,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
             return True
 
         # if we have work hours we have to check them
-        now = datetime.datetime.now()
-        return self.work_schedule.is_work_time(now)
+        return self.work_schedule.is_work_time(now())
 
     def _resume_work(self):
         """The resume work method will be called before resuming work after sleeping.
@@ -378,8 +378,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         if self.work_schedule is None:
             return
 
-        now = datetime.datetime.now()
-        next_work = self.work_schedule.next_work_start(now)
+        next_work = self.work_schedule.next_work_start(now())
 
         # if there is no next work time or the machine will end
         # before the next work we stop immediately

@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from datetime import timedelta
 
 import pytest
 
@@ -7,8 +8,8 @@ from pytest_mock import MockFixture
 from cr_kyoushi.simulation.sm import StartEndTimeStatemachine
 
 
-class DateTimeMock:
-    """utility class for faking datetime.now() and sleep interaction"""
+class NowMock:
+    """utility class for faking now() and sleep interaction"""
 
     def __init__(self, fake_datetimes):
         self.fake_datetimes = fake_datetimes
@@ -17,7 +18,7 @@ class DateTimeMock:
     def next(self):
         self.index = (self.index + 1) % len(self.fake_datetimes)
 
-    def mock_now(self):
+    def mock_now(self, tz=None):
         return self.fake_datetimes[self.index]
 
 
@@ -25,21 +26,21 @@ class DateTimeMock:
     "datetimes, start_time",
     [
         pytest.param(
-            datetime.datetime(2020, 12, 18, 12, 30),
+            datetime(2020, 12, 18, 12, 30),
             None,
             id="no-start-time",
         ),
         pytest.param(
-            datetime.datetime(2020, 12, 18, 12, 30),
-            datetime.datetime(2020, 12, 18, 12, 0),
+            datetime(2020, 12, 18, 12, 30),
+            datetime(2020, 12, 18, 12, 0),
             id="current-time-after-start",
         ),
         pytest.param(
             [
-                datetime.datetime(2020, 12, 18, 11, 0),
-                datetime.datetime(2020, 12, 18, 12, 0),
+                datetime(2020, 12, 18, 11, 0),
+                datetime(2020, 12, 18, 12, 0),
             ],
-            datetime.datetime(2020, 12, 18, 12, 0),
+            datetime(2020, 12, 18, 12, 0),
             id="current-before-start",
         ),
     ],
@@ -49,16 +50,12 @@ def test_wait_for_start(
     start_time,
     three_sequential_states,
     mocker: MockFixture,
-    monkeypatch,
 ):
     call = mocker.call
     # create a mock datetime and replace the now function
-    datetime_mock = mocker.MagicMock(wraps=datetime.datetime)
-    datetime_mock.now.side_effect = datetimes
-
-    # replace datetime.datetime with out mock
-    # (we have to do it like this as it is a builtin)
-    monkeypatch.setattr(datetime, "datetime", datetime_mock)
+    now_mock = mocker.Mock()
+    now_mock.now.side_effect = datetimes
+    mocker.patch("cr_kyoushi.simulation.sm.now", now_mock)
 
     # mock sleep_until
     sleep_mock = mocker.Mock()
@@ -93,11 +90,11 @@ def test_wait_for_start(
         mock_parent.assert_has_calls([call.m1(start_time), call.m2()])
 
 
-def test_stop_on_end_time(mocker: MockFixture, monkeypatch):
-    current_time = datetime.datetime.now()
-    end_time = current_time + datetime.timedelta(1)
+def test_stop_on_end_time(mocker: MockFixture):
+    current_time = datetime.now()
+    end_time = current_time + timedelta(1)
 
-    fake_datetime = DateTimeMock([current_time, current_time, current_time, end_time])
+    fake_datetime = NowMock([current_time, current_time, current_time, end_time])
 
     # mock sm._execute_step
     exec_mock = mocker.Mock()
@@ -107,13 +104,10 @@ def test_stop_on_end_time(mocker: MockFixture, monkeypatch):
         exec_mock,
     )
 
-    # create a mock datetime and replace the now function
-    datetime_mock = mocker.MagicMock(wraps=datetime.datetime)
-    datetime_mock.now.side_effect = fake_datetime.mock_now
-
-    # replace datetime.datetime with out mock
-    # (we have to do it like this as it is a builtin)
-    monkeypatch.setattr(datetime, "datetime", datetime_mock)
+    # create a mock and replace the now function
+    now_mock = mocker.Mock()
+    now_mock.side_effect = fake_datetime.mock_now
+    mocker.patch("cr_kyoushi.simulation.sm.now", now_mock)
 
     sm = StartEndTimeStatemachine(
         "mock-state",
@@ -131,18 +125,15 @@ def test_stop_on_end_time(mocker: MockFixture, monkeypatch):
     assert exec_mock.call_count == 3
 
 
-def test_stop_on_end_state(three_sequential_states, mocker: MockFixture, monkeypatch):
-    current_time = datetime.datetime.now()
-    end_time = current_time + datetime.timedelta(1)
+def test_stop_on_end_state(three_sequential_states, mocker: MockFixture):
+    current_time = datetime.now()
+    end_time = current_time + timedelta(1)
 
-    # create a mock datetime and replace the now function
+    # create a mock and replace the now function
     # fix return value so end time can never be reached
-    datetime_mock = mocker.MagicMock(wraps=datetime.datetime)
-    datetime_mock.now.return_value = current_time
-
-    # replace datetime.datetime with out mock
-    # (we have to do it like this as it is a builtin)
-    monkeypatch.setattr(datetime, "datetime", datetime_mock)
+    now_mock = mocker.Mock()
+    now_mock.return_value = current_time
+    mocker.patch("cr_kyoushi.simulation.sm.now", now_mock)
 
     sm = StartEndTimeStatemachine(
         three_sequential_states[0].name,
