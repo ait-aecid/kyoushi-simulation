@@ -301,9 +301,6 @@ class ApproximateFloat(BaseModel):
 class WorkHours(TimePeriod):
     """A special type of time period that does not allow over night periods"""
 
-    start_time: time = Field(description="The start time of the period")
-    end_time: time = Field(description="The end time of the period")
-
     @validator("end_time")
     def validate_start_before_end(
         cls,
@@ -339,7 +336,7 @@ class WorkSchedule(BaseModel):
         description="Dictionary containing the work hours for each weekday"
     )
 
-    def is_work_day(self, weekday: Union[Weekday, int]) -> bool:
+    def is_work_day(self, weekday: Weekday) -> bool:
         """Checks wether the given weekday is a work day.
 
         Args:
