@@ -168,7 +168,7 @@ class WeekdayActivePeriod(BaseModel):
         Returns:
             bool: `True` if inside the active period `False` otherwise
         """
-        return to_check.weekday() is self.week_day and (
+        return Weekday(to_check.weekday()) is self.week_day and (
             self.time_period is None or self.time_period.in_period(to_check.time())
         )
 
@@ -232,7 +232,7 @@ class SimpleActivePeriod(BaseModel):
         Returns:
             bool: `True` if inside the active period `False` otherwise
         """
-        return to_check.weekday() in self.week_days and (
+        return Weekday(to_check.weekday()) in self.week_days and (
             self.time_period is None or self.time_period.in_period(to_check.time())
         )
 
