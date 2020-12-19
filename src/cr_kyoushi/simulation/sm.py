@@ -336,7 +336,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         )
         self.__work_schedule = work_schedule
 
-    def __in_work_hours(self) -> bool:
+    def _in_work_hours(self) -> bool:
         # if we do not have work hours we work 24/7
         if self.work_schedule is None:
             return True
@@ -361,7 +361,6 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
             self.setup_context()
             ```
         """
-        ...
 
     def _wait_for_work(self):
         """Idle until it is time to work again.
@@ -400,7 +399,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         [wait until work][cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work] begins again.
         """
         # when we are in work hours business as usual
-        if self.__in_work_hours():
+        if self._in_work_hours():
             super()._execute_step()
         # outside of work hours we idle
         else:
