@@ -1,13 +1,27 @@
 from typing import List
 
+import pytest
+
 from pytest_mock import MockFixture
 
+from cr_kyoushi.simulation.sm import StartEndTimeStatemachine
 from cr_kyoushi.simulation.sm import Statemachine
+from cr_kyoushi.simulation.sm import WorkHoursStatemachine
 from cr_kyoushi.simulation.states import State
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution_stops(
-    mocker: MockFixture, three_sequential_states: List[State]
+    sm_class,
+    mocker: MockFixture,
+    three_sequential_states: List[State],
 ):
     """This test checks if given sequential states the state machine executes each state once and then stops
 
@@ -34,7 +48,7 @@ def test_sequential_sm_execution_stops(
     transition2_spy = mocker.spy(transition2, "execute")
     transition3_spy = mocker.spy(transition3, "execute")
 
-    sm = Statemachine(
+    sm = sm_class(
         initial_state=state1.name,
         states=three_sequential_states,
     )
@@ -51,8 +65,18 @@ def test_sequential_sm_execution_stops(
     assert transition3_spy.call_count == 1
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution_with_empty_transition(
-    mocker: MockFixture, empty_transition: List[State]
+    sm_class,
+    mocker: MockFixture,
+    empty_transition: List[State],
 ):
     """This test checks if given sequential states the state machine executes each state once and then stops
 
@@ -77,7 +101,7 @@ def test_sequential_sm_execution_with_empty_transition(
     transition1_spy = mocker.spy(transition1, "execute")
     transition2_spy = mocker.spy(transition2, "execute")
 
-    sm = Statemachine(
+    sm = sm_class(
         initial_state=state1.name,
         states=empty_transition,
     )
@@ -96,8 +120,18 @@ def test_sequential_sm_execution_with_empty_transition(
     assert transition2_spy.call_count == 1
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution(
-    mocker: MockFixture, three_sequential_states: List[State]
+    sm_class,
+    mocker: MockFixture,
+    three_sequential_states: List[State],
 ):
     """This test checks if given sequential states the state machine executes each state in order
 
@@ -124,7 +158,7 @@ def test_sequential_sm_execution(
     transition2_spy = mocker.spy(transition2, "execute")
     transition3_spy = mocker.spy(transition3, "execute")
 
-    sm = Statemachine(
+    sm = sm_class(
         initial_state=state1.name,
         states=three_sequential_states,
     )
@@ -193,8 +227,18 @@ def test_sequential_sm_execution(
     assert sm.current_state is None
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution_with_failing_state(
-    mocker: MockFixture, second_transition_fails: List[State]
+    sm_class,
+    mocker: MockFixture,
+    second_transition_fails: List[State],
 ):
     """This test checks if the state machine stops on a failing state if no recovery tries are available
 
@@ -221,7 +265,7 @@ def test_sequential_sm_execution_with_failing_state(
     transition2_spy = mocker.spy(transition2, "execute")
     transition3_spy = mocker.spy(transition3, "execute")
 
-    sm = Statemachine(
+    sm = sm_class(
         initial_state=state1.name,
         states=second_transition_fails,
     )
@@ -241,8 +285,18 @@ def test_sequential_sm_execution_with_failing_state(
     assert transition3_spy.call_count == 0
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution_with_failing_state_recovery(
-    mocker: MockFixture, second_transition_fails: List[State]
+    sm_class,
+    mocker: MockFixture,
+    second_transition_fails: List[State],
 ):
     """This test checks if the state machine tries to recover from a failing state
 
@@ -269,7 +323,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     transition2_spy = mocker.spy(transition2, "execute")
     transition3_spy = mocker.spy(transition3, "execute")
 
-    sm = Statemachine(
+    sm = sm_class(
         initial_state=state1.name,
         states=second_transition_fails,
         max_errors=3,
@@ -396,8 +450,18 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert sm.current_state is None
 
 
+@pytest.mark.parametrize(
+    "sm_class",
+    [
+        Statemachine,
+        StartEndTimeStatemachine,
+        WorkHoursStatemachine,
+    ],
+)
 def test_sequential_sm_execution_with_transition_error(
-    mocker: MockFixture, second_transition_error_fallback: List[State]
+    sm_class,
+    mocker: MockFixture,
+    second_transition_error_fallback: List[State],
 ):
     """This test checks if the state machine tries to recover from a failing state
 

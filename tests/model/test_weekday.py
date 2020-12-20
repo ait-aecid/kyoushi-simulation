@@ -19,13 +19,13 @@ def test_parse_from_int_values():
     saturday = WeekdayTestModel(weekday=Weekday.SATURDAY.value)
     sunday = WeekdayTestModel(weekday=Weekday.SUNDAY.value)
 
-    assert monday.weekday == Weekday.MONDAY.value
-    assert tuesday.weekday == Weekday.TUESDAY.value
-    assert wednesday.weekday == Weekday.WEDNESDAY.value
-    assert thursday.weekday == Weekday.THURSDAY.value
-    assert friday.weekday == Weekday.FRIDAY.value
-    assert saturday.weekday == Weekday.SATURDAY.value
-    assert sunday.weekday == Weekday.SUNDAY.value
+    assert monday.weekday == Weekday.MONDAY
+    assert tuesday.weekday == Weekday.TUESDAY
+    assert wednesday.weekday == Weekday.WEDNESDAY
+    assert thursday.weekday == Weekday.THURSDAY
+    assert friday.weekday == Weekday.FRIDAY
+    assert saturday.weekday == Weekday.SATURDAY
+    assert sunday.weekday == Weekday.SUNDAY
 
 
 def test_parse_from_invalid_int_value():
@@ -42,13 +42,13 @@ def test_parse_from_case_insensitive_string_value():
     saturday = WeekdayTestModel(weekday="SATurDAY")
     sunday = WeekdayTestModel(weekday="sUNDAy")
 
-    assert monday.weekday == Weekday.MONDAY.value
-    assert tuesday.weekday == Weekday.TUESDAY.value
-    assert wednesday.weekday == Weekday.WEDNESDAY.value
-    assert thursday.weekday == Weekday.THURSDAY.value
-    assert friday.weekday == Weekday.FRIDAY.value
-    assert saturday.weekday == Weekday.SATURDAY.value
-    assert sunday.weekday == Weekday.SUNDAY.value
+    assert monday.weekday == Weekday.MONDAY
+    assert tuesday.weekday == Weekday.TUESDAY
+    assert wednesday.weekday == Weekday.WEDNESDAY
+    assert thursday.weekday == Weekday.THURSDAY
+    assert friday.weekday == Weekday.FRIDAY
+    assert saturday.weekday == Weekday.SATURDAY
+    assert sunday.weekday == Weekday.SUNDAY
 
 
 def test_parse_from_invalid_string_value():
@@ -58,4 +58,4 @@ def test_parse_from_invalid_string_value():
 
 def test_parse_from_enum():
     monday = WeekdayTestModel(weekday=Weekday.MONDAY)
-    assert monday.weekday == Weekday.MONDAY.value
+    assert monday.weekday == Weekday.MONDAY

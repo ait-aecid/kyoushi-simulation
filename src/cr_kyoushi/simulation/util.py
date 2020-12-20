@@ -11,11 +11,14 @@ import signal
 import time
 
 from contextlib import contextmanager
+from datetime import datetime
+from datetime import tzinfo
 from types import FrameType
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
 from typing import List
+from typing import Optional
 from typing import Union
 
 from .errors import SkipSectionError
@@ -124,6 +127,20 @@ def skip_on_interrupt(
             signal.signal(sig, original_handler)
 
 
+def now(tz: Optional[tzinfo] = None) -> datetime:
+    """Utility function for getting the current datetime.
+
+    For statemachine features that require the current time it is preferred
+    to use this function instead of `datetime.now()` directly.
+    This suggested because `datetime` is a builtin and a such cannot
+    easily be mocked during tests.
+
+    Args:
+        tz: Optionally the timezone to use
+    """
+    return datetime.now(tz)
+
+
 def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
     """Skipable sleep function
 
@@ -145,3 +162,42 @@ def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
         logger.debug("Going to sleep for %f", sleep_time)
         time.sleep(sleep_time)
         logger.debug("Resuming execution after sleeping for %f", sleep_time)
+
+
+def sleep_until(
+    end_datetime: datetime,
+    min_sleep_amount: float = 0.1,
+    sleep_amount: Optional[Union[float, ApproximateFloat]] = None,
+):
+    """Sleep until specified datetime
+
+    The default behavior is to basically binary search towards the target datetime.
+    i.e., the sleep duration is always `time left/2` until min sleep amount is larger
+    than the division result. Alternatively fixed sleep steps can be configured.
+
+    !!! Hint
+        You can interupt the current sleep and check if the desired datetime is already
+        reached by pressing ++ctrl+c++ and sending a `SIGINT`.
+
+
+    Args:
+        end_datetime: The datetime to wait until
+        min_sleep_amount: The minimum amount of time sleep in between checks.
+        sleep_amount: Optionally use fixed amount of time sleep steps
+    """
+
+    while True:
+        diff = (end_datetime - now()).total_seconds()
+
+        # stop waiting once its the end time or later
+        if diff <= 0:
+            return
+
+        # if we do not have a sleep interval sleep relative to
+        # the time between now and the end time
+        if sleep_amount is None:
+            #  to avoid many extremely short sleeps
+            #  fallback to the minimum sleep
+            sleep(max(min_sleep_amount, diff / 2))
+        else:
+            sleep(sleep_amount)

@@ -6,4 +6,7 @@
         filters:
             - '!^_[^_]'
             - "!^__"
+            - "__init__"
             - "^_execute_"
+            - "_resume_work"
+            - "_wait_for_work"

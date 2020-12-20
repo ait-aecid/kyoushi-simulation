@@ -8,6 +8,7 @@ import logging
 
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 from typing import Dict
 from typing import Generic
 from typing import List
@@ -17,8 +18,11 @@ from typing import Type
 from . import errors
 from .model import Context
 from .model import StatemachineConfig
+from .model import WorkSchedule
 from .states import State
 from .transitions import Transition
+from .util import now
+from .util import sleep_until
 
 
 __all__ = ["Statemachine", "StatemachineFactory"]
@@ -203,6 +207,203 @@ class Statemachine:
         # clean up state machine
         self.destroy_context()
         logger.info("State machine finished")
+
+
+class StartEndTimeStatemachine(Statemachine):
+    """Special type of state machine that allows configuring a start and end time.
+
+    The main stat machine execution loop will only start execution once it is
+    the configured start time (starts immediately if none is configured). Similarly
+    the state machine will stop once the current time is the end time even if there
+    are still transitions left to execute. This is for example useful when you wish to
+    configure a state machine to only run for the duration of an experiment.
+
+    !!! Note
+        A state machine might end before its end time if it enters a final state.
+    """
+
+    @property
+    def start_time(self) -> Optional[datetime]:
+        """The `datetime` this state machine will start execution"""
+        return self.__start_time
+
+    @property
+    def end_time(self) -> Optional[datetime]:
+        """The `datetime` this state machine will end"""
+        return self.__end_time
+
+    def __init__(
+        self,
+        initial_state: str,
+        states: List[State],
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        max_errors: int = 0,
+    ):
+        """
+        Args:
+            initial_state: The name of the initial state
+            states: List of all states the state machine can enter
+            start_time: The `datetime` this state machine should start execution
+            end_time: The `datetime` this state machine should end execution
+            max_errors: Maximum amount of errors the state machine is allowed to encounter
+                        before it stops trying to recover by reseting to the initial state.
+
+        !!! Note
+            If `state_time` or `end_time` are `None` then the state machine will
+            start or end execution normally.
+        """
+        super().__init__(initial_state, states, max_errors=max_errors)
+        self.__start_time = start_time
+        self.__end_time = end_time
+
+    def _is_end_time(self) -> bool:
+        # if no end time was set then this is always false
+        if self.end_time is None:
+            return False
+        return self.end_time <= now()
+
+    def _execute_machine(self):
+        """State machine main execution loop.
+
+        This function executes state machine steps in a loop until either
+         - a end state is reached (i.e., current state is `None`)
+         - or the current time is >= `end_time`
+
+        """
+        # state machine run main loop
+        while self.current_state and not self._is_end_time():
+            self._execute_step()
+
+    def run(self):
+        """Starts the state machine execution.
+
+        This will only start the state machine execution
+        once the given start time is reached.
+        """
+        # wait for start time before actually starting the machine
+        if self.start_time is not None:
+            sleep_until(self.start_time)
+        return super().run()
+
+
+class WorkHoursStatemachine(StartEndTimeStatemachine):
+    """State machine optionally allows the configuration of work hours.
+
+    !!! Note
+        This state machine extends
+        [`StartEndTimeStatemachine`][cr_kyoushi.simulation.sm.StartEndTimeStatemachine]
+        and as such has all its features.
+
+    Work hours are defined through the configuration of a [`ActivePeriod`][cr_kyoushi.simulation.model.ActivePeriod].
+    Outside of its work hours this state machine will simply idle and do nothing. You can also configure
+    """
+
+    @property
+    def work_schedule(self) -> Optional[WorkSchedule]:
+        """The work schedules for this state machine"""
+        return self.__work_schedule
+
+    def __init__(
+        self,
+        initial_state: str,
+        states: List[State],
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        work_schedule: Optional[WorkSchedule] = None,
+        max_errors: int = 0,
+    ):
+        """
+        Args:
+            initial_state: The name of the initial state
+            states: List of all states the state machine can enter
+            start_time: The `datetime` this state machine should start execution
+            end_time: The `datetime` this state machine should end execution
+            work_schedule: The state machines work schedule (days and times to work)
+            max_errors: Maximum amount of errors the state machine is allowed to encounter
+                        before it stops trying to recover by reseting to the initial state.
+
+        !!! Note
+            If `state_time` or `end_time` are `None` then the state machine will
+            start or end execution normally.
+        """
+        super().__init__(
+            initial_state,
+            states,
+            start_time=start_time,
+            end_time=end_time,
+            max_errors=max_errors,
+        )
+        self.__work_schedule = work_schedule
+
+    def _in_work_hours(self) -> bool:
+        # if we do not have work hours we work 24/7
+        if self.work_schedule is None:
+            return True
+
+        # if we have work hours we have to check them
+        return self.work_schedule.is_work_time(now())
+
+    def _resume_work(self):
+        """The resume work method will be called before resuming work after sleeping.
+
+        Use this method to prepare the state machine to resume after a potentially long
+        pause. By default this method does nothing.
+
+        !!! Hint
+            You could for example configure your state machine to restart from the initial
+            state before resuming work:
+
+            ```python
+            self.current_state = self.initial_state
+            # reset context
+            self.destroy_context()
+            self.setup_context()
+            ```
+        """
+
+    def _wait_for_work(self):
+        """Idle until it is time to work again.
+
+        Before returning to the normal state machine flow this
+        will also call [`_resume_work`][cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work].
+
+        !!! Note
+            If the next potential work time is after the machines end time
+            it will not sleep, but instead set the current state to `None`
+            and let the state machine flow end execution.
+        """
+        # immediately return if there is no work schedule
+        if self.work_schedule is None:
+            return
+
+        next_work = self.work_schedule.next_work_start(now())
+
+        # if there is no next work time or the machine will end
+        # before the next work we stop immediately
+        if next_work is None or (
+            self.end_time is not None and self.end_time <= next_work
+        ):
+            self.current_state = None
+        else:
+            # wait til we have work again
+            sleep_until(next_work)
+            # and then pre-pare to resume work
+            self._resume_work()
+
+    def _execute_step(self):
+        """Execute a single state machine step.
+
+        This will only execute a step if the current time is within
+        our work schedule. Outside the work time the state machine will
+        [wait until work][cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work] begins again.
+        """
+        # when we are in work hours business as usual
+        if self._in_work_hours():
+            super()._execute_step()
+        # outside of work hours we idle
+        else:
+            self._wait_for_work()
 
 
 class StatemachineFactory(ABC, Generic[StatemachineConfig]):

@@ -3,6 +3,7 @@ import re
 
 from datetime import datetime
 from datetime import time
+from datetime import timedelta
 from enum import IntEnum
 from typing import Any
 from typing import Dict
@@ -89,7 +90,7 @@ class Weekday(IntEnum):
 
     @classmethod
     def lookup(cls):
-        return {v: k.value for v, k in cls.__members__.items()}
+        return {v: k for v, k in cls.__members__.items()}
 
     @classmethod
     def __get_validators__(cls):
@@ -106,7 +107,7 @@ class Weekday(IntEnum):
             ValueError: if the given input is not a valid weekday
 
         Returns:
-            [int]: `int` encoded week day
+            Weekday enum
         """
         # check enum input
         if isinstance(val, Weekday):
@@ -114,7 +115,7 @@ class Weekday(IntEnum):
         # check int weekday input
         if isinstance(val, int):
             if val in cls.lookup().values():
-                return val
+                return Weekday(val)
             raise ValueError("invalid integer weekday")
         # check str weekday input
         try:
@@ -167,7 +168,7 @@ class WeekdayActivePeriod(BaseModel):
         Returns:
             bool: `True` if inside the active period `False` otherwise
         """
-        return to_check.weekday() is self.week_day and (
+        return Weekday(to_check.weekday()) is self.week_day and (
             self.time_period is None or self.time_period.in_period(to_check.time())
         )
 
@@ -231,7 +232,7 @@ class SimpleActivePeriod(BaseModel):
         Returns:
             bool: `True` if inside the active period `False` otherwise
         """
-        return to_check.weekday() in self.week_days and (
+        return Weekday(to_check.weekday()) in self.week_days and (
             self.time_period is None or self.time_period.in_period(to_check.time())
         )
 
@@ -295,3 +296,118 @@ class ApproximateFloat(BaseModel):
             A float x for which `min <= x <= max`
         """
         return random.uniform(self.min, self.max)
+
+
+class WorkHours(TimePeriod):
+    """A special type of time period that does not allow over night periods"""
+
+    @validator("end_time")
+    def validate_start_before_end(
+        cls,
+        v: time,
+        values: Dict[str, Any],
+        **kwargs,
+    ) -> time:
+        """Validates that the start time is before the end time.
+
+        This restricts work hours to be within a single day i.e., work hours
+        can not be defined to start on one day and end on the following day.
+
+        Args:
+            v: The parsed end time to check
+            values: A dictionary containing previously parsed and validated fields.
+                    See [Pydantic](https://pydantic-docs.helpmanual.io/usage/validators/) for details.
+
+        Returns:
+            The end time if it is valid
+        """
+        # if start time is not in values it failed to validate
+        # so we skip the check and let validation fail
+        if "start_time" in values:
+            assert values["start_time"] < v, "End time must be after start time"
+
+        return v
+
+
+class WorkSchedule(BaseModel):
+    """A weekly work schedule represented by the week days and work hours for each day"""
+
+    work_days: Dict[Weekday, WorkHours] = Field(
+        description="Dictionary containing the work hours for each weekday"
+    )
+
+    def is_work_day(self, weekday: Weekday) -> bool:
+        """Checks wether the given weekday is a work day.
+
+        Args:
+            weekday: The weekday to check encoded as integer (0-6)
+
+        Returns:
+            `True` if it is a work day `False` otherwise
+        """
+        return weekday in self.work_days
+
+    def is_work_time(self, to_check: datetime) -> bool:
+        """Checks wether the given datetime is work time.
+
+        Something is considered to be work time if it is a work day
+        and the time is within the work hours of that work day.
+
+        Args:
+            to_check: The datetime to check
+
+        Returns:
+            `True` if the given datetime is work time `False` otherwise
+        """
+        weekday: Weekday = Weekday(to_check.weekday())
+        # check if the datetime is on a work day
+        if self.is_work_day(weekday):
+            # if its on a workday check if its with the days work hours
+            return self.work_days[weekday].in_period(to_check.time())
+
+        return False
+
+    def next_work_start(self, to_check: datetime) -> Optional[datetime]:
+        """Gets the next work time, relative to the given datetime.
+
+        If the given datetime is within work hours the start time
+        of that work day is returned.
+
+        Args:
+            to_check: The datetime to find the next work time for
+
+        Returns:
+            The next work time or `None` if there is no work time
+        """
+
+        weekday: Weekday = Weekday(to_check.weekday())
+
+        if (
+            # if the given datetime is a workday
+            self.is_work_day(weekday)
+            and (
+                # and work has not begun yet
+                to_check.time() <= self.work_days[weekday].start_time
+                # or if we are still within work time
+                # we return the given days start time
+                or self.is_work_time(to_check)
+            )
+        ):
+            return datetime.combine(to_check.date(), self.work_days[weekday].start_time)
+
+        # otherwise next work start must be some day after
+        # the given day so we check the next 7 days
+        # (we might only work once a week)
+        for i in range(1, 8):
+            # increment weekday and be sure to start from 0 once we pass sunday (int: 6)
+            weekday = Weekday((weekday + 1) % 7)
+            if self.is_work_day(weekday):
+                # add the days till the next work day to the given date
+                next_work: datetime = to_check + timedelta(i)
+                # get the start time for that day
+                start_time = self.work_days[weekday].start_time
+
+                return datetime.combine(next_work.date(), start_time)
+
+        # if we got here then no workday is set so we will never start
+        return None
