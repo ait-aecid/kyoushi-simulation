@@ -1,101 +1,162 @@
 import os
 
 from pathlib import Path
-from typing import Any
-from typing import Dict
 
 import pytest
+
+from pydantic import BaseModel
 
 from cr_kyoushi.simulation import config
 from cr_kyoushi.simulation import errors
 from cr_kyoushi.simulation import model
 
 
-FILE_DIR = os.path.dirname(__file__)
+FILE_DIR = os.path.dirname(__file__) + "/files"
 
 
-@pytest.fixture()
-def config_class():
-    from pydantic import BaseModel
-
-    class TestConfig(BaseModel):
-        str_field: str
-        int_field: int
-
-    return TestConfig
+class SimpleConfig(BaseModel):
+    str_field: str
+    int_field: int
 
 
-def test_given_no_config_return_empty_dicts():
-    path = Path(f"{FILE_DIR}/DOES_NOT_EXIST.yml")
-    assert path.exists() is False
-    cfg = config.load_config_file(path)
-    assert cfg == {"plugin": {}, "sm": {}}
+class ComplexConfig(BaseModel):
+    work_schedule: model.WorkSchedule
 
 
-def test_given_config_return_correct_dict():
-    cfg_expected = {
-        "plugin": {"include_names": ["test.*"]},
-        "sm": {
-            "activity_period": {
-                "week_days": ["monday"],
-                "time_period": {"start_time": "00:00", "end_time": "01:00"},
-            }
-        },
-    }
-    path = Path(f"{FILE_DIR}/test_config_loading.yml")
-    assert path.exists()
-    cfg = config.load_config_file(path)
-    assert cfg_expected == cfg
+@pytest.mark.parametrize(
+    "config_path, path_exists, expected_dict",
+    [
+        pytest.param(
+            Path(f"{FILE_DIR}/config.yml"),
+            True,
+            {"plugin": {"include_names": ["test.*", "cfg.*"]}},
+            id="settings",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/complex-sm.yml"),
+            True,
+            {
+                "work_schedule": {
+                    "work_days": {
+                        "monday": {
+                            "start_time": "00:00",
+                            "end_time": "12:00",
+                        }
+                    }
+                }
+            },
+            id="complex-sm",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/simple-sm.yml"),
+            True,
+            {"str_field": "string", "int_field": 0},
+            id="simple-sm",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/DOES_NOT_EXIST.yml"),
+            False,
+            {},
+            id="non-existent-file",
+        ),
+    ],
+)
+def test_given_config_return_correct_dict(config_path, path_exists, expected_dict):
+    assert config_path.exists() is path_exists
+    cfg = config.load_config_file(config_path)
+    assert expected_dict == cfg
 
 
-def test_load_valid_plugin_config():
-    plugin_cfg = {"plugin": {"include_names": ["test.*", "cfg.*"]}}
-    expected_cfg = model.PluginConfig(include_names=["test.*", "cfg.*"])
-    cfg = config.load_plugin_config(plugin_cfg)
-    assert expected_cfg == cfg
+@pytest.mark.parametrize(
+    "config_path, path_exists, expected_settings",
+    [
+        pytest.param(
+            Path(f"{FILE_DIR}/config.yml"),
+            True,
+            config.Settings(
+                plugin=model.PluginConfig(include_names=["test.*", "cfg.*"])
+            ),
+            id="config-file",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/DOES_NOT_EXIST.yml"),
+            False,
+            config.Settings(),
+            id="default",
+        ),
+    ],
+)
+def test_load_valid_settings(config_path, path_exists, expected_settings):
+    settings = config.load_settings(config_path)
+
+    assert config_path.exists() is path_exists
+    assert isinstance(settings, config.Settings)
+    assert expected_settings == settings
 
 
-def test_load_empty_plugin_config():
-    plugin_cfg: Dict[str, Any] = {}
-    expected_cfg = model.PluginConfig()
-    cfg = config.load_plugin_config(plugin_cfg)
-    assert expected_cfg == cfg
+def test_load_empty_config_file():
+    non_existent_path = Path(f"{FILE_DIR}/DOES_NOT_EXIST.yml")
+    cfg = config.load_config_file(non_existent_path)
+    assert cfg == {}
 
 
-def test_load_invvalid_plugin_config():
-    plugin_cfg = {"plugin": {"include_names": ["test.*", "cfg.*"], "exclude_names": 2}}
+@pytest.mark.parametrize(
+    "config_path",
+    [
+        pytest.param(
+            Path(f"{FILE_DIR}/invalid_plugin_exclude_names.yml"),
+            id="exclude-names",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/invalid_plugin_include_names.yml"),
+            id="exclude-names",
+        ),
+    ],
+)
+def test_load_invalid_settings(config_path):
     with pytest.raises(errors.ConfigValidationError):
-        config.load_plugin_config(plugin_cfg)
+        config.load_settings(config_path)
 
 
-def test_load_valid_config(config_class):
-    plugin_cfg = {"include_names": ["test.*", "cfg.*"]}
-    sm_cfg = {"str_field": "string", "int_field": 0}
-    input_cfg = {"plugin": plugin_cfg, "sm": sm_cfg}
+@pytest.mark.parametrize(
+    "sm_config_path, config_class, expected_sm_config",
+    [
+        pytest.param(
+            Path(f"{FILE_DIR}/simple-sm.yml"),
+            SimpleConfig,
+            SimpleConfig(str_field="string", int_field=0),
+            id="simple-sm",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/simple-sm.yml"),
+            dict,
+            {"str_field": "string", "int_field": 0},
+            id="simple-dict-cfg",
+        ),
+        pytest.param(
+            Path(f"{FILE_DIR}/complex-sm.yml"),
+            ComplexConfig,
+            ComplexConfig(
+                work_schedule=model.WorkSchedule(
+                    work_days={
+                        model.Weekday.MONDAY: model.WorkHours(
+                            start_time="00:00",
+                            end_time="12:00",
+                        )
+                    }
+                )
+            ),
+            id="complex-sm",
+        ),
+    ],
+)
+def test_load_valid_sm_config(sm_config_path, config_class, expected_sm_config):
+    cfg = config.load_sm_config(sm_config_path, config_class)
+    assert isinstance(cfg, config_class)
+    assert expected_sm_config == cfg
 
-    expected_plugin_cfg = model.PluginConfig(include_names=["test.*", "cfg.*"])
-    expected_sm_cfg = config_class(str_field="string", int_field=0)
 
-    cfg = config.load_config(input_cfg, config_class)
-    assert isinstance(cfg.plugin, model.PluginConfig)
-    assert isinstance(cfg.sm, config_class)
-    assert expected_plugin_cfg == cfg.plugin
-    assert expected_sm_cfg == cfg.sm
-
-
-def test_load_config_invalid_sm(config_class):
-    plugin_cfg = {"include_names": ["test.*", "cfg.*"]}
-    sm_cfg = {"str_field": "string", "int_field": "NOT AN INT"}
-    input_cfg = {"plugin": plugin_cfg, "sm": sm_cfg}
-
+def test_load_invalid_sm_config():
+    sm_config_path = Path(f"{FILE_DIR}/invalid_sm.yml")
     with pytest.raises(errors.ConfigValidationError):
-        config.load_config(input_cfg, config_class)
-
-
-def test_load_config_invalid_plugin(config_class):
-    plugin_cfg = {"include_names": "NOT A LIST"}
-    sm_cfg = {"str_field": "string", "int_field": 0}
-    input_cfg = {"plugin": plugin_cfg, "sm": sm_cfg}
-
-    with pytest.raises(errors.ConfigValidationError):
-        config.load_config(input_cfg, config_class)
+        config.load_sm_config(sm_config_path, SimpleConfig)

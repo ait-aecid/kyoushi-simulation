@@ -1,3 +1,2 @@
-sm:
-  cities: {}
-  desired_weather: light rain
+cities: {}
+desired_weather: light rain

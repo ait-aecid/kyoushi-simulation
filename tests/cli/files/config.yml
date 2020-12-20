@@ -1,0 +1,4 @@
+plugin:
+  include_names:
+      - test.*
+      - cfg.*
