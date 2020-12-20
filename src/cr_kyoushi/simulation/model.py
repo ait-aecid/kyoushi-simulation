@@ -7,7 +7,6 @@ from datetime import timedelta
 from enum import IntEnum
 from typing import Any
 from typing import Dict
-from typing import Generic
 from typing import List
 from typing import Optional
 from typing import Pattern
@@ -18,14 +17,12 @@ from typing import Union
 from pydantic import BaseModel
 from pydantic import Field
 from pydantic import validator
-from pydantic.generics import GenericModel
 
 
 __all__ = [
     "StatemachineConfig",
     "Context",
     "PluginConfig",
-    "Config",
     "Weekday",
     "TimePeriod",
     "WeekdayActivePeriod",
@@ -35,7 +32,7 @@ __all__ = [
     "ApproximateFloat",
 ]
 
-StatemachineConfig = TypeVar("StatemachineConfig")
+StatemachineConfig = TypeVar("StatemachineConfig", Dict[str, Any], BaseModel)
 """Placeholder generic type for state machine configurations."""
 
 Context = Union[BaseModel, Dict[str, Any]]
@@ -57,17 +54,6 @@ class PluginConfig(BaseModel):
         [],
         description="A list of regular expressions used to define \
         which plugins to explicitly exclude.",
-    )
-
-
-class Config(GenericModel, Generic[StatemachineConfig]):
-    """Cyber Range Kyoushi Simulation configuration options"""
-
-    plugin: PluginConfig = Field(
-        PluginConfig(), description="The plugin system configuration"
-    )
-    sm: StatemachineConfig = Field(
-        description="The configuration for the state machine"
     )
 
 

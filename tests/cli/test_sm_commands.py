@@ -1,12 +1,10 @@
 from pathlib import Path
-from typing import Any
-from typing import Dict
 
 from click.testing import CliRunner
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation import cli
-from cr_kyoushi.simulation import model
+from cr_kyoushi.simulation import config
 
 from .conftest import ExampleStatemachineConfig
 from .conftest import StatemachineFactory
@@ -20,17 +18,8 @@ except ImportError:
 
 
 def test_sm_base_function(mocker: MockFixture):
-    raw_config = {
-        "plugin": {"include_names": ["test.*"]},
-        "sm": {
-            "activity_period": {
-                "week_days": ["monday"],
-                "time_period": {"start_time": "00:00", "end_time": "01:00"},
-            }
-        },
-    }
-
-    plugin_config = model.PluginConfig(include_names=["test.*"])
+    raw_settings = {"plugin": {"include_names": ["test.*"]}}
+    settings = config.Settings(**raw_settings)
 
     ep_test = mocker.Mock(EntryPoint)
     ep_test.name = "FactoryName"
@@ -40,11 +29,8 @@ def test_sm_base_function(mocker: MockFixture):
     factory_eps = {"test": ep_test}
     info_obj = cli.Info()
 
-    load_config_file = mocker.patch("cr_kyoushi.simulation.cli.load_config_file")
-    load_config_file.return_value = raw_config
-
-    load_plugin_config = mocker.patch("cr_kyoushi.simulation.cli.load_plugin_config")
-    load_plugin_config.return_value = plugin_config
+    load_settings = mocker.patch("cr_kyoushi.simulation.cli.load_settings")
+    load_settings.return_value = settings
 
     get_factories = mocker.patch("cr_kyoushi.simulation.cli.plugins.get_factories")
     get_factories.return_value = factory_eps
@@ -53,9 +39,8 @@ def test_sm_base_function(mocker: MockFixture):
     result = runner.invoke(cli.cli, ["-c", "test.yml", "list"], obj=info_obj)
 
     # verify info is properly set
-    assert info_obj.config_path == Path("test.yml")
-    assert info_obj.config_raw == raw_config
-    assert info_obj.plugin_config == plugin_config
+    assert info_obj.settings_path == Path("test.yml")
+    assert info_obj.settings == settings
     assert info_obj.available_factories == factory_eps
 
     # verify set entry points are in the output
@@ -64,11 +49,6 @@ def test_sm_base_function(mocker: MockFixture):
 
 
 def test_sm_run(mocker: MockFixture):
-    raw_config: Dict[str, Any] = {
-        "plugin": {},
-        "sm": {},
-    }
-
     ep_test = mocker.Mock(EntryPoint)
     ep_test.name = "FactoryName"
     ep_test.module = "test.module"
@@ -76,7 +56,7 @@ def test_sm_run(mocker: MockFixture):
 
     factory_eps = {"test": StatemachineFactory}
     factory_obj = StatemachineFactory()
-    config_obj = model.Config[ExampleStatemachineConfig].parse_obj(raw_config)
+    config_obj = ExampleStatemachineConfig()
 
     # mock factory functions
     machine_obj = factory_obj.build(ExampleStatemachineConfig())
@@ -92,25 +72,34 @@ def test_sm_run(mocker: MockFixture):
     # mock load functions
     get_factory = mocker.patch("cr_kyoushi.simulation.cli.plugins.get_factory")
     get_factory.return_value = factory_mock
-    load_config = mocker.patch("cr_kyoushi.simulation.cli.load_config")
-    load_config.return_value = config_obj
+    load_sm_config = mocker.patch("cr_kyoushi.simulation.cli.load_sm_config")
+    load_sm_config.return_value = config_obj
 
     # setup input info obj
     info_obj = cli.Info()
     info_obj.config_path = "test.yml"
-    info_obj.config_raw = raw_config
+    info_obj.settings = config.Settings()
     info_obj.available_factories = factory_eps
 
+    # sm config path
+    sm_config_path = "test-sm.yml"
+
     runner = CliRunner()
-    result = runner.invoke(cli.sm_run, ["-f", "test"], obj=info_obj)
+    result = runner.invoke(
+        cli.sm_run,
+        ["-s", sm_config_path, "-f", "test"],
+        obj=info_obj,
+    )
 
     # verify  that the program exited correctly
     assert result.exit_code == 0
 
     # verify that factory was loaded correctly
     get_factory.assert_called_once_with(factory_eps, "test")
-    load_config.assert_called_once_with(raw_config, ExampleStatemachineConfig)
+    load_sm_config.assert_called_once_with(
+        Path(sm_config_path), ExampleStatemachineConfig
+    )
 
     # verify that machine was built and run correctly
-    factory_mock.build.assert_called_once_with(config_obj.sm)
+    factory_mock.build.assert_called_once_with(config_obj)
     machine_mock.run.assert_called_once()

@@ -1,0 +1,6 @@
+cities:
+    Vienna: light rain
+    London: clear
+    Tokio: light rain
+    New York: snow
+desired_weather: light rain
