@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     )
 
 
-def load_config_file(config_path: Path) -> Dict[str, Any]:
+def load_config_file(config_path: Path) -> Dict[Any, Any]:
     yaml = YAML(typ="safe")
     if config_path.exists():
         return yaml.load(config_path)
@@ -42,6 +42,7 @@ def load_sm_config(
             return sm_config_type.parse_obj(config_raw)
         else:
             return config_raw
+
     except ValidationError as val_err:
         raise ConfigValidationError(val_err)
 

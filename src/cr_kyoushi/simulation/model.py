@@ -32,7 +32,7 @@ __all__ = [
     "ApproximateFloat",
 ]
 
-StatemachineConfig = TypeVar("StatemachineConfig", Dict[str, Any], BaseModel)
+StatemachineConfig = TypeVar("StatemachineConfig", Dict[Any, Any], BaseModel)
 """Placeholder generic type for state machine configurations."""
 
 Context = Union[BaseModel, Dict[str, Any]]
