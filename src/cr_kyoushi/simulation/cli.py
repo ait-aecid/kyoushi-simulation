@@ -4,17 +4,15 @@
 import logging
 
 from pathlib import Path
-from typing import Any
 from typing import Dict
 from typing import Optional
 
 import click
 
 from . import plugins
-from .config import load_config
-from .config import load_config_file
-from .config import load_plugin_config
-from .model import PluginConfig
+from .config import Settings
+from .config import load_settings
+from .config import load_sm_config
 
 
 try:
@@ -47,9 +45,8 @@ class Info:
     def __init__(self):  # Note: This object must have an empty constructor.
         """Create a new instance."""
         self.verbose: int = 0
-        self.config_path: Optional[Path] = None
-        self.config_raw: Optional[Dict[str, Any]] = None
-        self.plugin_config: Optional[PluginConfig] = None
+        self.settings_path: Optional[Path] = None
+        self.settings: Optional[Settings] = None
         self.available_factories: Optional[Dict[str, EntryPoint]] = None
 
 
@@ -93,17 +90,16 @@ def __setup_logging(info: Info, verbose: int) -> None:
     type=CliPath(dir_okay=False, readable=True),
     default="config.yml",
     show_default=True,
-    help="The state machine configuration file",
+    help="The Cyber Range Kyoushi Simulation settings file",
 )
 @pass_info
 def cli(info: Info, verbose: int, config: Path):
     """Run Cyber Range Kyoushi Simulation."""
     __setup_logging(info, verbose)
 
-    info.config_path = config
-    info.config_raw = load_config_file(info.config_path)
-    info.plugin_config = load_plugin_config(info.config_raw)
-    info.available_factories = plugins.get_factories(info.plugin_config)
+    info.settings_path = config
+    info.settings = load_settings(info.settings_path)
+    info.available_factories = plugins.get_factories(info.settings.plugin)
 
 
 @cli.command()
@@ -130,6 +126,14 @@ def sm_list(info: Info):
 @cli.command(name="run")
 @pass_info
 @click.option(
+    "--sm-config",
+    "-s",
+    type=CliPath(dir_okay=False, readable=True),
+    default="sm.yml",
+    show_default=True,
+    help="The state machine configuration file",
+)
+@click.option(
     "--factory",
     "-f",
     type=str,
@@ -140,19 +144,18 @@ def sm_list(info: Info):
         the path to a python file containing a statemachine factory.
         """,
 )
-def sm_run(info: Info, factory: str):
+def sm_run(info: Info, sm_config: Path, factory: str):
     """Execute a state machine."""
     assert info.available_factories is not None
-    assert info.config_raw is not None
 
     # get factory
     factory_obj = plugins.get_factory(info.available_factories, factory)
     StatemachineConfig = factory_obj.config_class
 
     # load state machine config and build machine
-    config = load_config(info.config_raw, StatemachineConfig)
+    config = load_sm_config(sm_config, StatemachineConfig)
     logger.debug("Loaded config %s", config)
-    machine = factory_obj.build(config.sm)
+    machine = factory_obj.build(config)
 
     # execute machine
     machine.run()

@@ -1,0 +1,3 @@
+plugin:
+  include_names: ["test.*", "cfg.*"]
+  exclude_names: 2

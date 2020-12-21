@@ -49,8 +49,8 @@ def version_info(cli_info: Info) -> str:
 
     info = {
         "cr_kyoushi.simulation version": __version__,
-        "config path": cli_info.config_path.absolute()
-        if cli_info.config_path is not None
+        "config path": cli_info.settings_path.absolute()
+        if cli_info.settings_path is not None
         else None,
         "install path": Path(__file__).resolve().parent,
         "python version": sys.version,
