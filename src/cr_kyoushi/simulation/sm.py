@@ -4,8 +4,6 @@
 This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
-import logging
-
 from abc import ABC
 from abc import abstractmethod
 from datetime import datetime
@@ -15,7 +13,10 @@ from typing import List
 from typing import Optional
 from typing import Type
 
+from structlog import BoundLogger
+
 from . import errors
+from .logging import get_logger
 from .model import Context
 from .model import StatemachineConfig
 from .model import WorkSchedule
@@ -26,8 +27,6 @@ from .util import sleep_until
 
 
 __all__ = ["Statemachine", "StatemachineFactory"]
-
-logger = logging.getLogger("cr_kyoushi.simulation")
 
 
 class Statemachine:
@@ -61,6 +60,10 @@ class Statemachine:
     def context(self, new_value: Context):
         self._context = new_value
 
+    @property
+    def log(self) -> BoundLogger:
+        return self.__log
+
     def __init__(
         self,
         initial_state: str,
@@ -82,6 +85,7 @@ class Statemachine:
         self.context: Context = {}
         self.max_errors = max_errors
         self.errors = 0
+        self.__log: BoundLogger = get_logger()
 
     def setup_context(self) -> None:
         """Initialize and setup the state machine execution context
@@ -115,7 +119,7 @@ class Statemachine:
         assert self.current_state is not None
         assert self.current_transition is not None
         try:
-            logger.info(
+            self.log.info(
                 "Executing transition %s -> %s",
                 self.current_state,
                 self.current_transition,
@@ -123,11 +127,11 @@ class Statemachine:
             self.current_state = self.current_transition.execute(
                 self.current_state, self.context
             )
-            logger.info("Moved to new state %s", self.current_state)
+            self.log.info("Moved to new state %s", self.current_state)
         except errors.TransitionExecutionError as transition_error:
-            logger.warning("Encountered a transition error: %s", transition_error)
+            self.log.warning("Encountered a transition error: %s", transition_error)
             if transition_error.fallback_state:
-                logger.warning(
+                self.log.warning(
                     "Recovering to state '%s'", transition_error.fallback_state
                 )
             self.current_state = transition_error.fallback_state
@@ -151,21 +155,21 @@ class Statemachine:
             if self.current_transition:
                 self._execute_transition()
             else:
-                logger.info("Empty transition received state machine will end")
+                self.log.info("Empty transition received state machine will end")
                 self.current_state = None
         except Exception as err:
-            logger.error(
+            self.log.error(
                 "State machine failed in state:'%s' and transition:%r",
                 self.current_state,
                 self.current_transition,
             )
-            logger.error("Exception: %s", err)
+            self.log.error("Exception: %s", err)
 
             # try to recover from error by restarting state machine
             self.errors += 1
             if self.max_errors > self.errors:
                 self.destroy_context()
-                logger.warning(
+                self.log.warning(
                     "Trying to recover from exception in state:'%s' and transition:%r",
                     self.current_state,
                     self.current_transition,
@@ -197,16 +201,16 @@ class Statemachine:
         after the main loop ends.
         """
         # prepare state machine before start
-        logger.info("Starting state machine")
+        self.log.info("Starting state machine")
         self.setup_context()
 
         # execute the state machine
-        logger.info("Entering state machine execution")
+        self.log.info("Entering state machine execution")
         self._execute_machine()
 
         # clean up state machine
         self.destroy_context()
-        logger.info("State machine finished")
+        self.log.info("State machine finished")
 
 
 class StartEndTimeStatemachine(Statemachine):

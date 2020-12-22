@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
-
 from pathlib import Path
 from typing import Dict
 from typing import Optional
@@ -10,9 +8,12 @@ from typing import Optional
 import click
 
 from . import plugins
+from .config import LogLevel
 from .config import Settings
 from .config import load_settings
 from .config import load_sm_config
+from .logging import configure_logging
+from .logging import get_logger
 
 
 try:
@@ -23,13 +24,33 @@ except ImportError:
 
 __all__ = ["CliPath", "Info", "cli", "version", "sm_list", "sm_run"]
 
-logger = logging.getLogger("cr_kyoushi.simulation")
+logger = get_logger()
 
 
-LOGGING_LEVELS = {
-    1: logging.INFO,
-    2: logging.DEBUG,
-}
+class EnumChoice(click.Choice):
+    """Click choice from an enum
+
+    from https://github.com/pallets/click/issues/605#issuecomment-582574555
+    """
+
+    case_sensitive: bool
+
+    def __init__(self, enum, case_sensitive=False, use_value=False):
+        self.enum = enum
+        self.use_value = use_value
+        choices = [str(e.value) if use_value else e.name for e in self.enum]
+        super().__init__(choices, case_sensitive)
+
+    def convert(self, value, param, ctx):
+        if value in self.enum:
+            return value
+        result = super().convert(value, param, ctx)
+        # Find the original case in the enum
+        if not self.case_sensitive and result not in self.choices:
+            result = next(c for c in self.choices if result.lower() == c.lower())
+        if self.use_value:
+            return next(e for e in self.enum if str(e.value) == result)
+        return self.enum[result]
 
 
 class CliPath(click.Path):
@@ -44,7 +65,6 @@ class Info:
 
     def __init__(self):  # Note: This object must have an empty constructor.
         """Create a new instance."""
-        self.verbose: int = 0
         self.settings_path: Optional[Path] = None
         self.settings: Optional[Settings] = None
         self.available_factories: Optional[Dict[str, EntryPoint]] = None
@@ -55,35 +75,10 @@ class Info:
 pass_info = click.make_pass_decorator(Info, ensure=True)
 
 
-def __setup_logging(info: Info, verbose: int) -> None:
-    # Use the verbosity count to determine the logging level...
-    if verbose > 0:
-        # ensure only our loggers are configured
-        logger.handlers.clear()
-        handler = logging.StreamHandler()
-        handler.setFormatter(
-            logging.Formatter(
-                "[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
-            )
-        )
-        logger.addHandler(handler)
-        highest_logging_level = max(LOGGING_LEVELS.keys())
-        level = min(verbose, highest_logging_level)
-        logger.setLevel(LOGGING_LEVELS[level])
-
-        click.echo(
-            click.style(
-                f"Verbose logging is enabled. " f"(LEVEL={logger.getEffectiveLevel()})",
-                fg="yellow",
-            )
-        )
-    info.verbose = verbose
-
-
 # Change the options to below to suit the actual options for your task (or
 # tasks).
 @click.group()
-@click.option("--verbose", "-v", count=True, help="Enable verbose output.")
+@click.option("--log-level", type=EnumChoice(LogLevel), help="The log level")
 @click.option(
     "--config",
     "-c",
@@ -93,13 +88,14 @@ def __setup_logging(info: Info, verbose: int) -> None:
     help="The Cyber Range Kyoushi Simulation settings file",
 )
 @pass_info
-def cli(info: Info, verbose: int, config: Path):
+def cli(info: Info, log_level: LogLevel, config: Path):
     """Run Cyber Range Kyoushi Simulation."""
-    __setup_logging(info, verbose)
-
     info.settings_path = config
-    info.settings = load_settings(info.settings_path)
+    info.settings = load_settings(info.settings_path, log_level=log_level)
     info.available_factories = plugins.get_factories(info.settings.plugin)
+
+    # setup logging
+    configure_logging(info.settings.log)
 
 
 @cli.command()
@@ -154,7 +150,7 @@ def sm_run(info: Info, sm_config: Path, factory: str):
 
     # load state machine config and build machine
     config = load_sm_config(sm_config, StatemachineConfig)
-    logger.debug("Loaded config %s", config)
+    logger.debug("Loaded config", config=config)
     machine = factory_obj.build(config)
 
     # execute machine

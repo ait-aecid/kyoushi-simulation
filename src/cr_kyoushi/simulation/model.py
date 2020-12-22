@@ -1,5 +1,5 @@
+import logging
 import random
-import re
 
 from datetime import datetime
 from datetime import time
@@ -7,9 +7,7 @@ from datetime import timedelta
 from enum import IntEnum
 from typing import Any
 from typing import Dict
-from typing import List
 from typing import Optional
-from typing import Pattern
 from typing import Set
 from typing import TypeVar
 from typing import Union
@@ -22,7 +20,6 @@ from pydantic import validator
 __all__ = [
     "StatemachineConfig",
     "Context",
-    "PluginConfig",
     "Weekday",
     "TimePeriod",
     "WeekdayActivePeriod",
@@ -43,18 +40,48 @@ Context = Union[BaseModel, Dict[str, Any]]
 """
 
 
-class PluginConfig(BaseModel):
-    """Configuration options for the state machine factory plugin system."""
+class LogLevel(IntEnum):
+    CRITICAL = logging.CRITICAL
+    ERROR = logging.ERROR
+    WARNING = logging.WARNING
+    INFO = logging.INFO
+    DEBUG = logging.DEBUG
+    NOTSET = logging.NOTSET
 
-    include_names: List[Pattern] = Field(
-        [re.compile(r".*")],
-        description="A list of regular expressions used to define which plugins to include.",
-    )
-    exclude_names: List[Pattern] = Field(
-        [],
-        description="A list of regular expressions used to define \
-        which plugins to explicitly exclude.",
-    )
+    @classmethod
+    def lookup(cls):
+        return {v: k for v, k in cls.__members__.items()}
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, val: Union[str, int, "LogLevel"]):
+        """Parses and validates `LogLevel` input in either `str`, `int` or `Enum` encoding.
+
+        Args:
+            val: The encoded input log level
+
+        Raises:
+            ValueError: if the given input is not a valid log level
+
+        Returns:
+            LogLevel enum
+        """
+        # check enum input
+        if isinstance(val, LogLevel):
+            return val
+        # check int LogLevel input
+        if isinstance(val, int):
+            if val in cls.lookup().values():
+                return LogLevel(val)
+            raise ValueError("invalid integer LogLevel")
+        # check str LogLevel input
+        try:
+            return cls.lookup()[val.upper()]
+        except KeyError as key_error:
+            raise ValueError("invalid string LogLevel") from key_error
 
 
 class Weekday(IntEnum):
@@ -97,7 +124,7 @@ class Weekday(IntEnum):
         """
         # check enum input
         if isinstance(val, Weekday):
-            return val.value
+            return val
         # check int weekday input
         if isinstance(val, int):
             if val in cls.lookup().values():

@@ -74,7 +74,7 @@ def test_given_config_return_correct_dict(config_path, path_exists, expected_dic
             Path(f"{FILE_DIR}/config.yml"),
             True,
             config.Settings(
-                plugin=model.PluginConfig(include_names=["test.*", "cfg.*"])
+                plugin=config.PluginConfig(include_names=["test.*", "cfg.*"])
             ),
             id="config-file",
         ),
