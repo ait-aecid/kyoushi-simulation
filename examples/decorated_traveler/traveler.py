@@ -10,6 +10,7 @@ from pydantic import Field
 from pydantic import StrictStr
 from pydantic import validator
 from pydantic.errors import EnumMemberError
+from structlog import BoundLogger
 
 from cr_kyoushi.simulation import sm
 from cr_kyoushi.simulation import states
@@ -123,7 +124,11 @@ class DecidingState(states.State):
         self.not_going = not_going
         self.desired_weather = desired_weather
 
-    def next(self, context: TravelerContext) -> Optional[transitions.Transition]:
+    def next(
+        self,
+        log: BoundLogger,
+        context: TravelerContext,
+    ) -> Optional[transitions.Transition]:
         if context.weather == self.desired_weather:
             return self.going
         return self.not_going
@@ -150,7 +155,12 @@ class TravelerStatemachine(sm.Statemachine):
 
 
 @transitions.transition(target="selecting_city")
-def hello(current_state: str, context: TravelerContext, target: Optional[str]):
+def hello(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     """Transition function for the initial hello world message"""
     print(
         f"Hi I am {context.traveler}. "
@@ -159,33 +169,58 @@ def hello(current_state: str, context: TravelerContext, target: Optional[str]):
 
 
 @transitions.delayed_transition(target="researching", delay_after=3)
-def select_city(current_state: str, context: TravelerContext, target: Optional[str]):
+def select_city(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     cities = list(context.cities.keys())
     context.chosen_city = StrictStr(random.choice(cities))
     print(f"Maybe I will travel to somewhere in {context.chosen_city}.")
 
 
 @transitions.delayed_transition(target="deciding", delay_before=1, delay_after=1)
-def check_weather(current_state: str, context: TravelerContext, target: Optional[str]):
+def check_weather(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     """Transition function to check the weather in the chosen city"""
     context.weather = context.cities[StrictStr(context.chosen_city)]
     print(f"The weather is {context.weather} in {context.chosen_city}")
 
 
 @transitions.delayed_transition(target="traveling", delay_after=10)
-def going_to_city(current_state: str, context: TravelerContext, target: Optional[str]):
+def going_to_city(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     print(f"The weather is ok so I am going to {context.chosen_city} now ...")
 
 
 @transitions.delayed_transition(target="selecting_city", delay_before=2)
-def not_going(current_state: str, context: TravelerContext, target: Optional[str]):
+def not_going(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     print(f"I don't like the weather in {context.chosen_city} so I am not going ...")
     context.chosen_city = None
     context.weather = None
 
 
 @transitions.transition(target="in_city")
-def arrive(current_state: str, context: TravelerContext, target: Optional[str]):
+def arrive(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     print(
         f"I have arrived in {context.chosen_city} the weather is {context.weather} just how I like it."
     )
@@ -195,7 +230,12 @@ def arrive(current_state: str, context: TravelerContext, target: Optional[str]):
 
 
 @transitions.delayed_transition(target="sleeping", delay_before=3.5)
-def going_to_sleep(current_state: str, context: TravelerContext, target: Optional[str]):
+def going_to_sleep(
+    log: BoundLogger,
+    current_state: str,
+    context: TravelerContext,
+    target: Optional[str],
+):
     """Transition function that prints the final message before the traveler goes to sleep"""
     print(f"I {context.traveler} have travelled enough for now.")
     print(f"I am going to sleep in {context.current_location} ...")
