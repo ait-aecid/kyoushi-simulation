@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from enum import Enum
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import Optional
 
@@ -34,22 +36,35 @@ class EnumChoice(click.Choice):
     """
 
     case_sensitive: bool
+    use_value: bool
 
     def __init__(self, enum, case_sensitive=False, use_value=False):
         self.enum = enum
         self.use_value = use_value
-        choices = [str(e.value) if use_value else e.name for e in self.enum]
+        choices = [
+            str(e.value) if use_value else e.name
+            for e in self.enum.__members__.values()
+        ]
         super().__init__(choices, case_sensitive)
 
-    def convert(self, value, param, ctx):
-        if value in self.enum:
+    def convert(
+        self,
+        value: Any,
+        param: Optional[click.Parameter] = None,
+        ctx: Optional[click.Context] = None,
+    ):
+        if isinstance(value, Enum) and value in self.enum:
             return value
         result = super().convert(value, param, ctx)
-        # Find the original case in the enum
-        if not self.case_sensitive and result not in self.choices:
-            result = next(c for c in self.choices if result.lower() == c.lower())
+
+        # if we got here result must be a value or enum key
+        # since super will convert one of the choices
+
         if self.use_value:
-            return next(e for e in self.enum if str(e.value) == result)
+            # using list instead of generator for test coverage
+            # also we don't care about efficiency to much here
+            return [e for e in self.enum if str(e.value) == result][0]
+
         return self.enum[result]
 
 

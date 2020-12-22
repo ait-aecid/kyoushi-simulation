@@ -43,8 +43,6 @@ def test_logging_default_to_warning_and_console():
     assert isinstance(handlers[0], logging.StreamHandler)
 
 
-# needed since pytest has a false positive because of the `for .. in LogLevel`
-@pytest.mark.filterwarnings("ignore:.*using non-Enums in containment.*")
 @pytest.mark.parametrize(
     "option, expected_level",
     [pytest.param(key, val, id=key) for key, val in LogLevel.__members__.items()],
