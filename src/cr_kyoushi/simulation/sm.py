@@ -150,7 +150,9 @@ class Statemachine:
         """
         assert self.current_state is not None
         try:
-            self.current_transition = self.states[self.current_state].next(self.context)
+            self.current_transition = self.states[self.current_state].next(
+                self.log, self.context
+            )
 
             if self.current_transition:
                 self._execute_transition()
