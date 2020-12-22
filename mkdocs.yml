@@ -26,6 +26,12 @@ edit_uri: edit/master/docs/
 
 nav:
 - Overview: index.md
+- Usage:
+    - Getting Started: usage/getting_started.md
+    - Custom States: usage/states.md
+    - State Machine Factories: usage/factories.md
+    - Logging: usage/logging.md
+    - Configuration: usage/configuration.md
 - Examples:
     - Traveler: examples/traveler.md
     - Decorated Traveler: examples/decorated_traveler.md
