@@ -12,6 +12,8 @@ from typing import Generic
 from typing import List
 from typing import Optional
 from typing import Type
+from uuid import UUID
+from uuid import uuid4
 
 from structlog import BoundLogger
 
@@ -62,7 +64,16 @@ class Statemachine:
 
     @property
     def log(self) -> BoundLogger:
+        """Bound logger initialize with context information for this state machine."""
         return self.__log
+
+    @property
+    def uuid(self) -> UUID:
+        """UUID for this state machine execution.
+
+        For example used as unique run ID during when logging.
+        """
+        return self.__uuid
 
     def __init__(
         self,
@@ -85,7 +96,8 @@ class Statemachine:
         self.context: Context = {}
         self.max_errors = max_errors
         self.errors = 0
-        self.__log: BoundLogger = get_logger()
+        self.__uuid = uuid4()
+        self.__log: BoundLogger = get_logger().bind(run=self.uuid)
 
     def setup_context(self) -> None:
         """Initialize and setup the state machine execution context
@@ -103,13 +115,16 @@ class Statemachine:
             logic or free `Context` information after it has finished executing.
         """
 
-    def _execute_transition(self):
+    def _execute_transition(self, log: BoundLogger):
         """Execute the current transition.
 
         The current transition is executed and the current state is
         updated on successful executions. This function also handles
         [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]
         and sets the state machines current state to the errors fallback state.
+
+        Args:
+            log: The bound logger initialized with transition specific information
 
         ??? Note
             Override or extend this if you want to change how transitions are executed
@@ -119,21 +134,23 @@ class Statemachine:
         assert self.current_state is not None
         assert self.current_transition is not None
         try:
-            self.log.info(
+            log.info(
                 "Executing transition %s -> %s",
                 self.current_state,
                 self.current_transition,
             )
             self.current_state = self.current_transition.execute(
-                self.log, self.current_state, self.context
+                log, self.current_state, self.context
             )
-            self.log.info("Moved to new state %s", self.current_state)
+            log.info("Moved to new state", new_state=self.current_state)
         except errors.TransitionExecutionError as transition_error:
-            self.log.warning("Encountered a transition error: %s", transition_error)
+            log.warning("Encountered a transition error: %s", transition_error)
             if transition_error.fallback_state:
-                self.log.warning(
-                    "Recovering to state '%s'", transition_error.fallback_state
+                log.warning(
+                    "Recovering to fallback state",
+                    fallback=transition_error.fallback_state,
                 )
+
             self.current_state = transition_error.fallback_state
 
     def _execute_step(self):
@@ -149,33 +166,40 @@ class Statemachine:
             and handling of all unexpected errors.
         """
         assert self.current_state is not None
+
+        # bind upcoming transition context to logger
+        log: BoundLogger = self.log.bind(
+            current_state=self.current_state,
+            transition=None,
+            transition_id=uuid4(),
+            target=None,
+        )
+
         try:
             self.current_transition = self.states[self.current_state].next(
-                self.log, self.context
+                log, self.context
             )
 
             if self.current_transition:
-                self._execute_transition()
+                # bind selected transition and target to logger
+                log = log.bind(
+                    transition=self.current_transition.name,
+                    target=self.current_transition.target,
+                )
+
+                # execute transition
+                self._execute_transition(log)
             else:
-                self.log.info("Empty transition received state machine will end")
+                log.info("Empty transition received state machine will end")
                 self.current_state = None
-        except Exception as err:
-            self.log.error(
-                "State machine failed in state:'%s' and transition:%r",
-                self.current_state,
-                self.current_transition,
-            )
-            self.log.error("Exception: %s", err)
+        except Exception:
+            log.exception("State machine execution failure")
 
             # try to recover from error by restarting state machine
             self.errors += 1
             if self.max_errors > self.errors:
                 self.destroy_context()
-                self.log.warning(
-                    "Trying to recover from exception in state:'%s' and transition:%r",
-                    self.current_state,
-                    self.current_transition,
-                )
+                log.warning("Trying to recover statemachine from exception ")
                 self.setup_context()
                 self.current_state = self.initial_state
             else:
