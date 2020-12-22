@@ -3,12 +3,16 @@ import re
 
 from pathlib import Path
 
+import pytest
+
 from click.testing import CliRunner
 
 from cr_kyoushi.simulation import __version__
 from cr_kyoushi.simulation.cli import Info
 from cr_kyoushi.simulation.cli import cli
 from cr_kyoushi.simulation.cli import version
+from cr_kyoushi.simulation.logging import get_logger
+from cr_kyoushi.simulation.model import LogLevel
 
 
 def test_version_command():
@@ -23,44 +27,37 @@ def test_version_command():
     assert re.match(r".*: " + str(info.settings_path.absolute()), output_lines[1])
 
 
-def test_verbose_switch_default_to_no_handler():
+def test_logging_default_to_warning_and_console():
     info_obj = Info()
     runner = CliRunner()
     result = runner.invoke(cli, ["version"], obj=info_obj)
+
+    handlers = get_logger().handlers
+
     assert result.exit_code == 0
-    assert info_obj.verbose == 0
+    assert info_obj.settings.log.console.enabled is True
+    assert info_obj.settings.log.level == LogLevel.WARNING
+    assert get_logger().level == LogLevel.WARNING
 
-    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 0
+    assert len(handlers) == 1
+    assert isinstance(handlers[0], logging.StreamHandler)
 
 
-def test_verbose_switch_once_to_info():
+@pytest.mark.parametrize(
+    "option, expected_level",
+    [pytest.param(key, val, id=key) for key, val in LogLevel.__members__.items()],
+)
+def test_verbose_switch_once_to_info(option, expected_level):
     info_obj = Info()
     runner = CliRunner()
-    result = runner.invoke(cli, ["-v", "version"], obj=info_obj)
-    assert result.exit_code == 0
-    assert info_obj.verbose == 1
+    result = runner.invoke(cli, ["--log-level", option, "version"], obj=info_obj)
 
-    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 1
-    assert logging.getLogger("cr_kyoushi.simulation").level == logging.INFO
-
-
-def test_verbose_switch_twice_to_debug():
-    info_obj = Info()
-    runner = CliRunner()
-    result = runner.invoke(cli, ["-vv", "version"], obj=info_obj)
+    handlers = get_logger().handlers
 
     assert result.exit_code == 0
-    assert info_obj.verbose == 2
+    assert info_obj.settings.log.console.enabled is True
+    assert info_obj.settings.log.level == expected_level
+    assert get_logger().level == expected_level
 
-    assert len(logging.getLogger("cr_kyoushi.simulation").handlers) == 1
-    assert logging.getLogger("cr_kyoushi.simulation").level == logging.DEBUG
-
-
-def test_verbose_switch_multiple_to_debug():
-    info_obj = Info()
-    runner = CliRunner()
-    result = runner.invoke(cli, ["-vvvvvv", "version"], obj=info_obj)
-    assert result.exit_code == 0
-    assert info_obj.verbose == 6
-
-    assert logging.getLogger("cr_kyoushi.simulation").level == logging.DEBUG
+    assert len(handlers) == 1
+    assert isinstance(handlers[0], logging.StreamHandler)

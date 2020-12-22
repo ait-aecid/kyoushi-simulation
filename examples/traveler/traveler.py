@@ -10,6 +10,7 @@ from pydantic import Field
 from pydantic import StrictStr
 from pydantic import validator
 from pydantic.errors import EnumMemberError
+from structlog import BoundLogger
 
 from cr_kyoushi.simulation import sm
 from cr_kyoushi.simulation import states
@@ -103,6 +104,7 @@ class TravelerContext(BaseModel):
 
 
 def goto_city_transition(
+    log: BoundLogger,
     current_state: str,
     context: TravelerContext,
     target: Optional[str],
@@ -111,6 +113,7 @@ def goto_city_transition(
 
 
 def do_not_go_transition(
+    log: BoundLogger,
     current_state: str,
     context: TravelerContext,
     target: Optional[str],
@@ -121,6 +124,7 @@ def do_not_go_transition(
 
 
 def arrive_transition(
+    log: BoundLogger,
     current_state: str,
     context: TravelerContext,
     target: Optional[str],
@@ -145,6 +149,7 @@ class SayHello:
 
     def __call__(
         self,
+        log: BoundLogger,
         current_state: str,
         context: TravelerContext,
         target: Optional[str],
@@ -163,6 +168,7 @@ class SelectRandomCity:
 
     def __call__(
         self,
+        log: BoundLogger,
         current_state: str,
         context: TravelerContext,
         target: Optional[str],
@@ -179,6 +185,7 @@ class CheckWeatherMap:
 
     def __call__(
         self,
+        log: BoundLogger,
         current_state: str,
         context: TravelerContext,
         target: Optional[str],
@@ -195,6 +202,7 @@ class SleepInCity:
 
     def __call__(
         self,
+        log: BoundLogger,
         current_state: str,
         context: TravelerContext,
         target: Optional[str],
@@ -219,7 +227,11 @@ class DecidingState(states.State):
         self.not_going = not_going
         self.desired_weather = desired_weather
 
-    def next(self, context: TravelerContext) -> Optional[transitions.Transition]:
+    def next(
+        self,
+        log: BoundLogger,
+        context: TravelerContext,
+    ) -> Optional[transitions.Transition]:
         if context.weather == self.desired_weather:
             return self.going
         return self.not_going

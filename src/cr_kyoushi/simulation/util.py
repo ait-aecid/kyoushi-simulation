@@ -6,7 +6,6 @@ and state transitions.
 """
 from __future__ import annotations
 
-import logging
 import signal
 import time
 
@@ -22,6 +21,7 @@ from typing import Optional
 from typing import Union
 
 from .errors import SkipSectionError
+from .logging import get_logger
 from .model import ApproximateFloat
 
 
@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
 __all__ = ["version_info", "elements_unique", "skip_on_interrupt", "sleep"]
 
-logger = logging.getLogger("cr_kyoushi.simulation")
+log = get_logger()
 
 
 def version_info(cli_info: Info) -> str:
@@ -82,7 +82,7 @@ def skip_on_interrupt_sig_handler(signum: signal.Signals, frame: FrameType):
     Raises:
         SkipSectionError: To indicate the current section should be skipped
     """
-    logger.debug("Received interrupt raising skip section error")
+    log.debug("Received interrupt raising skip section error")
     raise SkipSectionError()
 
 
@@ -115,7 +115,7 @@ def skip_on_interrupt(
         signal.signal(sig, sig_handler)
         yield
     except SkipSectionError:
-        logger.debug("Skipped section")
+        log.debug("Skipped section")
         signal.signal(sig, original_handler)
         # clear original signal handler so we know not to
         # reset to it twice
@@ -159,9 +159,9 @@ def sleep(sleep_time: Union[ApproximateFloat, float]) -> None:
         sleep_time = sleep_time.value
 
     with skip_on_interrupt():
-        logger.debug("Going to sleep for %f", sleep_time)
+        log.debug("Going to sleep for %f", sleep_time)
         time.sleep(sleep_time)
-        logger.debug("Resuming execution after sleeping for %f", sleep_time)
+        log.debug("Resuming execution after sleeping for %f", sleep_time)
 
 
 def sleep_until(

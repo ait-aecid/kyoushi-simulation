@@ -10,6 +10,8 @@ from typing import Optional
 from typing import Sequence
 from typing import Union
 
+from structlog import BoundLogger
+
 from .model import Context
 from .transitions import Transition
 
@@ -64,7 +66,7 @@ class State(metaclass=ABCMeta):
             raise ValueError("Transition names must be unique")
 
     @abstractmethod
-    def next(self, context: Context) -> Optional[Transition]:
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         """Selects the next state transition.
 
            The selection logic depends on the state implementation. It might
@@ -72,6 +74,7 @@ class State(metaclass=ABCMeta):
            and/or execution environment information to select transitions based on complex conditions.
 
         Args:
+            log: The bound logger initialized with transition specific information
             context (Context): State machine context which can be used for complex selection logic
 
         Returns:
@@ -106,7 +109,7 @@ class SequentialState(State):
         super().__init__(name, [transition])
         self.__transition = transition
 
-    def next(self, context: Context) -> Optional[Transition]:
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         return self.__transition
 
 
@@ -120,7 +123,7 @@ class FinalState(State):
         """
         super().__init__(name, [])
 
-    def next(self, context: Context) -> Optional[Transition]:
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         return None
 
 
@@ -137,7 +140,7 @@ class RoundRobinState(State):
         super().__init__(name, transitions)
         self.transition_cycle = cycle(transitions)
 
-    def next(self, context: Context) -> Optional[Transition]:
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         try:
             return next(self.transition_cycle)
         except StopIteration:
@@ -208,7 +211,7 @@ class ProbabilisticState(State):
                             be either 1 or 100, but got {self.weights[-1]}!"
                     )
 
-    def next(self, context: Context) -> Optional[Transition]:
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
             return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
         return None

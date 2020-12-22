@@ -7,9 +7,13 @@ import pytest
 
 from pytest_mock import MockFixture
 
+from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.states import EquallyRandomState
 from cr_kyoushi.simulation.states import ProbabilisticState
 from cr_kyoushi.simulation.transitions import Transition
+
+
+log = get_logger()
 
 
 @pytest.fixture()
@@ -52,7 +56,7 @@ def test_empty_transition_list():
 
     state = ProbabilisticState(name="test", transitions=transitions, weights=weights)
 
-    assert state.next(context=empty_context) is None
+    assert state.next(log, context=empty_context) is None
 
 
 def test_non_unique_transitions_fail(four_mocked_transitions: List[Transition]):
@@ -176,7 +180,7 @@ def test_next_probabilities_float(four_mocked_transitions: List[Transition]):
     observations = 250000
 
     for i in range(0, observations):
-        observed_transition = state.next(context=empty_context)
+        observed_transition = state.next(log, context=empty_context)
         # increase the observation count for the observed transition
         observed_counts[observed_transition.name] = (
             observed_counts[observed_transition.name] + 1
@@ -218,7 +222,7 @@ def test_next_probabilities_int(four_mocked_transitions: List[Transition]):
     observations = 250000
 
     for i in range(0, observations):
-        observed_transition = state.next(context=empty_context)
+        observed_transition = state.next(log, context=empty_context)
         # increase the observation count for the observed transition
         observed_counts[observed_transition.name] = (
             observed_counts[observed_transition.name] + 1
@@ -267,7 +271,7 @@ def test_equally_random_next_probabilities(four_mocked_transitions: List[Transit
     observations = 250000
 
     for i in range(0, observations):
-        observed_transition = state.next(context=empty_context)
+        observed_transition = state.next(log, context=empty_context)
         # increase the observation count for the observed transition
         observed_counts[observed_transition.name] = (
             observed_counts[observed_transition.name] + 1

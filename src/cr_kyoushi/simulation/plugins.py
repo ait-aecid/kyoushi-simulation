@@ -8,9 +8,9 @@ from typing import List
 from typing import Type
 
 from . import __sm_factory_entrypoint__
+from .config import PluginConfig
 from .errors import StatemachineFactoryLoadError
 from .errors import StatemachineFactoryTypeError
-from .model import PluginConfig
 from .sm import StatemachineFactory
 
 

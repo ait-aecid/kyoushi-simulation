@@ -5,13 +5,17 @@ from typing import Tuple
 import pytest
 
 from cr_kyoushi.simulation import states
+from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.transitions import Transition
 
 from ..fixtures.transitions import noop
 
 
+log = get_logger
+
+
 class StubState(states.State):
-    def next(self, context):
+    def next(self, log, context):
         return None
 
 
@@ -62,8 +66,8 @@ def test_sequential_state_given_transition_returns_it():
     assert seq.transitions == [abc]
 
     # check next behaving as expected
-    assert seq.next(None) == abc
-    assert seq.next({"dummy": "context"}) == abc
+    assert seq.next(log, None) == abc
+    assert seq.next(log, {"dummy": "context"}) == abc
 
 
 def test_final_state_has_no_transition():
@@ -74,8 +78,8 @@ def test_final_state_has_no_transition():
     assert final.transitions == []
 
     # check next behaving as expected
-    assert final.next(None) is None
-    assert final.next({"dummy": "context"}) is None
+    assert final.next(log, None) is None
+    assert final.next(log, {"dummy": "context"}) is None
 
 
 def test_round_robin_loops(noop_transitions):
@@ -93,13 +97,13 @@ def test_round_robin_loops(noop_transitions):
 
     # verify round robin logic on next
     for _ in range(0, 10):
-        assert robin.next(empty_context) == t1
-        assert robin.next(empty_context) == t2
-        assert robin.next(empty_context) == t3
-        assert robin.next(empty_context) == t4
+        assert robin.next(log, empty_context) == t1
+        assert robin.next(log, empty_context) == t2
+        assert robin.next(log, empty_context) == t3
+        assert robin.next(log, empty_context) == t4
 
     # sanity check that one more next will get us to the start again
-    assert robin.next(empty_context) == t1
+    assert robin.next(log, empty_context) == t1
 
 
 def test_round_robin_no_transitions():
@@ -112,5 +116,5 @@ def test_round_robin_no_transitions():
     assert robin.transitions == []
 
     # verify next will return none
-    assert robin.next(empty_context) is None
-    assert robin.next(empty_context) is None
+    assert robin.next(log, empty_context) is None
+    assert robin.next(log, empty_context) is None
