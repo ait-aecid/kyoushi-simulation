@@ -125,7 +125,7 @@ class Statemachine:
                 self.current_transition,
             )
             self.current_state = self.current_transition.execute(
-                self.current_state, self.context
+                self.log, self.current_state, self.context
             )
             self.log.info("Moved to new state %s", self.current_state)
         except errors.TransitionExecutionError as transition_error:

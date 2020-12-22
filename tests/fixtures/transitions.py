@@ -1,33 +1,50 @@
-import logging
-
 from typing import Optional
 
+from structlog import BoundLogger
+
 from cr_kyoushi.simulation.errors import TransitionExecutionError
+from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.model import Context
 
 
-logger = logging.getLogger("cr_kyoushi.simulation")
+logger = get_logger()
 
 
 class Noop:
     def __call__(
-        self, current_state: str, context: Context, target: Optional[str] = None
+        self,
+        log: BoundLogger,
+        current_state: str,
+        context: Context,
+        target: Optional[str] = None,
     ):
         pass
 
 
-def noop(current_state: str, context: Context, target: Optional[str] = None):
+def noop(
+    log: BoundLogger,
+    current_state: str,
+    context: Context,
+    target: Optional[str] = None,
+):
     pass
 
 
 def debug_transition(
-    self, current_state: str, context: Context, target: Optional[str] = None
+    self,
+    log: BoundLogger,
+    current_state: str,
+    context: Context,
+    target: Optional[str] = None,
 ):
     logger.debug("executing %s -- %s --> %s", current_state, self._name, self._target)
 
 
 def exception_function_stub(
-    current_state: str, context: Context, target: Optional[str] = None
+    log: BoundLogger,
+    current_state: str,
+    context: Context,
+    target: Optional[str] = None,
 ):
     raise Exception("Impossible transition")
 
@@ -42,7 +59,11 @@ class FallbackFunctionStub:
         self.cause = cause
 
     def __call__(
-        self, current_state: str, context: Context, target: Optional[str] = None
+        self,
+        log: BoundLogger,
+        current_state: str,
+        context: Context,
+        target: Optional[str] = None,
     ):
         raise TransitionExecutionError(
             message="Transition failed!",

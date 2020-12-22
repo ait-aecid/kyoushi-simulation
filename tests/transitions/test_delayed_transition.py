@@ -1,8 +1,12 @@
 import time
 
 from cr_kyoushi.simulation import transitions
+from cr_kyoushi.simulation.logging import get_logger
 
 from ..fixtures.transitions import noop
+
+
+log = get_logger()
 
 
 def test_delayed_transition_init():
@@ -23,7 +27,7 @@ def test_delayed_transition_delay_before():
 
     # execute and time sleep
     start_seconds = time.time()
-    transition.execute("dummy_state", {})
+    transition.execute(log, "dummy_state", {})
     end_seconds = time.time()
 
     # calculate waited time
@@ -39,7 +43,7 @@ def test_delayed_transition_delay_after():
 
     # execute and time sleep
     start_seconds = time.time()
-    transition.execute("dummy_state", {})
+    transition.execute(log, "dummy_state", {})
     end_seconds = time.time()
 
     # calculate waited time
@@ -58,7 +62,7 @@ def test_delayed_transition_delay_both():
 
     # execute and time sleep
     start_seconds = time.time()
-    transition.execute("dummy_state", {})
+    transition.execute(log, "dummy_state", {})
     end_seconds = time.time()
 
     # calculate waited time

@@ -3,6 +3,7 @@ from typing import Callable
 from typing import Optional
 from typing import Union
 
+from structlog import BoundLogger
 from typing_extensions import Protocol
 
 from .model import ApproximateFloat
@@ -14,12 +15,20 @@ __all__ = ["Transition", "DelayedTransition", "transition", "delayed_transition"
 
 
 class TransitionFunction(Protocol):
-    def __call__(self, current_state: str, context: Context, target: Optional[str]):
+    def __call__(
+        self,
+        log: BoundLogger,
+        current_state: str,
+        context: Context,
+        target: Optional[str],
+    ):
         """
 
         Args:
+            log: The bound logger initialized with transition specific information
             current_state: The calling states name
             context: The state machine context
+            target: The target state
 
         Raises:
             TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
@@ -66,7 +75,12 @@ class Transition:
         self._transition_function = transition_function
         self._target = target
 
-    def execute(self, current_state: str, context: Context) -> Optional[str]:
+    def execute(
+        self,
+        log: BoundLogger,
+        current_state: str,
+        context: Context,
+    ) -> Optional[str]:
         """Transition execution function called by the state machine.
 
         The default behavior is to directly call the configured
@@ -84,6 +98,7 @@ class Transition:
             or `#!python self.transition_function(current_state, context)`.
 
         Args:
+            log: The bound logger initialized with transition specific information
             current_state: The calling states name
             context: The state machine context
 
@@ -93,7 +108,7 @@ class Transition:
         Raises:
             TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
         """
-        self.transition_function(current_state, context, self.target)
+        self.transition_function(log, current_state, context, self.target)
         return self.target
 
     def __str__(self):
@@ -187,7 +202,12 @@ class DelayedTransition(Transition):
         self._delay_before = delay_before
         self._delay_after = delay_after
 
-    def execute(self, current_state, context) -> Optional[str]:
+    def execute(
+        self,
+        log: BoundLogger,
+        current_state: str,
+        context: Context,
+    ) -> Optional[str]:
         """
         Delayed transition execution sleeps before and after executing the transition.
 
@@ -201,6 +221,7 @@ class DelayedTransition(Transition):
             *fast forward*.
 
         Args:
+            log: The bound logger initialized with transition specific information
             current_state: The calling states name
             context: The state machine context
 
@@ -211,7 +232,7 @@ class DelayedTransition(Transition):
             TransitionExecutionError: If a transition error occurs for which we can fallback into a valid state
         """
         sleep(self.delay_before)
-        next_state = super().execute(current_state, context)
+        next_state = super().execute(log, current_state, context)
         sleep(self.delay_after)
         return next_state
 
