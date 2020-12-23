@@ -42,6 +42,7 @@ nav:
     - Utility Functions: reference/util.md
     - Exceptions: reference/errors.md
     - Configuration: reference/config.md
+    - Logging: reference/logging.md
 - Contributing: contributing.md
 - License: license.md
 
