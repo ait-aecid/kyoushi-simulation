@@ -30,6 +30,7 @@ nav:
     - Getting Started: usage/getting_started.md
     - Configuration: usage/configuration.md
     - Logging: usage/logging.md
+    - CLI Reference: usage/cli.md
 - Examples:
     - Traveler: examples/traveler.md
     - Decorated Traveler: examples/decorated_traveler.md
@@ -40,7 +41,7 @@ nav:
     - State Machine: reference/sm.md
     - Utility Functions: reference/util.md
     - Exceptions: reference/errors.md
-- CLI Reference: cli.md
+    - Configuration: reference/config.md
 - Contributing: contributing.md
 - License: license.md
 
