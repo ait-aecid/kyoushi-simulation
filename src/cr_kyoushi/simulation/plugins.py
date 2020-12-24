@@ -7,7 +7,7 @@ from typing import Dict
 from typing import List
 from typing import Type
 
-from . import __sm_factory_entrypoint__
+from . import FACTORY_ENTRYPOINT
 from .config import PluginConfig
 from .errors import StatemachineFactoryLoadError
 from .errors import StatemachineFactoryTypeError
@@ -27,7 +27,7 @@ def get_factories(plugin_config: PluginConfig) -> Dict[str, EntryPoint]:
     # all available factories which are also included as per the config
     available_sm_factories: List[EntryPoint] = [
         ep
-        for ep in entry_points().get(__sm_factory_entrypoint__, [])
+        for ep in entry_points().get(FACTORY_ENTRYPOINT, [])
         if any([pattern.match(ep.name) for pattern in plugin_config.include_names])
     ]
 

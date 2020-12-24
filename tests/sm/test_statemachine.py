@@ -163,7 +163,7 @@ def test_sequential_sm_execution(
         states=three_sequential_states,
     )
 
-    execute_transition_spy = mocker.spy(sm, "_execute_transition")
+    execute_transition_spy = mocker.spy(sm, "execute_transition")
 
     # check that no transition was executed by the sm
     assert execute_transition_spy.call_count == 0
@@ -178,7 +178,7 @@ def test_sequential_sm_execution(
     assert transition2_spy.call_count == 0
     assert transition3_spy.call_count == 0
 
-    sm._execute_step()
+    sm.execute_step()
 
     # check that the first transition was executed
     assert execute_transition_spy.call_count == 1
@@ -193,7 +193,7 @@ def test_sequential_sm_execution(
     assert transition2_spy.call_count == 0
     assert transition3_spy.call_count == 0
 
-    sm._execute_step()
+    sm.execute_step()
 
     # check that the second transition was executed
     assert execute_transition_spy.call_count == 2
@@ -208,7 +208,7 @@ def test_sequential_sm_execution(
     assert transition2_spy.call_count == 1
     assert transition3_spy.call_count == 0
 
-    sm._execute_step()
+    sm.execute_step()
 
     # check that the last transition was executed
     assert execute_transition_spy.call_count == 3
@@ -329,7 +329,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
         max_errors=3,
     )
 
-    execute_transition_spy = mocker.spy(sm, "_execute_transition")
+    execute_transition_spy = mocker.spy(sm, "execute_transition")
 
     # check that no transition was executed by the sm
     assert execute_transition_spy.call_count == 0
@@ -345,7 +345,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert transition3_spy.call_count == 0
 
     # step 1
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 1
@@ -361,7 +361,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert transition3_spy.call_count == 0
 
     # step 2 - error 1
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 2
@@ -380,7 +380,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert sm.current_state == sm.initial_state
 
     # step 3 - error 1
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 3
@@ -396,7 +396,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert transition3_spy.call_count == 0
 
     # step 4 - error 2
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 4
@@ -415,7 +415,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert sm.current_state == sm.initial_state
 
     # step 5 - error 2
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 5
@@ -431,7 +431,7 @@ def test_sequential_sm_execution_with_failing_state_recovery(
     assert transition3_spy.call_count == 0
 
     # step 6 - error 3
-    sm._execute_step()
+    sm.execute_step()
 
     # check that transition execution count has increased by one
     assert execute_transition_spy.call_count == 6

@@ -155,17 +155,17 @@ def test_wait_for_work_given_schedule_and_work_day_waits(mocker: MockFixture):
         pytest.param(False, 0, 1, id="outside-work-hours"),
     ],
 )
-def test_execute_step(
+def testexecute_step(
     is_work,
     exec_step_count,
     wait_count,
     mocker: MockFixture,
 ):
     end_time = datetime.now() + timedelta(1)
-    # mock the super _execute_step method
+    # mock the super execute_step method
     super_exec_mock = mocker.Mock()
     super_exec_mock.return_value = None
-    mocker.patch("cr_kyoushi.simulation.sm.Statemachine._execute_step", super_exec_mock)
+    mocker.patch("cr_kyoushi.simulation.sm.Statemachine.execute_step", super_exec_mock)
 
     schedule_mock = mocker.MagicMock(spec=WorkSchedule)
 
@@ -186,7 +186,7 @@ def test_execute_step(
     check_work_mock.return_value = is_work
     mocker.patch.object(sm, "_in_work_hours", check_work_mock)
 
-    sm._execute_step()
+    sm.execute_step()
 
     assert wait_mock.call_count == wait_count
     assert super_exec_mock.call_count == exec_step_count

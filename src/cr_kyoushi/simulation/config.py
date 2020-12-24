@@ -25,6 +25,8 @@ __all__ = [
     "PluginConfig",
     "LoggingConfig",
     "LogFormat",
+    "LogHandler",
+    "FileLogHandler",
     "Settings",
     "load_config_file",
     "load_sm_config",
@@ -47,12 +49,21 @@ class PluginConfig(BaseModel):
 
 
 class LogFormat(str, Enum):
+    """Enum for log formatter styles"""
+
     PLAIN = "plain"
+    """Human readable structured text format"""
+
     COLORED = "colored"
+    """The same as PLAIN, but colorized"""
+
     JSON = "json"
+    """The log events in JSON format"""
 
 
 class LogHandler(BaseModel):
+    """Configuration for a log handler"""
+
     enabled: bool = Field(
         False,
         description="If the log handler should be enabled or not",
@@ -64,6 +75,8 @@ class LogHandler(BaseModel):
 
 
 class FileLogHandler(LogHandler):
+    """Configuration for a file log handler"""
+
     format: LogFormat = Field(
         LogFormat.JSON,
         description="The log format to use when logging to the console",
@@ -76,12 +89,15 @@ class FileLogHandler(LogHandler):
 
     @validator("path")
     def validate_log_path(cls, path: Path) -> Path:
+        """Validate that the given path is a file if it exists"""
         if path.exists() and not path.is_file():
             raise ValueError(f"Log file path {path.absolute()} is not a file!")
         return path
 
 
 class LogTimestamp(BaseModel):
+    """Configuration for the log timestamp format and key"""
+
     format: Optional[str] = Field(
         None,
         description=(
@@ -138,6 +154,18 @@ class Settings(BaseSettings):
 
 
 def load_config_file(config_path: Path) -> Dict[Any, Any]:
+    """Loads a given a config from the given path and returns a raw dictionary.
+
+    Supported file formats are:
+        - YAML
+
+    Args:
+        config_path: The file path to read the config from
+
+    Returns:
+        The contents of the configuration file converted to a dictionary or `{}`
+        if the file is empty or does not exist.
+    """
     yaml = YAML(typ="safe")
     if config_path.exists():
         return yaml.load(config_path)
@@ -148,6 +176,19 @@ def load_sm_config(
     config_path: Path,
     sm_config_type: Type[StatemachineConfig],
 ) -> StatemachineConfig:
+    """Loads and validates the state machine configuration
+
+    Args:
+        config_path: The path to load the configuration from
+        sm_config_type: The state machine config class to convert to
+
+    Raises:
+        ConfigValidationError: If the config validation fails
+
+    Returns:
+        The state machine configuration validated and converted
+        to the given config class.
+    """
     try:
         config_raw = load_config_file(config_path)
         if issubclass(sm_config_type, BaseModel):
@@ -163,6 +204,19 @@ def load_settings(
     settings_path: Path,
     log_level: Optional[LogLevel] = None,
 ) -> Settings:
+    """Loads the Cyber Range Kyoushi Simulation CLI settings
+
+    Args:
+        settings_path: The path to load the settings file from
+        log_level: The CLI log_level override. This supercedes the config
+                   and environment variable values..
+
+    Raises:
+        ConfigValidationError: If the config validation fails
+
+    Returns:
+        The validated settings object
+    """
     try:
         settings_raw = load_config_file(settings_path)
         settings = Settings(

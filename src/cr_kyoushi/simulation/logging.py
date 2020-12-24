@@ -11,13 +11,21 @@ from .config import LoggingConfig
 
 
 LOGGER_NAME = "cr_kyoushi.simulation"
+"""The name of the Cyber Range Kyoushi Simulation logger"""
 
 
 def get_logger() -> structlog.BoundLogger:
+    """Convenience function for getting the Cyber Range Kyoushi Simulation logger."""
     return structlog.get_logger(LOGGER_NAME)
 
 
 def configure_logging(logging_config: LoggingConfig):
+    """Configures the logging system based on the passed
+    [`LoggingConfig`][cr_kyoushi.simulation.config.LoggingConfig]
+
+    Args:
+        logging_config: The logging configuration object
+    """
     # ensure we start from default config
     structlog.reset_defaults()
 
