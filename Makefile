@@ -54,7 +54,7 @@ ifdef rule
 	@git commit -m "Bump version to $$(poetry version -s)"
 	@git tag -a "$$(poetry version -s)" -m "version $$(poetry version -s)"
 	@echo "Currently on branch: $$(git rev-parse --abbrev-ref HEAD)"
-	@echo "Please verify changes and then: \n\tgit push\n\tgit push origin $(poetry version -s)"
+	@echo "Please verify changes and then: \n\tgit push\n\tgit push origin $$(poetry version -s)"
 else
 	@poetry version
 endif

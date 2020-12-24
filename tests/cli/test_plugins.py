@@ -6,7 +6,7 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation import __sm_factory_entrypoint__
+from cr_kyoushi.simulation import FACTORY_ENTRYPOINT
 from cr_kyoushi.simulation import errors
 from cr_kyoushi.simulation import plugins
 from cr_kyoushi.simulation.config import PluginConfig
@@ -52,7 +52,7 @@ def mock_entry_points(mocker: MockFixture) -> List[EntryPoint]:
 
 def __patch_entry_points(mocker: MockFixture, eps: List[EntryPoint]):
     entry_points = mocker.patch("cr_kyoushi.simulation.plugins.entry_points")
-    entry_points.return_value = {__sm_factory_entrypoint__: eps}
+    entry_points.return_value = {FACTORY_ENTRYPOINT: eps}
     return entry_points
 
 

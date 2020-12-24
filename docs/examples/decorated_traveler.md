@@ -69,14 +69,14 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.transition(target="some_state")
-    def do_something(current_state, context, target):
+    def do_something(log, current_state, context, target):
         print("something")
     ```
 
     is equivalent to
 
     ```python
-    def do_something_function(current_state, context, target):
+    def do_something_function(log, current_state, context, target):
         print("something")
 
     do_something = transitions.Transition(do_something_function, name="do_something", target="some_state")
@@ -88,7 +88,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.transition(target="selecting_city")
-    def hello(current_state: str, context: TravelerContext, target: Optional[str]):
+    def hello(log, current_state: str, context: TravelerContext, target: Optional[str]):
         """Transition function for the initial hello world message"""
         print(
             f"Hi I am {context.traveler}. "
@@ -100,7 +100,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.delayed_transition(target="researching", delay_after=3)
-    def select_city(current_state: str, context: TravelerContext, target: Optional[str]):
+    def select_city(log, current_state: str, context: TravelerContext, target: Optional[str]):
         cities = list(context.cities.keys())
         context.chosen_city = StrictStr(random.choice(cities))
         print(f"Maybe I will travel to somewhere in {context.chosen_city}.")
@@ -115,7 +115,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.delayed_transition(target="deciding", delay_before=1, delay_after=1)
-    def check_weather(current_state: str, context: TravelerContext, target: Optional[str]):
+    def check_weather(log, current_state: str, context: TravelerContext, target: Optional[str]):
         """Transition function to check the weather in the chosen city"""
         context.weather = context.cities[StrictStr(context.chosen_city)]
         print(f"The weather is {context.weather} in {context.chosen_city}")
@@ -125,7 +125,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.delayed_transition(target="traveling", delay_after=10)
-    def going_to_city(current_state: str, context: TravelerContext, target: Optional[str]):
+    def going_to_city(log, current_state: str, context: TravelerContext, target: Optional[str]):
         print(f"The weather is ok so I am going to {context.chosen_city} now ...")
     ```
 
@@ -133,7 +133,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.delayed_transition(target="selecting_city", delay_before=2)
-    def not_going(current_state: str, context: TravelerContext, target: Optional[str]):
+    def not_going(log, current_state: str, context: TravelerContext, target: Optional[str]):
         print(f"I don't like the weather in {context.chosen_city} so I am not going ...")
         context.chosen_city = None
         context.weather = None
@@ -143,7 +143,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.transition(target="in_city")
-    def arrive(current_state: str, context: TravelerContext, target: Optional[str]):
+    def arrive(log, current_state: str, context: TravelerContext, target: Optional[str]):
         print(
             f"I have arrived in {context.chosen_city} the weather is {context.weather} just how I like it."
         )
@@ -156,7 +156,7 @@ a transition instance in our factories build method.
 
     ```python
     @transitions.delayed_transition(target="sleeping", delay_before=3.5)
-    def going_to_sleep(current_state: str, context: TravelerContext, target: Optional[str]):
+    def going_to_sleep(log, current_state: str, context: TravelerContext, target: Optional[str]):
         """Transition function that prints the final message before the traveler goes to sleep"""
         print(f"I {context.traveler} have travelled enough for now.")
         print(f"I am going to sleep in {context.current_location} ...")

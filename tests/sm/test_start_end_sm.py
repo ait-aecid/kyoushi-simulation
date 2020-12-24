@@ -62,11 +62,11 @@ def test_wait_for_start(
     sleep_mock.return_value = None
     mocker.patch("cr_kyoushi.simulation.sm.sleep_until", sleep_mock)
 
-    # mock sm._execute_machine
+    # mock sm.execute_machine
     exec_mock = mocker.Mock()
     exec_mock.return_value = None
     mocker.patch(
-        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine._execute_machine",
+        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_machine",
         exec_mock,
     )
 
@@ -96,11 +96,11 @@ def test_stop_on_end_time(mocker: MockFixture):
 
     fake_datetime = NowMock([current_time, current_time, current_time, end_time])
 
-    # mock sm._execute_step
+    # mock sm.execute_step
     exec_mock = mocker.Mock()
     exec_mock.side_effect = fake_datetime.next
     mocker.patch(
-        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine._execute_step",
+        "cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_step",
         exec_mock,
     )
 
@@ -142,7 +142,7 @@ def test_stop_on_end_state(three_sequential_states, mocker: MockFixture):
     )
 
     # spy on exec step so we can verify that we only executed our transitions
-    exec_step_spy = mocker.spy(sm, "_execute_step")
+    exec_step_spy = mocker.spy(sm, "execute_step")
 
     sm.run()
 
