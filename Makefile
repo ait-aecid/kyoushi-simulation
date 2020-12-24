@@ -5,8 +5,8 @@
 # http://www.opensource.org/licenses/MIT-license
 # Copyright (c) 2018 Sébastien Eustace
 
-RELEASE := $$(sed -n -E "s/__version__ = '(.+)'/\1/p" src/cr_kyoushi/simulation/__version__.py)
 PY_SRC := src/cr_kyoushi tests/
+
 
 .PHONY: docs
 
@@ -44,6 +44,20 @@ test-junit:
 	@poetry run pytest --junitxml=report.xml --cov=src/cr_kyoushi --cov-config .coveragerc --cov-report xml --cov-report term tests/ -sq
 
 release: build
+
+version:
+ifdef rule
+	@poetry version $(rule)
+	@sed -i -E "s/(__version__ =) \"(.+)\"/\1 \"$$(poetry version -s)\"/g" src/cr_kyoushi/simulation/__init__.py
+	@git add src/cr_kyoushi/simulation/__init__.py
+	@git add pyproject.toml
+	@git commit -m "Bump version to $$(poetry version -s)"
+	@git tag -a "$$(poetry version -s)" -m "version $$(poetry version -s)"
+	@echo "Currently on branch: $$(git rev-parse --abbrev-ref HEAD)"
+	@echo "Please verify changes and then: \n\tgit push\n\tgit push origin $(poetry version -s)"
+else
+	@poetry version
+endif
 
 build:
 	@poetry build
