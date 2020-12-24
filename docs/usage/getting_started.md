@@ -25,7 +25,7 @@ Simulation state machines are defined by combining these 6 components.
 The [`Statemachine`][cr_kyoushi.simulation.sm.Statemachine] base class provides the high level state machine
 execution logic for state machines. In its most basic form it is initialized with a **initial state** and a **list of states**.
 After initialization a state machine can either be executed autonomously via [`Statemachine.run()`][cr_kyoushi.simulation.sm.Statemachine.run]
-or manually via [`Statemachine._execute_step(...)`][cr_kyoushi.simulation.sm.Statemachine._execute_step].
+or manually via [`Statemachine.execute_step(...)`][cr_kyoushi.simulation.sm.Statemachine.execute_step].
 
 State machines will execute according to the [`transitions`][cr_kyoushi.simulation.transitions.Transition] defined in
 its [`states`][cr_kyoushi.simulation.states.State]. When using [`Statemachine.run()`][cr_kyoushi.simulation.sm.Statemachine.run] execution

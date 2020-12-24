@@ -41,16 +41,16 @@ class Statemachine:
     can be started by calling the [`run()`][cr_kyoushi.simulation.sm.Statemachine.run] function.
 
     !!! Note
-        You can also execute a state machine step wise using `_execute_step()`
+        You can also execute a state machine step wise using `execute_step()`
         function manually. If you choose to do so be care full to remember to call
         `setup_context()` before you start execution and `destroy_context()`
         after the state machine is finished.
 
     Default state machine behavior can be extended or modified by creating
     a sub class and overriding the state machine functions
-    [`_execute_machine()`][cr_kyoushi.simulation.sm.Statemachine._execute_machine],
-    [`_execute_step()`][cr_kyoushi.simulation.sm.Statemachine._execute_step],
-    [`_execute_transition()`][cr_kyoushi.simulation.sm.Statemachine._execute_transition], etc.
+    [`execute_machine()`][cr_kyoushi.simulation.sm.Statemachine.execute_machine],
+    [`execute_step()`][cr_kyoushi.simulation.sm.Statemachine.execute_step],
+    [`execute_transition()`][cr_kyoushi.simulation.sm.Statemachine.execute_transition], etc.
     """
 
     @property
@@ -115,7 +115,7 @@ class Statemachine:
             logic or free `Context` information after it has finished executing.
         """
 
-    def _execute_transition(self, log: BoundLogger):
+    def execute_transition(self, log: BoundLogger):
         """Execute the current transition.
 
         The current transition is executed and the current state is
@@ -153,10 +153,10 @@ class Statemachine:
 
             self.current_state = transition_error.fallback_state
 
-    def _execute_step(self):
+    def execute_step(self):
         """Execute a single state machine step.
 
-        This function delegates transition execution to `_execute_transition()`.
+        This function delegates transition execution to `execute_transition()`.
         All pre and post execution tasks such as retrieving the transition
         from the current state before the transition and handeling unexpected
         errors encountered during transition execution.
@@ -188,7 +188,7 @@ class Statemachine:
                 )
 
                 # execute transition
-                self._execute_transition(log)
+                self.execute_transition(log)
             else:
                 log.info("Empty transition received state machine will end")
                 self.current_state = None
@@ -205,7 +205,7 @@ class Statemachine:
             else:
                 self.current_state = None
 
-    def _execute_machine(self):
+    def execute_machine(self):
         """State machine main execution loop.
 
         This function executes state machine steps in a loop
@@ -217,7 +217,7 @@ class Statemachine:
         """
         # state machine run main loop
         while self.current_state:
-            self._execute_step()
+            self.execute_step()
 
     def run(self) -> None:
         """Starts the state machine execution.
@@ -232,7 +232,7 @@ class Statemachine:
 
         # execute the state machine
         self.log.info("Entering state machine execution")
-        self._execute_machine()
+        self.execute_machine()
 
         # clean up state machine
         self.destroy_context()
@@ -293,7 +293,7 @@ class StartEndTimeStatemachine(Statemachine):
             return False
         return self.end_time <= now()
 
-    def _execute_machine(self):
+    def execute_machine(self):
         """State machine main execution loop.
 
         This function executes state machine steps in a loop until either
@@ -303,7 +303,7 @@ class StartEndTimeStatemachine(Statemachine):
         """
         # state machine run main loop
         while self.current_state and not self._is_end_time():
-            self._execute_step()
+            self.execute_step()
 
     def run(self):
         """Starts the state machine execution.
@@ -421,7 +421,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
             # and then pre-pare to resume work
             self._resume_work()
 
-    def _execute_step(self):
+    def execute_step(self):
         """Execute a single state machine step.
 
         This will only execute a step if the current time is within
@@ -430,7 +430,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         """
         # when we are in work hours business as usual
         if self._in_work_hours():
-            super()._execute_step()
+            super().execute_step()
         # outside of work hours we idle
         else:
             self._wait_for_work()
