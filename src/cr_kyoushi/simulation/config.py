@@ -1,4 +1,6 @@
+import random
 import re
+import time
 
 from enum import Enum
 from pathlib import Path
@@ -18,6 +20,7 @@ from ruamel.yaml import YAML
 
 from .errors import ConfigValidationError
 from .model import LogLevel
+from .model import Seed
 from .model import StatemachineConfig
 
 
@@ -31,7 +34,11 @@ __all__ = [
     "load_config_file",
     "load_sm_config",
     "load_settings",
+    "get_seed",
+    "configure_seed",
 ]
+
+_SEED: Seed
 
 
 class PluginConfig(BaseModel):
@@ -142,6 +149,11 @@ class LoggingConfig(BaseSettings):
 class Settings(BaseSettings):
     """Cyber Range Kyoushi Simulation settings"""
 
+    seed: Optional[Seed] = Field(
+        None,
+        description="The seed to use for random generators",
+    )
+
     plugin: PluginConfig = Field(
         PluginConfig(),
         description="The plugin system configuration",
@@ -232,3 +244,30 @@ def load_settings(
         return settings
     except ValidationError as val_err:
         raise ConfigValidationError(val_err)
+
+
+def configure_seed(seed: Optional[Seed] = None):
+    """Configure a seed for PRNG, if no seed is passed the current time is used.
+
+    Args:
+        seed: The seed to use for PRNG
+    """
+    if seed is None:
+        seed = time.time()
+    global _SEED
+    _SEED = seed
+    random.seed(seed)
+
+
+def get_seed() -> Seed:
+    """Get the global random seed value for the simulation library
+
+    Returns:
+        The seed value
+    """
+    # configure seed if not already done
+    if _SEED is None:
+        configure_seed()
+
+    # return seed value
+    return _SEED
