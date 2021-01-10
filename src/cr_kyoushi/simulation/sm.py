@@ -18,6 +18,7 @@ from uuid import uuid4
 from structlog import BoundLogger
 
 from . import errors
+from .config import get_seed
 from .logging import get_logger
 from .model import Context
 from .model import StatemachineConfig
@@ -98,6 +99,7 @@ class Statemachine:
         self.errors = 0
         self.__uuid = uuid4()
         self.__log: BoundLogger = get_logger().bind(run=self.uuid)
+        self.log.info("Created state machine", seed=get_seed())
 
     def setup_context(self) -> None:
         """Initialize and setup the state machine execution context

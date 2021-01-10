@@ -215,6 +215,7 @@ def load_sm_config(
 def load_settings(
     settings_path: Path,
     log_level: Optional[LogLevel] = None,
+    seed: Optional[Seed] = None,
 ) -> Settings:
     """Loads the Cyber Range Kyoushi Simulation CLI settings
 
@@ -240,6 +241,9 @@ def load_settings(
 
         if log_level is not None:
             settings.log.level = log_level
+
+        if seed is not None:
+            settings.seed = seed
 
         return settings
     except ValidationError as val_err:
