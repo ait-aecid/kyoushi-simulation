@@ -232,18 +232,19 @@ def load_settings(
     """
     try:
         settings_raw = load_config_file(settings_path)
+
+        if log_level is not None:
+            settings_raw.setdefault("log", {})["level"] = log_level
+
+        if seed is not None:
+            settings_raw["seed"] = seed
+
         settings = Settings(
             _env_file=str(object),
             _env_file_encoding=None,
             _secrets_dir=None,
             **settings_raw,
         )
-
-        if log_level is not None:
-            settings.log.level = log_level
-
-        if seed is not None:
-            settings.seed = seed
 
         return settings
     except ValidationError as val_err:

@@ -80,15 +80,23 @@ def test_configure_seed_file():
     assert get_seed() == expected_seed
 
 
-def test_configure_seed_cli():
-    expected_seed = "THIS_IS_THE_SEED_CLI"
+@pytest.mark.parametrize(
+    "expected_seed, seed_type",
+    [
+        pytest.param("THIS_IS_THE_SEED_CLI", str, id="str-seed-value"),
+        pytest.param(1337, int, id="int-seed-value"),
+        pytest.param(42.42, float, id="float-seed-value"),
+    ],
+)
+def test_configure_seed_cli(expected_seed, seed_type):
     cfg_file = FILE_DIR + "/config_seed.yml"
     info_obj = Info()
     runner = CliRunner()
     result = runner.invoke(
-        cli, ["--seed", expected_seed, "-c", cfg_file, "version"], obj=info_obj
+        cli, ["--seed", str(expected_seed), "-c", cfg_file, "version"], obj=info_obj
     )
 
     assert result.exit_code == 0
     assert info_obj.settings.seed == expected_seed
     assert get_seed() == expected_seed
+    assert type(get_seed()) == seed_type
