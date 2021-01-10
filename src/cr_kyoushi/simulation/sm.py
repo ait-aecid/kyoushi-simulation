@@ -15,7 +15,7 @@ from typing import Type
 from uuid import UUID
 from uuid import uuid4
 
-from structlog import BoundLogger
+from structlog.stdlib import BoundLogger
 
 from . import errors
 from .config import get_seed
