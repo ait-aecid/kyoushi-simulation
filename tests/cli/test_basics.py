@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 
 from pathlib import Path
@@ -11,8 +12,12 @@ from cr_kyoushi.simulation import __version__
 from cr_kyoushi.simulation.cli import Info
 from cr_kyoushi.simulation.cli import cli
 from cr_kyoushi.simulation.cli import version
+from cr_kyoushi.simulation.config import get_seed
 from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.model import LogLevel
+
+
+FILE_DIR = os.path.dirname(__file__) + "/files"
 
 
 def test_version_command():
@@ -61,3 +66,29 @@ def test_verbose_switch_once_to_info(option, expected_level):
 
     assert len(handlers) == 1
     assert isinstance(handlers[0], logging.StreamHandler)
+
+
+def test_configure_seed_file():
+    expected_seed = "THIS_IS_THE_SEED_FILE"
+    cfg_file = FILE_DIR + "/config_seed.yml"
+    info_obj = Info()
+    runner = CliRunner()
+    result = runner.invoke(cli, ["-c", cfg_file, "version"], obj=info_obj)
+
+    assert result.exit_code == 0
+    assert info_obj.settings.seed == expected_seed
+    assert get_seed() == expected_seed
+
+
+def test_configure_seed_cli():
+    expected_seed = "THIS_IS_THE_SEED_CLI"
+    cfg_file = FILE_DIR + "/config_seed.yml"
+    info_obj = Info()
+    runner = CliRunner()
+    result = runner.invoke(
+        cli, ["--seed", expected_seed, "-c", cfg_file, "version"], obj=info_obj
+    )
+
+    assert result.exit_code == 0
+    assert info_obj.settings.seed == expected_seed
+    assert get_seed() == expected_seed

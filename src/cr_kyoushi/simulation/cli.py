@@ -12,10 +12,12 @@ import click
 from . import plugins
 from .config import LogLevel
 from .config import Settings
+from .config import configure_seed
 from .config import load_settings
 from .config import load_sm_config
 from .logging import configure_logging
 from .logging import get_logger
+from .model import Seed
 
 
 try:
@@ -95,6 +97,11 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @click.group()
 @click.option("--log-level", type=EnumChoice(LogLevel), help="The log level")
 @click.option(
+    "--seed",
+    default=None,
+    help="Global seeds for PRNGs used during simulation",
+)
+@click.option(
     "--config",
     "-c",
     type=CliPath(dir_okay=False, readable=True),
@@ -103,14 +110,17 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
     help="The Cyber Range Kyoushi Simulation settings file",
 )
 @pass_info
-def cli(info: Info, log_level: LogLevel, config: Path):
+def cli(info: Info, log_level: LogLevel, seed: Optional[Seed], config: Path):
     """Run Cyber Range Kyoushi Simulation."""
     info.settings_path = config
-    info.settings = load_settings(info.settings_path, log_level=log_level)
+    info.settings = load_settings(info.settings_path, log_level=log_level, seed=seed)
     info.available_factories = plugins.get_factories(info.settings.plugin)
 
     # setup logging
     configure_logging(info.settings.log)
+
+    # setup prngs
+    configure_seed(info.settings.seed)
 
 
 @cli.command()
