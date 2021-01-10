@@ -10,7 +10,7 @@ from typing import Optional
 from typing import Sequence
 from typing import Union
 
-from structlog import BoundLogger
+from structlog.stdlib import BoundLogger
 
 from .model import Context
 from .transitions import Transition

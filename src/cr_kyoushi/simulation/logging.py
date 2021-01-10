@@ -2,6 +2,14 @@ import json
 import logging
 import logging.config
 
+from typing import Any
+from typing import Callable
+from typing import List
+from typing import Mapping
+from typing import MutableMapping
+from typing import Tuple
+from typing import Union
+
 import structlog
 
 from pydantic.json import pydantic_encoder
@@ -14,9 +22,9 @@ LOGGER_NAME = "cr_kyoushi.simulation"
 """The name of the Cyber Range Kyoushi Simulation logger"""
 
 
-def get_logger() -> structlog.BoundLogger:
+def get_logger() -> structlog.stdlib.BoundLogger:
     """Convenience function for getting the Cyber Range Kyoushi Simulation logger."""
-    return structlog.get_logger(LOGGER_NAME)
+    return structlog.stdlib.get_logger(LOGGER_NAME)
 
 
 def configure_logging(logging_config: LoggingConfig):
@@ -35,7 +43,12 @@ def configure_logging(logging_config: LoggingConfig):
         key=logging_config.timestamp.key,
     )
     # shared processors for standard lib and structlog
-    shared_processors = [
+    shared_processors: List[
+        Callable[
+            [Any, str, MutableMapping[str, Any]],
+            Union[Mapping[str, Any], str, bytes, Tuple[Any, ...]],
+        ]
+    ] = [
         structlog.stdlib.add_log_level,
         timestamper,
         structlog.stdlib.PositionalArgumentsFormatter(),
@@ -44,7 +57,12 @@ def configure_logging(logging_config: LoggingConfig):
     ]
 
     # processor only for structlog
-    processors = [structlog.stdlib.filter_by_level]
+    processors: List[
+        Callable[
+            [Any, str, MutableMapping[str, Any]],
+            Union[Mapping[str, Any], str, bytes, Tuple[Any, ...]],
+        ]
+    ] = [structlog.stdlib.filter_by_level]
     processors.extend(shared_processors)
     processors.append(structlog.stdlib.ProcessorFormatter.wrap_for_formatter)
 

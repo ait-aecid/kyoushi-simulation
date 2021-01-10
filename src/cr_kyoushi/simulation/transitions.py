@@ -3,7 +3,7 @@ from typing import Callable
 from typing import Optional
 from typing import Union
 
-from structlog import BoundLogger
+from structlog.stdlib import BoundLogger
 from typing_extensions import Protocol
 
 from .model import ApproximateFloat
