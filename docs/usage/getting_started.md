@@ -250,7 +250,7 @@ See the [examples section](../examples) for complete example state machine imple
 ### Plugin System
 
 There are two ways for a user to make their state machine factory accessible for the CLI system. Either through i
-n the form of an entry point plugin using the entry point `cr_kyoushi-simulation` or through a self contained python
+n the form of an entry point plugin using the entry point `cr_kyoushi.simulation` or through a self contained python
 file that declares a `StatemachineFactory` class. Both approaches have their advantages and disadvantages.
 
 Entry point plugins only work if the state machine code is installed as a proper python package, but by using this approach
