@@ -10,15 +10,19 @@ import signal
 import time
 
 from contextlib import contextmanager
-from datetime import datetime
-from datetime import tzinfo
+from datetime import (
+    datetime,
+    tzinfo,
+)
 from types import FrameType
-from typing import TYPE_CHECKING
-from typing import Any
-from typing import Callable
-from typing import List
-from typing import Optional
-from typing import Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    List,
+    Optional,
+    Union,
+)
 
 from .errors import SkipSectionError
 from .logging import get_logger

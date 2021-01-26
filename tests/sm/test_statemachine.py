@@ -4,9 +4,11 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.sm import StartEndTimeStatemachine
-from cr_kyoushi.simulation.sm import Statemachine
-from cr_kyoushi.simulation.sm import WorkHoursStatemachine
+from cr_kyoushi.simulation.sm import (
+    StartEndTimeStatemachine,
+    Statemachine,
+    WorkHoursStatemachine,
+)
 from cr_kyoushi.simulation.states import State
 
 

@@ -2,20 +2,24 @@ import json
 import logging
 import logging.config
 
-from typing import Any
-from typing import Callable
-from typing import List
-from typing import Mapping
-from typing import MutableMapping
-from typing import Tuple
-from typing import Union
+from typing import (
+    Any,
+    Callable,
+    List,
+    Mapping,
+    MutableMapping,
+    Tuple,
+    Union,
+)
 
 import structlog
 
 from pydantic.json import pydantic_encoder
 
-from .config import LogFormat
-from .config import LoggingConfig
+from .config import (
+    LogFormat,
+    LoggingConfig,
+)
 
 
 LOGGER_NAME = "cr_kyoushi.simulation"

@@ -9,9 +9,11 @@ import pytest
 from click.testing import CliRunner
 
 from cr_kyoushi.simulation import __version__
-from cr_kyoushi.simulation.cli import Info
-from cr_kyoushi.simulation.cli import cli
-from cr_kyoushi.simulation.cli import version
+from cr_kyoushi.simulation.cli import (
+    Info,
+    cli,
+    version,
+)
 from cr_kyoushi.simulation.config import get_seed
 from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.model import LogLevel

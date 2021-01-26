@@ -1,13 +1,17 @@
 from types import FunctionType
-from typing import Callable
-from typing import Optional
-from typing import Union
+from typing import (
+    Callable,
+    Optional,
+    Union,
+)
 
 from structlog.stdlib import BoundLogger
 from typing_extensions import Protocol
 
-from .model import ApproximateFloat
-from .model import Context
+from .model import (
+    ApproximateFloat,
+    Context,
+)
 from .util import sleep
 
 

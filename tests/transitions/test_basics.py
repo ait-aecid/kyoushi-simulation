@@ -2,8 +2,10 @@ import pytest
 
 from cr_kyoushi.simulation import transitions
 
-from ..fixtures.transitions import Noop
-from ..fixtures.transitions import noop
+from ..fixtures.transitions import (
+    Noop,
+    noop,
+)
 
 
 @pytest.mark.parametrize(

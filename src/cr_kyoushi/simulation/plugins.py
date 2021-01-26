@@ -1,16 +1,22 @@
 import sys
 
-from importlib.util import module_from_spec
-from importlib.util import spec_from_file_location
+from importlib.util import (
+    module_from_spec,
+    spec_from_file_location,
+)
 from pathlib import Path
-from typing import Dict
-from typing import List
-from typing import Type
+from typing import (
+    Dict,
+    List,
+    Type,
+)
 
 from . import FACTORY_ENTRYPOINT
 from .config import PluginConfig
-from .errors import StatemachineFactoryLoadError
-from .errors import StatemachineFactoryTypeError
+from .errors import (
+    StatemachineFactoryLoadError,
+    StatemachineFactoryTypeError,
+)
 from .sm import StatemachineFactory
 
 
@@ -19,8 +25,10 @@ try:
     from importlib.metadata import entry_points  # type: ignore
 except ImportError:
     # need to use backport for python < 3.8
-    from importlib_metadata import EntryPoint
-    from importlib_metadata import entry_points
+    from importlib_metadata import (
+        EntryPoint,
+        entry_points,
+    )
 
 
 def get_factories(plugin_config: PluginConfig) -> Dict[str, EntryPoint]:
