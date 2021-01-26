@@ -20,6 +20,7 @@ importlib-metadata = {version = "^3.1.0", python = "<=3.7"}
 importlib = "^1.0.4"
 structlog = "^20.2.0"
 colorama = "^0.4.4"
+numpy = "^1.19.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
