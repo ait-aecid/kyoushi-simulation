@@ -23,7 +23,6 @@ from .logging import (
     configure_logging,
     get_logger,
 )
-from .model import Seed
 
 
 try:
@@ -105,6 +104,7 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @click.option(
     "--seed",
     default=None,
+    type=click.INT,
     help="Global seeds for PRNGs used during simulation",
 )
 @click.option(
@@ -116,7 +116,7 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
     help="The Cyber Range Kyoushi Simulation settings file",
 )
 @pass_info
-def cli(info: Info, log_level: LogLevel, seed: Optional[Seed], config: Path):
+def cli(info: Info, log_level: LogLevel, seed: Optional[int], config: Path):
     """Run Cyber Range Kyoushi Simulation."""
     info.settings_path = config
     info.settings = load_settings(info.settings_path, log_level=log_level, seed=seed)
