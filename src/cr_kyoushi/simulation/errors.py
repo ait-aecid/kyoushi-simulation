@@ -1,5 +1,7 @@
-from typing import Optional
-from typing import Type
+from typing import (
+    Optional,
+    Type,
+)
 
 from click import ClickException
 from pydantic import ValidationError

@@ -1,15 +1,19 @@
 import sys
 
-from signal import SIGINT
-from signal import getsignal
+from signal import (
+    SIGINT,
+    getsignal,
+)
 
 import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation.util import SkipSectionError
-from cr_kyoushi.simulation.util import skip_on_interrupt
-from cr_kyoushi.simulation.util import skip_on_interrupt_sig_handler
+from cr_kyoushi.simulation.util import (
+    SkipSectionError,
+    skip_on_interrupt,
+    skip_on_interrupt_sig_handler,
+)
 
 
 def __call_sig_handler(handler):

@@ -6,9 +6,11 @@ import pytest
 
 from pydantic import BaseModel
 
-from cr_kyoushi.simulation import config
-from cr_kyoushi.simulation import errors
-from cr_kyoushi.simulation import model
+from cr_kyoushi.simulation import (
+    config,
+    errors,
+    model,
+)
 
 
 FILE_DIR = os.path.dirname(__file__) + "/files"

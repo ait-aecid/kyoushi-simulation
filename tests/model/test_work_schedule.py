@@ -1,13 +1,17 @@
-from datetime import datetime
-from datetime import time
+from datetime import (
+    datetime,
+    time,
+)
 
 import pytest
 
 from pydantic import ValidationError
 
-from cr_kyoushi.simulation.model import Weekday
-from cr_kyoushi.simulation.model import WorkHours
-from cr_kyoushi.simulation.model import WorkSchedule
+from cr_kyoushi.simulation.model import (
+    Weekday,
+    WorkHours,
+    WorkSchedule,
+)
 
 
 def test_work_hours_given_start_before_end_then_validation_fails():

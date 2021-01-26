@@ -1,10 +1,14 @@
-from abc import ABCMeta
-from abc import abstractmethod
+from abc import (
+    ABCMeta,
+    abstractmethod,
+)
 from itertools import cycle
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Sequence
+from typing import (
+    Dict,
+    List,
+    Optional,
+    Sequence,
+)
 
 import numpy as np
 

@@ -1,15 +1,19 @@
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
+from typing import (
+    Any,
+    Dict,
+    List,
+    Tuple,
+)
 
 import pytest
 
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation.logging import get_logger
-from cr_kyoushi.simulation.states import EquallyRandomState
-from cr_kyoushi.simulation.states import ProbabilisticState
+from cr_kyoushi.simulation.states import (
+    EquallyRandomState,
+    ProbabilisticState,
+)
 from cr_kyoushi.simulation.transitions import Transition
 
 

@@ -3,20 +3,26 @@
 
 from enum import Enum
 from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Optional
+from typing import (
+    Any,
+    Dict,
+    Optional,
+)
 
 import click
 
 from . import plugins
-from .config import LogLevel
-from .config import Settings
-from .config import configure_seed
-from .config import load_settings
-from .config import load_sm_config
-from .logging import configure_logging
-from .logging import get_logger
+from .config import (
+    LogLevel,
+    Settings,
+    configure_seed,
+    load_settings,
+    load_sm_config,
+)
+from .logging import (
+    configure_logging,
+    get_logger,
+)
 from .model import Seed
 
 

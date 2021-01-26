@@ -6,9 +6,11 @@ import pytest
 
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation import FACTORY_ENTRYPOINT
-from cr_kyoushi.simulation import errors
-from cr_kyoushi.simulation import plugins
+from cr_kyoushi.simulation import (
+    FACTORY_ENTRYPOINT,
+    errors,
+    plugins,
+)
 from cr_kyoushi.simulation.config import PluginConfig
 from cr_kyoushi.simulation.sm import StatemachineFactory
 

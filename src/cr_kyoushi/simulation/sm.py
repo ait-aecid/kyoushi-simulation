@@ -4,29 +4,39 @@
 This module contains all class and function defintions for creating and defining
 Cyber Range Kyoushi simulation machines.
 """
-from abc import ABC
-from abc import abstractmethod
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from datetime import datetime
-from typing import Dict
-from typing import Generic
-from typing import List
-from typing import Optional
-from typing import Type
-from uuid import UUID
-from uuid import uuid4
+from typing import (
+    Dict,
+    Generic,
+    List,
+    Optional,
+    Type,
+)
+from uuid import (
+    UUID,
+    uuid4,
+)
 
 from structlog.stdlib import BoundLogger
 
 from . import errors
 from .config import get_seed
 from .logging import get_logger
-from .model import Context
-from .model import StatemachineConfig
-from .model import WorkSchedule
+from .model import (
+    Context,
+    StatemachineConfig,
+    WorkSchedule,
+)
 from .states import State
 from .transitions import Transition
-from .util import now
-from .util import sleep_until
+from .util import (
+    now,
+    sleep_until,
+)
 
 
 __all__ = ["Statemachine", "StatemachineFactory"]

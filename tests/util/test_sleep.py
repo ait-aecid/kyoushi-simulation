@@ -1,15 +1,19 @@
 import time
 
-from datetime import datetime
-from datetime import timedelta
+from datetime import (
+    datetime,
+    timedelta,
+)
 
 import pytest
 
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation.model import ApproximateFloat
-from cr_kyoushi.simulation.util import sleep
-from cr_kyoushi.simulation.util import sleep_until
+from cr_kyoushi.simulation.util import (
+    sleep,
+    sleep_until,
+)
 
 
 def test_sleep_waits():

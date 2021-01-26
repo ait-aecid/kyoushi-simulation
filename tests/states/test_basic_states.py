@@ -1,6 +1,8 @@
-from typing import Any
-from typing import Dict
-from typing import Tuple
+from typing import (
+    Any,
+    Dict,
+    Tuple,
+)
 
 import pytest
 

@@ -2,14 +2,18 @@ from typing import List
 
 import pytest
 
-from cr_kyoushi.simulation.states import FinalState
-from cr_kyoushi.simulation.states import SequentialState
-from cr_kyoushi.simulation.states import State
+from cr_kyoushi.simulation.states import (
+    FinalState,
+    SequentialState,
+    State,
+)
 from cr_kyoushi.simulation.transitions import Transition
 
-from ..fixtures.transitions import FallbackFunctionStub
-from ..fixtures.transitions import exception_function_stub
-from ..fixtures.transitions import noop
+from ..fixtures.transitions import (
+    FallbackFunctionStub,
+    exception_function_stub,
+    noop,
+)
 
 
 @pytest.fixture(scope="module")

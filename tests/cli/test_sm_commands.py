@@ -3,11 +3,15 @@ from pathlib import Path
 from click.testing import CliRunner
 from pytest_mock import MockFixture
 
-from cr_kyoushi.simulation import cli
-from cr_kyoushi.simulation import config
+from cr_kyoushi.simulation import (
+    cli,
+    config,
+)
 
-from .conftest import ExampleStatemachineConfig
-from .conftest import StatemachineFactory
+from .conftest import (
+    ExampleStatemachineConfig,
+    StatemachineFactory,
+)
 
 
 try:

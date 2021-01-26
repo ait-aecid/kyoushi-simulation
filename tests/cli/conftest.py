@@ -1,8 +1,10 @@
 from pydantic import BaseModel
 
-from cr_kyoushi.simulation import sm
-from cr_kyoushi.simulation import states
-from cr_kyoushi.simulation import transitions
+from cr_kyoushi.simulation import (
+    sm,
+    states,
+    transitions,
+)
 from tests.fixtures.transitions import debug_transition
 
 
