@@ -1,14 +1,12 @@
-import random
-
 from abc import ABCMeta
 from abc import abstractmethod
-from itertools import accumulate
 from itertools import cycle
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Sequence
-from typing import Union
+
+import numpy as np
 
 from structlog.stdlib import BoundLogger
 
@@ -159,39 +157,29 @@ class ProbabilisticState(State):
         self,
         name: str,
         transitions: List[Transition],
-        weights: Sequence[Union[int, float]],
-        allow_uneven_probabilites: bool = False,
+        weights: Sequence[float],
     ):
         """
         Args:
             name: The state name
             transitions: The list of transitions
             weights: The list of weights to assign to the transitions in probability notation.
-            allow_uneven_probabilites: By default only even propabilities are allowed (those that sum to 1 or 100).
-                                       You can disable this by setting this flag to `True`, but note that uneven
-                                       probabilities are harder to interpret users of your state machine.
 
         Raises:
             ValueError: If there are transitions with duplicate names
             ValueError: If the weights and transitions list lengths do not match
-            ValueError: If the given weights are uneven, but `allow_uneven_probabilites` is `False`
-
-        !!! note
-            Probability form weights are automatically converted to cumulative weights
-            to be more efficient with random selection functions (e.g.,
-            [`random.choices`](https://docs.python.org/3/library/random.html#random.choices))
-
+            ValueError: If the given weights do not sum up to 1
         """
         # initial base properties
         super().__init__(name, transitions)
 
         # convert weights to cumulative weights
-        self.__weights = list(accumulate(weights))
+        self.__weights = weights
 
         # verify that given weights and transitions are sound
-        self.__verify_weights(allow_uneven_probabilites)
+        self.__verify_weights()
 
-    def __verify_weights(self, allow_uneven_probabilites: bool) -> None:
+    def __verify_weights(self) -> None:
         # check that lengths match
         if len(self.transitions) != len(self.weights):
             raise ValueError(
@@ -201,19 +189,19 @@ class ProbabilisticState(State):
         # if we were given an empty transition list
         # then there is nothing more to check
         if len(self.weights) > 0:
-            # if we do not allow uneven probabilites we have to check for them
-            if not allow_uneven_probabilites:
-                # even probabilities must always sum to 100%
-                # we allow definition in 0-1 or 0-100 format
-                if self.weights[-1] != 1 and self.weights[-1] != 100:
-                    raise ValueError(
-                        f"Probabilities are uneven, sum of weights must \
-                            be either 1 or 100, but got {self.weights[-1]}!"
-                    )
+            # check that all probs are positive values
+            if any(p < 0 for p in self.weights):
+                raise ValueError("Probabilities cannot be negative!")
+            # even probabilities must always sum to 1
+            if sum(self.weights) != 1:
+                raise ValueError(
+                    "Probabilities are uneven, sum of weights must be 1,"
+                    f" but got {self.weights[-1]}!"
+                )
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
-            return random.choices(self.transitions, cum_weights=self.weights, k=1)[0]
+            return np.random.choice(a=self.transitions, p=self.weights)
         return None
 
 
