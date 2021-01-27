@@ -4,6 +4,7 @@ from abc import (
 )
 from itertools import cycle
 from typing import (
+    Callable,
     Dict,
     List,
     Optional,
@@ -114,6 +115,37 @@ class SequentialState(State):
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         return self.__transition
+
+
+class ChoiceState(State):
+    """Simple boolean choice state decides between two transitions"""
+
+    def __init__(
+        self,
+        name: str,
+        decision_function: Callable[[BoundLogger, Context], bool],
+        yes: Transition,
+        no: Transition,
+    ):
+        """
+        Args:
+            name: The state name
+            transition: The target transition
+            decision_function: Context function that decides a yes/no question.
+            yes: The transition to return when the decision function returns `True`
+            no: The transition to return when the decision function returns `False`
+        """
+        super().__init__(name, [yes, no])
+        self.__decision_function: Callable[
+            [BoundLogger, Context], bool
+        ] = decision_function
+
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
+        return (
+            self.transitions[0]  # when true return yes
+            if self.__decision_function(log, context)
+            else self.transitions[1]  # when false return no
+        )
 
 
 class FinalState(State):
