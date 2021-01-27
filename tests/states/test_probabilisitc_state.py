@@ -11,6 +11,7 @@ from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.states import (
+    AdaptiveProbabilisticState,
     EquallyRandomState,
     ProbabilisticState,
 )
@@ -45,13 +46,22 @@ def four_uneven_weights(
     return (four_mocked_transitions, [0.5, 0.2, 0.2, 0.2], [0.5, 0.7, 0.9, 1.1])
 
 
-def test_empty_transition_list():
+@pytest.mark.parametrize(
+    "state_class",
+    [
+        ProbabilisticState,
+        AdaptiveProbabilisticState,
+    ],
+)
+def test_empty_transition_list(state_class):
     transitions: List[Transition] = []
     weights: List[float] = []
     empty_context: Dict[str, Any] = {}
 
-    state = ProbabilisticState(name="test", transitions=transitions, weights=weights)
+    state = state_class(name="test", transitions=transitions, weights=weights)
 
+    assert state.transitions == []
+    assert state.weights == []
     assert state.next(log, context=empty_context) is None
 
 
@@ -197,3 +207,124 @@ def test_equally_random_next_probabilities(four_mocked_transitions: List[Transit
     assert observed_probabilities[t2_name] == expected_probability
     assert observed_probabilities[t3_name] == expected_probability
     assert observed_probabilities[t4_name] == expected_probability
+
+
+@pytest.mark.parametrize(
+    "w, m, expected_w, expected_m",
+    [
+        pytest.param(
+            [0.25, 0.25, 0.25, 0.25],
+            [1, 2, 3, 4],
+            [0.25, 0.25, 0.25, 0.25],
+            [1, 2, 3, 4],
+            id="preset-modifier",
+        ),
+        pytest.param(
+            [0.25, 0.25, 0.25, 0.25],
+            None,
+            [0.25, 0.25, 0.25, 0.25],
+            [1, 1, 1, 1],
+            id="notset-modifier",  # special case for []*0
+        ),
+        pytest.param(
+            [],
+            [],
+            [],
+            [],
+            id="empty-list-set",
+        ),
+        pytest.param(
+            [],
+            None,
+            [],
+            [],
+            id="empty-list-notset",
+        ),
+    ],
+)
+def test_adaptive_initialization(
+    w,
+    m,
+    expected_w,
+    expected_m,
+    four_mocked_transitions: List[Transition],
+):
+    state = AdaptiveProbabilisticState(
+        name="test",
+        transitions=four_mocked_transitions if len(w) > 0 else [],
+        weights=w,
+        modifiers=m,
+    )
+
+    assert state.weights == expected_w
+    assert state.modifiers == expected_m
+
+
+def test_adaptive_next_calls(
+    mocker: MockFixture, four_mocked_transitions: List[Transition]
+):
+    call = mocker.call
+    weights = [0.25, 0.25, 0.25, 0.25]
+    empty_context: Dict[str, Any] = {}
+
+    state = AdaptiveProbabilisticState(
+        name="test",
+        transitions=four_mocked_transitions,
+        weights=weights,
+        modifiers=[1, 1, 1, 1],
+    )
+
+    # get spys and mock
+    before_spy = mocker.spy(state, "adapt_before")
+    after_spy = mocker.spy(state, "adapt_after")
+    np_mock = mocker.patch("cr_kyoushi.simulation.states.np.random.choice")
+    np_mock.return_value = selected = four_mocked_transitions[0]
+
+    # combine spys and mocks into one mock object
+    # so we can check relative call order
+    mock = mocker.Mock()
+    mock.attach_mock(before_spy, "adapt_before")
+    mock.attach_mock(after_spy, "adapt_after")
+    mock.attach_mock(np_mock, "choice")
+
+    state.next(log, empty_context)
+
+    # note that since all modifiers are 1 w=p is expected
+    assert mock.mock_calls == [
+        call.adapt_before(log, empty_context),
+        call.choice(a=four_mocked_transitions, p=weights),
+        call.adapt_after(log, empty_context, selected),
+    ]
+
+
+def test_adaptive_caluclates_and_returns_correctly(
+    mocker: MockFixture,
+    four_mocked_transitions: List[Transition],
+):
+    call = mocker.call
+    weights = [0.25, 0.25, 0.25, 0.25]
+    modifiers = [1, 1, 1, 1]
+    empty_context: Dict[str, Any] = {}
+
+    state = AdaptiveProbabilisticState(
+        name="test",
+        transitions=four_mocked_transitions,
+        weights=weights,
+        modifiers=modifiers,
+    )
+
+    mock_p = [0.5, 0.25, 0.25, 0]
+
+    calc_mock = mocker.patch("cr_kyoushi.simulation.states.calculate_propabilities")
+    calc_mock.return_value = mock_p
+
+    np_mock = mocker.patch("cr_kyoushi.simulation.states.np.random.choice")
+    np_mock.return_value = selected = four_mocked_transitions[0]
+
+    # check returns chosen transition
+    assert state.next(log, empty_context) == selected
+
+    # check calc called correctly
+    assert calc_mock.mock_calls == [call(weights, modifiers)]
+    # check choice called with calculated probs
+    assert np_mock.mock_calls == [call(a=four_mocked_transitions, p=mock_p)]
