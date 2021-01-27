@@ -9,6 +9,7 @@ from typing import (
     List,
     Optional,
     Sequence,
+    Tuple,
 )
 
 import numpy as np
@@ -284,6 +285,8 @@ class AdaptiveProbabilisticState(ProbabilisticState):
         else:
             self._modifiers = [1.0] * len(self.weights)
 
+        self.__modifiers_org: Tuple[float, ...] = tuple(self.modifiers)
+
     def adapt_before(self, log: BoundLogger, context: Context):
         """Hook to update the weight modifiers before the transition selection.
 
@@ -305,6 +308,10 @@ class AdaptiveProbabilisticState(ProbabilisticState):
             context: The state machine context
             selected: The transition selected in this next call
         """
+
+    def reset(self):
+        """Resets the modifiers to their original state"""
+        self._modifiers = list(self.__modifiers_org)
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:

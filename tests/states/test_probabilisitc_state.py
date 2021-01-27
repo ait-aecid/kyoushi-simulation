@@ -328,3 +328,36 @@ def test_adaptive_caluclates_and_returns_correctly(
     assert calc_mock.mock_calls == [call(weights, modifiers)]
     # check choice called with calculated probs
     assert np_mock.mock_calls == [call(a=four_mocked_transitions, p=mock_p)]
+
+
+def test_adaptive_reset(four_mocked_transitions: List[Transition]):
+    weights = [0.25, 0.25, 0.25, 0.25]
+    modifiers = [1, 1, 1, 1]
+    modifiers_modified = [1, 2, 3, 4]
+    modifiers_orig = [1, 1, 1, 1]
+
+    class MockAdapt(AdaptiveProbabilisticState):
+        def adapt_before(self, log, context):
+            # modify the list object to have desired values
+            for i in range(0, len(self._modifiers)):
+                self._modifiers[i] = modifiers_modified[i]
+
+    empty_context: Dict[str, Any] = {}
+
+    state = MockAdapt(
+        name="test",
+        transitions=four_mocked_transitions,
+        weights=weights,
+        modifiers=modifiers,
+    )
+
+    # check initial state
+    assert state.modifiers == modifiers_orig
+
+    # modify and check
+    state.adapt_before(log, empty_context)
+    assert state.modifiers == modifiers_modified
+
+    # reset and check
+    state.reset()
+    assert state.modifiers == modifiers_orig
