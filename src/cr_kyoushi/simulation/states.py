@@ -4,10 +4,12 @@ from abc import (
 )
 from itertools import cycle
 from typing import (
+    Callable,
     Dict,
     List,
     Optional,
     Sequence,
+    Tuple,
 )
 
 import numpy as np
@@ -16,6 +18,7 @@ from structlog.stdlib import BoundLogger
 
 from .model import Context
 from .transitions import Transition
+from .util import calculate_propabilities
 
 
 __all__ = [
@@ -115,6 +118,43 @@ class SequentialState(State):
         return self.__transition
 
 
+class ChoiceState(State):
+    """Simple boolean choice state decides between two transitions"""
+
+    @property
+    def yes(self) -> Transition:
+        """The transition that is returned when the decision function returns `True`"""
+        return self.transitions[0]
+
+    @property
+    def no(self) -> Transition:
+        """The transition that is returned when the decision function returns `False`"""
+        return self.transitions[1]
+
+    def __init__(
+        self,
+        name: str,
+        decision_function: Callable[[BoundLogger, Context], bool],
+        yes: Transition,
+        no: Transition,
+    ):
+        """
+        Args:
+            name: The state name
+            transition: The target transition
+            decision_function: Context function that decides a yes/no question.
+            yes: The transition to return when the decision function returns `True`
+            no: The transition to return when the decision function returns `False`
+        """
+        super().__init__(name, [yes, no])
+        self.__decision_function: Callable[
+            [BoundLogger, Context], bool
+        ] = decision_function
+
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
+        return self.yes if self.__decision_function(log, context) else self.no
+
+
 class FinalState(State):
     """State with not further transitions which can be used as final state of a state machine"""
 
@@ -154,7 +194,7 @@ class ProbabilisticState(State):
 
     @property
     def weights(self) -> Sequence[float]:
-        """The cumulative weights assigned to the transitions."""
+        """The weight assigned to the transitions."""
         return self.__weights
 
     def __init__(
@@ -196,8 +236,8 @@ class ProbabilisticState(State):
             # check that all probs are positive values
             if any(p < 0 for p in self.weights):
                 raise ValueError("Probabilities cannot be negative!")
-            # even probabilities must always sum to 1
-            if sum(self.weights) != 1:
+            # probabilities must always sum to 1
+            if abs(1.0 - sum(self.weights)) > 1e-8:
                 raise ValueError(
                     "Probabilities are uneven, sum of weights must be 1,"
                     f" but got {self.weights[-1]}!"
@@ -206,6 +246,79 @@ class ProbabilisticState(State):
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
             return np.random.choice(a=self.transitions, p=self.weights)
+        return None
+
+
+class AdaptiveProbabilisticState(ProbabilisticState):
+    """Special probabilistic state that allows modifaction of weights."""
+
+    _modifiers: List[float]
+
+    @property
+    def modifiers(self) -> List[float]:
+        """The weight modifiers assigned to the transitions."""
+        return self._modifiers
+
+    @property
+    def probabilities(self) -> List[float]:
+        """The propabilities based on the weights and modifiers"""
+        return calculate_propabilities(self.weights, self.modifiers)
+
+    def __init__(
+        self,
+        name: str,
+        transitions: List[Transition],
+        weights: Sequence[float],
+        modifiers: Optional[Sequence[float]] = None,
+    ):
+        """
+        Args:
+            name: The name of the state
+            transitions: The list of transitions
+            weights: The list of weights to assign to the transitions in propability notation
+            modifiers: List of multiplicative modifiers for each weight.
+                       Will default to all 1 if not set.
+        """
+        super().__init__(name, transitions, weights)
+        if modifiers is not None:
+            self._modifiers = list(modifiers)
+        else:
+            self._modifiers = [1.0] * len(self.weights)
+
+        self.__modifiers_org: Tuple[float, ...] = tuple(self.modifiers)
+
+    def adapt_before(self, log: BoundLogger, context: Context):
+        """Hook to update the weight modifiers before the transition selection.
+
+        Args:
+            log: The logger for the sm context
+            context: The state machine context
+        """
+
+    def adapt_after(
+        self,
+        log: BoundLogger,
+        context: Context,
+        selected: Optional[Transition],
+    ):
+        """Hook to update the weight modifiers after the transition selection.
+
+        Args:
+            log: The logger for the sm context
+            context: The state machine context
+            selected: The transition selected in this next call
+        """
+
+    def reset(self):
+        """Resets the modifiers to their original state"""
+        self._modifiers = list(self.__modifiers_org)
+
+    def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
+        if len(self.transitions) > 0:
+            self.adapt_before(log, context)
+            selected = np.random.choice(a=self.transitions, p=self.probabilities)
+            self.adapt_after(log, context, selected)
+            return selected
         return None
 
 

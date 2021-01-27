@@ -1,6 +1,5 @@
 import random
 import re
-import time
 
 from enum import Enum
 from pathlib import Path
@@ -12,6 +11,8 @@ from typing import (
     Pattern,
     Type,
 )
+
+import numpy as np
 
 from pydantic import (
     BaseModel,
@@ -25,7 +26,6 @@ from ruamel.yaml import YAML
 from .errors import ConfigValidationError
 from .model import (
     LogLevel,
-    Seed,
     StatemachineConfig,
 )
 
@@ -44,7 +44,7 @@ __all__ = [
     "configure_seed",
 ]
 
-_SEED: Seed
+_SEED: int
 
 
 class PluginConfig(BaseModel):
@@ -155,7 +155,7 @@ class LoggingConfig(BaseSettings):
 class Settings(BaseSettings):
     """Cyber Range Kyoushi Simulation settings"""
 
-    seed: Optional[Seed] = Field(
+    seed: Optional[int] = Field(
         None,
         description="The seed to use for random generators",
     )
@@ -221,7 +221,7 @@ def load_sm_config(
 def load_settings(
     settings_path: Path,
     log_level: Optional[LogLevel] = None,
-    seed: Optional[Seed] = None,
+    seed: Optional[int] = None,
 ) -> Settings:
     """Loads the Cyber Range Kyoushi Simulation CLI settings
 
@@ -257,20 +257,23 @@ def load_settings(
         raise ConfigValidationError(val_err)
 
 
-def configure_seed(seed: Optional[Seed] = None):
-    """Configure a seed for PRNG, if no seed is passed the current time is used.
+def configure_seed(seed: Optional[int] = None):
+    """Configure a seed for PRNG, if no seed is passed then one is generated.
 
     Args:
         seed: The seed to use for PRNG
     """
     if seed is None:
-        seed = time.time()
+        # legacy global numpy requires seeds to be in
+        # [0, 2**32-1]
+        seed = random.randint(0, 2 ** 32 - 1)
     global _SEED
     _SEED = seed
     random.seed(seed)
+    np.random.seed(seed)
 
 
-def get_seed() -> Seed:
+def get_seed() -> int:
     """Get the global random seed value for the simulation library
 
     Returns:

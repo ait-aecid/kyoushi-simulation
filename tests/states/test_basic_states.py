@@ -1,19 +1,23 @@
 from typing import (
     Any,
+    Callable,
     Dict,
     Tuple,
 )
 
 import pytest
 
+from structlog.stdlib import BoundLogger
+
 from cr_kyoushi.simulation import states
 from cr_kyoushi.simulation.logging import get_logger
+from cr_kyoushi.simulation.model import Context
 from cr_kyoushi.simulation.transitions import Transition
 
 from ..fixtures.transitions import noop
 
 
-log = get_logger
+log = get_logger()
 
 
 class StubState(states.State):
@@ -120,3 +124,29 @@ def test_round_robin_no_transitions():
     # verify next will return none
     assert robin.next(log, empty_context) is None
     assert robin.next(log, empty_context) is None
+
+
+@pytest.mark.parametrize(
+    "decision, yes, no, expected",
+    [
+        pytest.param((lambda log, context: True), 0, 1, 0, id="yes"),
+        pytest.param((lambda log, context: False), 0, 1, 1, id="no"),
+    ],
+)
+def test_choice_returns_correctly(
+    decision: Callable[[BoundLogger, Context], bool],
+    yes: int,
+    no: int,
+    expected: int,
+    noop_transitions,
+):
+    empty_context: Dict[str, Any] = {}
+
+    state = states.ChoiceState(
+        name="test",
+        decision_function=decision,
+        yes=noop_transitions[yes],
+        no=noop_transitions[no],
+    )
+
+    assert state.next(log, empty_context) == noop_transitions[expected]

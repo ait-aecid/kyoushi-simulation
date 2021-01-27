@@ -71,7 +71,7 @@ def test_verbose_switch_once_to_info(option, expected_level):
 
 
 def test_configure_seed_file():
-    expected_seed = "THIS_IS_THE_SEED_FILE"
+    expected_seed = 4242
     cfg_file = FILE_DIR + "/config_seed.yml"
     info_obj = Info()
     runner = CliRunner()
@@ -82,15 +82,8 @@ def test_configure_seed_file():
     assert get_seed() == expected_seed
 
 
-@pytest.mark.parametrize(
-    "expected_seed, seed_type",
-    [
-        pytest.param("THIS_IS_THE_SEED_CLI", str, id="str-seed-value"),
-        pytest.param(1337, int, id="int-seed-value"),
-        pytest.param(42.42, float, id="float-seed-value"),
-    ],
-)
-def test_configure_seed_cli(expected_seed, seed_type):
+def test_configure_seed_cli():
+    expected_seed = 1337
     cfg_file = FILE_DIR + "/config_seed.yml"
     info_obj = Info()
     runner = CliRunner()
@@ -101,4 +94,4 @@ def test_configure_seed_cli(expected_seed, seed_type):
     assert result.exit_code == 0
     assert info_obj.settings.seed == expected_seed
     assert get_seed() == expected_seed
-    assert type(get_seed()) == seed_type
+    assert type(get_seed()) == int

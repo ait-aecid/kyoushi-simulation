@@ -430,7 +430,3 @@ class WorkSchedule(BaseModel):
 
         # if we got here then no workday is set so we will never start
         return None
-
-
-Seed = Union[int, float, str]
-"""Type alias for python random seed values"""

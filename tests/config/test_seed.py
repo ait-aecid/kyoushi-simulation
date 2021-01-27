@@ -16,7 +16,7 @@ def run_before_and_after_tests():
 
 def test_get_seed_when_set(mocker: MockFixture):
     # mock the seed beeing set
-    expected_seed = "THIS_IS_THE_SEED"
+    expected_seed = 4242
     mocker.patch("cr_kyoushi.simulation.config._SEED", expected_seed)
 
     assert config.get_seed() == expected_seed
@@ -24,7 +24,7 @@ def test_get_seed_when_set(mocker: MockFixture):
 
 def test_get_seed_when_not_set(mocker: MockFixture):
     call = mocker.call
-    expected_seed = "THIS_IS_THE_SEED"
+    expected_seed = 4242
 
     # replace configure seed with simply seeding the seed to the expected value
     configure_mock = mocker.Mock()
@@ -45,7 +45,7 @@ def test_configure_seed_when_value_given(mocker: MockFixture):
     call = mocker.call
     configure_spy = mocker.spy(config, "configure_seed")
 
-    expected_seed = "THIS_IS_THE_SEED"
+    expected_seed = 4242
     config.configure_seed(expected_seed)
 
     # assert seed was returned
@@ -57,11 +57,11 @@ def test_configure_seed_when_value_given(mocker: MockFixture):
 def test_configure_seed_default_value(mocker: MockFixture):
     call = mocker.call
     configure_spy = mocker.spy(config, "configure_seed")
-    time_spy = mocker.spy(config.time, "time")
+    default_seed_spy = mocker.spy(config.random, "randint")
 
     config.configure_seed()
 
     # assert seed value is set to current time
-    assert config.get_seed() == time_spy.spy_return
+    assert config.get_seed() == default_seed_spy.spy_return
     # assert configure was called only once by us
     assert configure_spy.mock_calls == [call()]

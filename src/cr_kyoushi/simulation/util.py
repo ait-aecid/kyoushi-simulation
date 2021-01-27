@@ -21,6 +21,7 @@ from typing import (
     Callable,
     List,
     Optional,
+    Sequence,
     Union,
 )
 
@@ -76,6 +77,80 @@ def elements_unique(to_check: List[Any]) -> bool:
     """
     seen = set()
     return not any(i in seen or seen.add(i) for i in to_check)  # type: ignore
+
+
+def normalize_propabilities(
+    propabilities: Sequence[float], check_positive: bool = True
+) -> List[float]:
+    """Normalizes a propability distribution to sum up to 1.
+
+    Has a floating point error tolerance of up to 1e-8 (same as numpy.choice).
+    If the resulting difference is greater than 1e-8 it is added to the first
+    non zero propability.
+
+    Args:
+        propabilities: The distribution to normalize
+        check_positive: Switch to disable the positive number test.
+                        This makes the function slightly faster
+
+    Raises:
+        ValueError: If the distribution sums to 0 or
+                    If one of the propability values is negative
+
+    Returns:
+        List[float]: [description]
+    """
+    # only check when requested
+    if check_positive and any(p < 0 for p in propabilities):
+        raise ValueError("Propabilities must be positive numbers")
+
+    total = sum(propabilities)
+    if total > 0:
+        multiplier = 1.0 / total
+        propabilities = [p * multiplier for p in propabilities]
+        diff = 1.0 - sum(propabilities)
+        # when rounding errors become to extrem
+        # then we fix them by adding the diff to 1 a propability
+        if abs(diff) > 1e-8:
+            # first non 0 propability index will be increased
+            adjust_index = next((i for i, x in enumerate(propabilities) if x != 0.0))
+            propabilities[adjust_index] += diff
+        return propabilities
+
+    raise ValueError("Resulting propabilities sum to 0")
+
+
+def calculate_propabilities(
+    weights: Sequence[float],
+    modifiers: Sequence[float],
+) -> List[float]:
+    """Calculates the propability distribution from a list of weights and modifiers.
+
+    Args:
+        weights: The base weights
+        modifiers: The weight modifiers
+
+    Raises:
+        ValueError: If the len of weights and modifiers do not match
+                    If the resulting propabilities do not sum to 1
+
+    Returns:
+        The modified weights as propabilities
+    """
+    if len(weights) != len(modifiers):
+        raise ValueError("The len of weights and modifieres do not match!")
+
+    if abs(1.0 - sum(weights)) > 1e-8:
+        raise ValueError("The weights must sum up to 1")
+
+    if any(w < 0 for w in weights) or any(m < 0 for m in modifiers):
+        raise ValueError("Weights and modifiers must be positive values")
+
+    return normalize_propabilities(
+        [w * m for w, m in zip(weights, modifiers)],
+        # weights[*] and modifiers[*] > 0 already guarantees this
+        check_positive=False,
+    )
 
 
 def skip_on_interrupt_sig_handler(signum: signal.Signals, frame: FrameType):
