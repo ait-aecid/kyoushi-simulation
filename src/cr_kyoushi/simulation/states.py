@@ -141,7 +141,6 @@ class ChoiceState(State):
         """
         Args:
             name: The state name
-            transition: The target transition
             decision_function: Context function that decides a yes/no question.
             yes: The transition to return when the decision function returns `True`
             no: The transition to return when the decision function returns `False`
