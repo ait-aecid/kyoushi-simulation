@@ -120,6 +120,16 @@ class SequentialState(State):
 class ChoiceState(State):
     """Simple boolean choice state decides between two transitions"""
 
+    @property
+    def yes(self) -> Transition:
+        """The transition that is returned when the decision function returns `True`"""
+        return self.transitions[0]
+
+    @property
+    def no(self) -> Transition:
+        """The transition that is returned when the decision function returns `False`"""
+        return self.transitions[1]
+
     def __init__(
         self,
         name: str,
@@ -141,11 +151,7 @@ class ChoiceState(State):
         ] = decision_function
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
-        return (
-            self.transitions[0]  # when true return yes
-            if self.__decision_function(log, context)
-            else self.transitions[1]  # when false return no
-        )
+        return self.yes if self.__decision_function(log, context) else self.no
 
 
 class FinalState(State):
