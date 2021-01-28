@@ -285,3 +285,19 @@ def delayed_transition(
         )
 
     return decorator
+
+
+def noop(log: BoundLogger, current_state: str, context: Context, target: Optional[str]):
+    """No operation transition function"""
+
+
+class NoopTransition(Transition):
+    """No noperation transition that only changes the current state."""
+
+    def __init__(self, name: str = "noop", target: Optional[str] = None):
+        """
+        Args:
+            name: The name of the transition
+            target: The name of the target state
+        """
+        super().__init__(noop, name=name, target=target)
