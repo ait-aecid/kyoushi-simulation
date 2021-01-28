@@ -1,2 +1,2 @@
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 FACTORY_ENTRYPOINT = "cr_kyoushi.simulation"
