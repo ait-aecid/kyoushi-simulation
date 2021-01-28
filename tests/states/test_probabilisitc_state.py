@@ -340,7 +340,7 @@ def test_adaptive_reset(four_mocked_transitions: List[Transition]):
         def adapt_before(self, log, context):
             # modify the list object to have desired values
             for i in range(0, len(self._modifiers)):
-                self._modifiers[i] = modifiers_modified[i]
+                self._modifiers[four_mocked_transitions[i]] = modifiers_modified[i]
 
     empty_context: Dict[str, Any] = {}
 

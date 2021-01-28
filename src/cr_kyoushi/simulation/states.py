@@ -251,12 +251,12 @@ class ProbabilisticState(State):
 class AdaptiveProbabilisticState(ProbabilisticState):
     """Special probabilistic state that allows modifaction of weights."""
 
-    _modifiers: List[float]
+    _modifiers: Dict[Transition, float]
 
     @property
     def modifiers(self) -> List[float]:
         """The weight modifiers assigned to the transitions."""
-        return self._modifiers
+        return list(self._modifiers.values())
 
     @property
     def probabilities(self) -> List[float]:
@@ -279,10 +279,10 @@ class AdaptiveProbabilisticState(ProbabilisticState):
                        Will default to all 1 if not set.
         """
         super().__init__(name, transitions, weights)
-        if modifiers is not None:
-            self._modifiers = list(modifiers)
-        else:
-            self._modifiers = [1.0] * len(self.weights)
+        if modifiers is None:
+            modifiers = [1.0] * len(self.weights)
+
+        self._modifiers = dict(zip(transitions, list(modifiers)))
 
         self.__modifiers_org: Tuple[float, ...] = tuple(self.modifiers)
 
@@ -310,7 +310,7 @@ class AdaptiveProbabilisticState(ProbabilisticState):
 
     def reset(self):
         """Resets the modifiers to their original state"""
-        self._modifiers = list(self.__modifiers_org)
+        self._modifiers = dict(zip(self.transitions, self.__modifiers_org))
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
