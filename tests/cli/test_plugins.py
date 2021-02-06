@@ -4,12 +4,17 @@ from typing import List
 
 import pytest
 
+from click.testing import CliRunner
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation import (
     FACTORY_ENTRYPOINT,
     errors,
     plugins,
+)
+from cr_kyoushi.simulation.cli import (
+    Info,
+    cli,
 )
 from cr_kyoushi.simulation.config import PluginConfig
 from cr_kyoushi.simulation.sm import StatemachineFactory
@@ -42,6 +47,14 @@ def mock_entry_points(mocker: MockFixture) -> List[EntryPoint]:
     ep_example_2.name = "example_2"
     ep_example_3.name = "example_3"
 
+    # set value mocks
+    ep_test.value = "cr_kyoushi.simulation.test:test"
+    ep_test_2.value = "cr_kyoushi.simulation.test:test_2"
+    ep_test_3.value = "cr_kyoushi.simulation.test:test_3"
+    ep_example.value = "cr_kyoushi.simulation.test:example"
+    ep_example_2.value = "cr_kyoushi.simulation.test:example_2"
+    ep_example_3.value = "cr_kyoushi.simulation.test:example_3"
+
     return [
         ep_test,
         ep_test_2,
@@ -56,6 +69,21 @@ def __patch_entry_points(mocker: MockFixture, eps: List[EntryPoint]):
     entry_points = mocker.patch("cr_kyoushi.simulation.plugins.entry_points")
     entry_points.return_value = {FACTORY_ENTRYPOINT: eps}
     return entry_points
+
+
+def test_sm_list_loaded_eps(
+    mocker: MockFixture,
+    mock_entry_points: List[EntryPoint],
+):
+    entry_points = __patch_entry_points(mocker, mock_entry_points)
+
+    info_obj = Info()
+    runner = CliRunner()
+    result = runner.invoke(cli, ["list"], obj=info_obj)
+
+    assert result.exit_code == 0
+    for ep in entry_points:
+        assert f"{ep.name} - {ep.value}" in result.stdout
 
 
 def test_get_factories_allow_all(
