@@ -1,3 +1,5 @@
+import sys
+
 from types import FunctionType
 from typing import (
     Callable,
@@ -6,7 +8,12 @@ from typing import (
 )
 
 from structlog.stdlib import BoundLogger
-from typing_extensions import Protocol
+
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
 
 from .model import (
     ApproximateFloat,
