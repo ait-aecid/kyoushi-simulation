@@ -27,8 +27,7 @@ def test_sm_base_function(mocker: MockFixture):
 
     ep_test = mocker.Mock(EntryPoint)
     ep_test.name = "FactoryName"
-    ep_test.module = "test.module"
-    ep_test.attr = "TestFactory"
+    ep_test.value = "test.module:TestFactory"
 
     factory_eps = {"test": ep_test}
     info_obj = cli.Info()

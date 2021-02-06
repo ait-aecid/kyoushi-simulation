@@ -145,9 +145,7 @@ def sm_list(info: Info):
     assert info.available_factories is not None
     click.echo(click.style("Available state machine factories:", bold=True))
     for factory_plugin in info.available_factories.values():
-        click.echo(
-            f"\t{factory_plugin.name} - {factory_plugin.module}:{factory_plugin.attr}"
-        )
+        click.echo(f"\t{factory_plugin.name} - {factory_plugin.value}")
 
 
 @cli.command(name="run")
