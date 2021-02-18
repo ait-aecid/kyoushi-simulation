@@ -1,7 +1,9 @@
 import json
 import logging
 import logging.config
+import re
 
+from functools import partial
 from typing import (
     Any,
     Callable,
@@ -14,12 +16,29 @@ from typing import (
 
 import structlog
 
-from pydantic.json import pydantic_encoder
+from pydantic.json import custom_pydantic_encoder
 
 from .config import (
     LogFormat,
     LoggingConfig,
 )
+
+
+JSON_ENCODERS = {
+    re.Pattern: lambda p: p.pattern,
+}
+
+
+encoder = partial(custom_pydantic_encoder, JSON_ENCODERS)
+"""
+Custom encoder based on the pydantic encoder with additional types enabled.
+(see `JSON_ENCODERS`)
+
+!!! Note
+    This is necessary since the Pydantic JSON encoder
+    cannot handle `Pattern` fields as of v1.7.3. The code exists already on
+    the master branch and should be part of the next release.
+"""
 
 
 LOGGER_NAME = "cr_kyoushi.simulation"
@@ -109,7 +128,7 @@ def configure_logging(logging_config: LoggingConfig):
                     "processor": structlog.processors.JSONRenderer(
                         serializer=json.dumps,
                         sort_keys=True,
-                        default=pydantic_encoder,
+                        default=encoder,
                     ),
                     "foreign_pre_chain": shared_processors,
                 },
