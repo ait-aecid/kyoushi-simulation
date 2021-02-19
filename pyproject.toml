@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cr-kyoushi-simulation"
-version = "0.3.4"
+version = "0.3.5"
 description = ""
 authors = ["Maximilian Frank <maximilian.frank@ait.ac.at>"]
 license = "MIT"
