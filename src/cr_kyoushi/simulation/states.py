@@ -36,8 +36,23 @@ class State(metaclass=ABCMeta):
 
     @property
     def name(self) -> str:
+        """The name (including the prefix) of the state instance
+
+        Names must be unique within a state machine.
+        """
+        if self._name_prefix is not None:
+            return f"{self._name_prefix}_{self._name}"
+        return self._name
+
+    @property
+    def name_only(self) -> str:
         """The name of the state instance (names must be uniq within a state machine)."""
         return self._name
+
+    @property
+    def name_prefix(self) -> Optional[str]:
+        """The name prefix of the state instance."""
+        return self._name_prefix
 
     @property
     def transitions(self) -> List[Transition]:
@@ -55,17 +70,24 @@ class State(metaclass=ABCMeta):
         """
         return self._transitions
 
-    def __init__(self, name: str, transitions: List[Transition]):
+    def __init__(
+        self,
+        name: str,
+        transitions: List[Transition],
+        name_prefix: Optional[str] = None,
+    ):
         """
         Args:
-            name (str): The state name
-            transitions (List[Transition]): List of possible transitions
+            name: The state name
+            transitions: List of possible transitions
+            name_prefix: A prefix for the state name
 
         Raises:
             ValueError: If there are transitions with duplicate names
         """
         self._name = name
         self._transitions = {t.name: t for t in transitions}
+        self._name_prefix: Optional[str] = name_prefix
 
         if len(self._transitions) < len(transitions):
             raise ValueError("Transition names must be unique")
@@ -99,11 +121,17 @@ class State(metaclass=ABCMeta):
 class SequentialState(State):
     """Simple sequential state only having one possible transition"""
 
-    def __init__(self, name: str, transition: Transition):
+    def __init__(
+        self,
+        name: str,
+        transition: Transition,
+        name_prefix: Optional[str] = None,
+    ):
         """
         Args:
             name: The state name
             transition: The target transition
+            name_prefix: A prefix for the state name
 
         Raises:
             ValueError: If transition is None
@@ -111,7 +139,7 @@ class SequentialState(State):
         if transition is None:
             raise ValueError("Transition must not be None")
 
-        super().__init__(name, [transition])
+        super().__init__(name, [transition], name_prefix)
         self.__transition = transition
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
@@ -137,6 +165,7 @@ class ChoiceState(State):
         decision_function: Callable[[BoundLogger, Context], bool],
         yes: Transition,
         no: Transition,
+        name_prefix: Optional[str] = None,
     ):
         """
         Args:
@@ -144,8 +173,9 @@ class ChoiceState(State):
             decision_function: Context function that decides a yes/no question.
             yes: The transition to return when the decision function returns `True`
             no: The transition to return when the decision function returns `False`
+            name_prefix: A prefix for the state name
         """
-        super().__init__(name, [yes, no])
+        super().__init__(name, [yes, no], name_prefix)
         self.__decision_function: Callable[
             [BoundLogger, Context], bool
         ] = decision_function
@@ -157,28 +187,35 @@ class ChoiceState(State):
 class FinalState(State):
     """State with not further transitions which can be used as final state of a state machine"""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, name_prefix: Optional[str] = None):
         """
         Args:
             name: The state name
+            name_prefix: A prefix for the state name
         """
-        super().__init__(name, [])
+        super().__init__(name, [], name_prefix)
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         return None
 
 
 class RoundRobinState(State):
-    def __init__(self, name: str, transitions: List[Transition]):
+    def __init__(
+        self,
+        name: str,
+        transitions: List[Transition],
+        name_prefix: Optional[str] = None,
+    ):
         """
         Args:
             name (str): The state name
             transitions (List[Transition]): List of transitions to cycle through
+            name_prefix: A prefix for the state name
 
         Raises:
             ValueError: If there are transitions with duplicate names
         """
-        super().__init__(name, transitions)
+        super().__init__(name, transitions, name_prefix)
         self.transition_cycle = cycle(transitions)
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
@@ -201,12 +238,14 @@ class ProbabilisticState(State):
         name: str,
         transitions: List[Transition],
         weights: Sequence[float],
+        name_prefix: Optional[str] = None,
     ):
         """
         Args:
             name: The state name
             transitions: The list of transitions
             weights: The list of weights to assign to the transitions in probability notation.
+            name_prefix: A prefix for the state name
 
         Raises:
             ValueError: If there are transitions with duplicate names
@@ -214,7 +253,7 @@ class ProbabilisticState(State):
             ValueError: If the given weights do not sum up to 1
         """
         # initial base properties
-        super().__init__(name, transitions)
+        super().__init__(name, transitions, name_prefix)
 
         # convert weights to cumulative weights
         self.__weights = weights
@@ -269,6 +308,7 @@ class AdaptiveProbabilisticState(ProbabilisticState):
         transitions: List[Transition],
         weights: Sequence[float],
         modifiers: Optional[Sequence[float]] = None,
+        name_prefix: Optional[str] = None,
     ):
         """
         Args:
@@ -277,8 +317,9 @@ class AdaptiveProbabilisticState(ProbabilisticState):
             weights: The list of weights to assign to the transitions in propability notation
             modifiers: List of multiplicative modifiers for each weight.
                        Will default to all 1 if not set.
+            name_prefix: A prefix for the state name
         """
-        super().__init__(name, transitions, weights)
+        super().__init__(name, transitions, weights, name_prefix)
         if modifiers is None:
             modifiers = [1.0] * len(self.weights)
 
@@ -324,11 +365,17 @@ class AdaptiveProbabilisticState(ProbabilisticState):
 class EquallyRandomState(ProbabilisticState):
     """Special type of probabilistic state using an equal random distribution for all transitions"""
 
-    def __init__(self, name: str, transitions: List[Transition]):
+    def __init__(
+        self,
+        name: str,
+        transitions: List[Transition],
+        name_prefix: Optional[str] = None,
+    ):
         """
         Args:
             name: The state name
             transitions: The list of transitions
+            name_prefix: A prefix for the state name
 
         Raises:
             ValueError: If there are transitions with duplicate names
@@ -337,4 +384,4 @@ class EquallyRandomState(ProbabilisticState):
         probability = 1.0 / len(transitions)
         weights = [probability for i in range(0, len(transitions))]
         # initialize using super
-        super().__init__(name, transitions, weights)
+        super().__init__(name, transitions, weights, name_prefix)

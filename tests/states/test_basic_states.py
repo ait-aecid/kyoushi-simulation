@@ -12,7 +12,10 @@ from structlog.stdlib import BoundLogger
 from cr_kyoushi.simulation import states
 from cr_kyoushi.simulation.logging import get_logger
 from cr_kyoushi.simulation.model import Context
-from cr_kyoushi.simulation.transitions import Transition
+from cr_kyoushi.simulation.transitions import (
+    NoopTransition,
+    Transition,
+)
 
 from ..fixtures.transitions import noop
 
@@ -150,3 +153,47 @@ def test_choice_returns_correctly(
     )
 
     assert state.next(log, empty_context) == noop_transitions[expected]
+
+
+@pytest.mark.parametrize(
+    "state_class, args",
+    [
+        pytest.param(
+            states.SequentialState,
+            {"transition": NoopTransition("test")},
+            id="SequentialState",
+        ),
+        pytest.param(states.FinalState, {}, id="FinalState"),
+        pytest.param(
+            states.RoundRobinState,
+            {"transitions": [NoopTransition("test")]},
+            id="RoundRobinState",
+        ),
+        pytest.param(
+            states.ProbabilisticState,
+            {"transitions": [NoopTransition("test")], "weights": [1]},
+            id="ProbabilisticState",
+        ),
+        pytest.param(
+            states.EquallyRandomState,
+            {"transitions": [NoopTransition("test")]},
+            id="EquallyRandomState",
+        ),
+    ],
+)
+def test_name_prefix(state_class, args: Dict[str, Any]):
+    args["name"] = "test"
+    no_prefix_args = args
+    prefix_args = args.copy()
+    prefix_args["name_prefix"] = "test"
+
+    no_prefix = state_class(**no_prefix_args)
+    prefixed = state_class(**prefix_args)
+
+    assert no_prefix.name == "test"
+    assert no_prefix.name_only == "test"
+    assert no_prefix.name_prefix is None
+
+    assert prefixed.name == "test_test"
+    assert prefixed.name_only == "test"
+    assert prefixed.name_prefix == "test"
