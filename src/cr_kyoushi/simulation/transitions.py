@@ -22,7 +22,14 @@ from .model import (
 from .util import sleep
 
 
-__all__ = ["Transition", "DelayedTransition", "transition", "delayed_transition"]
+__all__ = [
+    "Transition",
+    "DelayedTransition",
+    "transition",
+    "delayed_transition",
+    "NoopTransition",
+    "noop",
+]
 
 
 class TransitionFunction(Protocol):
@@ -51,8 +58,20 @@ class Transition:
 
     @property
     def name(self) -> str:
+        """The name of the transition (including the prefix)"""
+        if self._name_prefix is not None:
+            return f"{self._name_prefix}_{self._name}"
+        return self._name
+
+    @property
+    def name_only(self) -> str:
         """The name of the transition"""
         return self._name
+
+    @property
+    def name_prefix(self) -> Optional[str]:
+        """The name prefix of the transition instance."""
+        return self._name_prefix
 
     @property
     def target(self) -> Optional[str]:
@@ -67,14 +86,16 @@ class Transition:
     def __init__(
         self,
         transition_function: TransitionFunction,
-        name: str = None,
+        name: Optional[str] = None,
         target: Optional[str] = None,
+        name_prefix: Optional[str] = None,
     ):
         """
         Args:
+            transition_function: The transition function to call upon execution
             name: The transition name
             target: The target state
-            transition_function: The transition function to call upon execution
+            name_prefix: A prefix for the transition name
         """
         if name is None:
             if isinstance(transition_function, FunctionType):
@@ -82,9 +103,10 @@ class Transition:
             else:
                 name = transition_function.__class__.__name__.lower()
 
-        self._name = name
-        self._transition_function = transition_function
-        self._target = target
+        self._transition_function: TransitionFunction = transition_function
+        self._name: str = name
+        self._name_prefix: Optional[str] = name_prefix
+        self._target: Optional[str] = target
 
     def execute(
         self,
@@ -132,6 +154,7 @@ class Transition:
 def transition(
     name: Optional[str] = None,
     target: Optional[str] = None,
+    name_prefix: Optional[str] = None,
 ) -> Callable[[TransitionFunction], Transition]:
     """Transition decorator that can be used to turn a
     [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction] into a
@@ -140,6 +163,7 @@ def transition(
     Args:
         name: The name of the transition
         target: The target states name
+        name_prefix: A prefix for the transition name
 
 
     Example:
@@ -162,9 +186,7 @@ def transition(
 
     def decorator(func: TransitionFunction) -> Transition:
         return Transition(
-            transition_function=func,
-            target=target,
-            name=name,
+            transition_function=func, target=target, name=name, name_prefix=name_prefix
         )
 
     return decorator
@@ -193,6 +215,7 @@ class DelayedTransition(Transition):
         target: Optional[str] = None,
         delay_before: Union[ApproximateFloat, float] = 0.0,
         delay_after: Union[ApproximateFloat, float] = 0.0,
+        name_prefix: Optional[str] = None,
     ):
         """
         Args:
@@ -201,8 +224,9 @@ class DelayedTransition(Transition):
             target: The target state
             delay_before: The pre execution delay to configure
             delay_after: The post execution delay to configure
+            name_prefix: A prefix for the transition name
         """
-        super().__init__(transition_function, name, target)
+        super().__init__(transition_function, name, target, name_prefix)
 
         if isinstance(delay_before, float):
             delay_before = ApproximateFloat.convert(delay_before)
@@ -253,6 +277,7 @@ def delayed_transition(
     target: Optional[str] = None,
     delay_before: Union[ApproximateFloat, float] = 0.0,
     delay_after: Union[ApproximateFloat, float] = 0.0,
+    name_prefix: Optional[str] = None,
 ) -> Callable[[TransitionFunction], DelayedTransition]:
     """Transition decorator that can be used to turn a
     [`TransitionFunction`][cr_kyoushi.simulation.transitions.TransitionFunction] into a
@@ -263,6 +288,7 @@ def delayed_transition(
         target: The target states name
         delay_before: The pre execution delay to configure
         delay_after: The post execution delay to configure
+        name_prefix: A prefix for the transition name
 
     Example:
         ```python
@@ -289,6 +315,7 @@ def delayed_transition(
             name=name,
             delay_before=delay_before,
             delay_after=delay_after,
+            name_prefix=name_prefix,
         )
 
     return decorator
@@ -301,10 +328,16 @@ def noop(log: BoundLogger, current_state: str, context: Context, target: Optiona
 class NoopTransition(Transition):
     """No noperation transition that only changes the current state."""
 
-    def __init__(self, name: str = "noop", target: Optional[str] = None):
+    def __init__(
+        self,
+        name: str = "noop",
+        target: Optional[str] = None,
+        name_prefix: Optional[str] = None,
+    ):
         """
         Args:
             name: The name of the transition
             target: The name of the target state
+            name_prefix: A prefix for the transition name
         """
-        super().__init__(noop, name=name, target=target)
+        super().__init__(noop, name=name, target=target, name_prefix=name_prefix)

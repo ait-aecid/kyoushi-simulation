@@ -88,3 +88,41 @@ def test_noop_transition(mocker: MockFixture):
             expected_state,
         )
     ]
+
+
+@pytest.mark.parametrize(
+    "transition_class, args",
+    [
+        pytest.param(
+            transitions.Transition,
+            {"transition_function": noop},
+            id="Transition",
+        ),
+        pytest.param(
+            transitions.DelayedTransition,
+            {"transition_function": noop},
+            id="DelayedTransition",
+        ),
+        pytest.param(
+            transitions.NoopTransition,
+            {},
+            id="NoopTransition",
+        ),
+    ],
+)
+def test_name_prefix(transition_class, args: Dict[str, Any]):
+    args["name"] = "test"
+    no_prefix_args = args
+    prefix_args = args.copy()
+    prefix_args["name_prefix"] = "test"
+
+    no_prefix = transition_class(**no_prefix_args)
+    prefixed = transition_class(**prefix_args)
+
+    assert no_prefix.name == "test"
+    assert no_prefix.name_only == "test"
+    assert no_prefix.name_prefix is None
+
+    assert prefixed.name == "test_test"
+    assert prefixed.name_only == "test"
+    assert prefixed.name_prefix == "test"
