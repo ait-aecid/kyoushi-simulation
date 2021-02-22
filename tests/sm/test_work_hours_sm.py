@@ -44,11 +44,13 @@ def test_wait_for_work_given_no_schedule_do_nothing(mocker: MockFixture):
 
     sm = WorkHoursStatemachine("mock", states=[])
 
+    pause_spy = mocker.spy(sm, "_pause_work")
     resume_spy = mocker.spy(sm, "_resume_work")
 
     sm._wait_for_work()
 
     assert sleep_mock.call_count == 0
+    assert pause_spy.call_count == 0
     assert resume_spy.call_count == 0
 
 
@@ -91,6 +93,7 @@ def test_wait_for_work_stops_machine_when_end_or_no_work(
         "mock", states=[], end_time=end_time, work_schedule=schedule_mock
     )
 
+    pause_spy = mocker.spy(sm, "_pause_work")
     resume_spy = mocker.spy(sm, "_resume_work")
 
     expected_schedule_calls = [call.next_work_start(current_time)]
@@ -102,6 +105,7 @@ def test_wait_for_work_stops_machine_when_end_or_no_work(
 
     assert sm.current_state is None
     assert sleep_mock.call_count == 0
+    assert pause_spy.call_count == 0
     assert resume_spy.call_count == 0
     assert schedule_mock.mock_calls == expected_schedule_calls
 
@@ -132,6 +136,7 @@ def test_wait_for_work_given_schedule_and_work_day_waits(mocker: MockFixture):
         work_schedule=schedule_mock,
     )
 
+    pause_spy = mocker.spy(sm, "_pause_work")
     resume_spy = mocker.spy(sm, "_resume_work")
 
     expected_schedule_calls = [call.next_work_start(current_time)]
@@ -143,6 +148,7 @@ def test_wait_for_work_given_schedule_and_work_day_waits(mocker: MockFixture):
     sm._wait_for_work()
 
     assert sm.current_state == "mock"
+    assert pause_spy.call_count == 1
     assert sleep_mock.call_count == 1
     assert resume_spy.call_count == 1
 

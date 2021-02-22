@@ -386,20 +386,32 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         # if we have work hours we have to check them
         return self.work_schedule.is_work_time(now())
 
-    def _resume_work(self):
-        """The resume work method will be called before resuming work after sleeping.
+    def _pause_work(self):
+        """The pause work metho will be called before pausing the SM until the next work time.
 
-        Use this method to prepare the state machine to resume after a potentially long
-        pause. By default this method does nothing.
+        Use this method to destroy any resources that should not be active outside
+        the work hours (e.g., the selenium browser). Also see `_resume_work`
 
         !!! Hint
-            You could for example configure your state machine to restart from the initial
-            state before resuming work:
-
+            You could simply destroy your context and set the SM to the initial state:
             ```python
             self.current_state = self.initial_state
             # reset context
             self.destroy_context()
+            ```
+        """
+
+    def _resume_work(self):
+        """The resume work method will be called before resuming work after sleeping.
+
+        Use this method to prepare the state machine to resume after a potentially long
+        pause. By default this method does nothing. Also see `_pause_work`.
+
+        !!! Hint
+            You could for example configure your state machine to recreate from the initial
+            state before resuming work:
+
+            ```python
             self.setup_context()
             ```
         """
@@ -428,6 +440,7 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         ):
             self.current_state = None
         else:
+            self._pause_work()
             # wait til we have work again
             sleep_until(next_work)
             # and then pre-pare to resume work
