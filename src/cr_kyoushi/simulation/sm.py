@@ -440,11 +440,15 @@ class WorkHoursStatemachine(StartEndTimeStatemachine):
         ):
             self.current_state = None
         else:
+            self.log.info("Pausing state machine")
             self._pause_work()
+            self.log.info("Paused state machine")
             # wait til we have work again
             sleep_until(next_work)
             # and then pre-pare to resume work
+            self.log.info("Resuming state machine")
             self._resume_work()
+            self.log.info("Resumed state machine")
 
     def execute_step(self):
         """Execute a single state machine step.
