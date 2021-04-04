@@ -45,6 +45,45 @@ LOGGER_NAME = "cr_kyoushi.simulation"
 """The name of the Cyber Range Kyoushi Simulation logger"""
 
 
+def rename_event_key(
+    logger: logging.Logger,
+    method_name: str,
+    event_dict: MutableMapping[str, Any],
+    field_name: str,
+) -> MutableMapping[str, Any]:
+    """Processor for renaming the event key to message.
+
+    We do this since this is more compatible with the ecs schema.
+    """
+    event_dict[field_name] = event_dict.pop("event")
+    return event_dict
+
+
+def rename_event_key_wrapper(
+    func: Callable[[logging.Logger, str, MutableMapping[str, Any]], Any],
+    field_name: str = "message",
+) -> Callable[
+    [logging.Logger, str, MutableMapping[str, Any]], MutableMapping[str, Any]
+]:
+    """Processor wrapper that renames the event field before calling the given processor.
+
+    Args:
+        func: The processor to be wrapped
+        field_name: The field name to use instead of `event`
+
+    Returns:
+        The wrapped processor
+    """
+
+    def _rename_event_key(
+        logger: logging.Logger, method_name: str, event_dict: MutableMapping[str, Any]
+    ) -> MutableMapping[str, Any]:
+        event_dict = rename_event_key(logger, method_name, event_dict, field_name)
+        return func(logger, method_name, event_dict)
+
+    return _rename_event_key
+
+
 def get_logger() -> structlog.stdlib.BoundLogger:
     """Convenience function for getting the Cyber Range Kyoushi Simulation logger."""
     return structlog.stdlib.get_logger(LOGGER_NAME)
@@ -87,6 +126,7 @@ def configure_logging(logging_config: LoggingConfig):
         ]
     ] = [structlog.stdlib.filter_by_level]
     processors.extend(shared_processors)
+    # the processor formatter wrapper must be last as it changes the
     processors.append(structlog.stdlib.ProcessorFormatter.wrap_for_formatter)
 
     handlers = {}
@@ -125,10 +165,13 @@ def configure_logging(logging_config: LoggingConfig):
                 },
                 LogFormat.JSON: {
                     "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.processors.JSONRenderer(
-                        serializer=json.dumps,
-                        sort_keys=True,
-                        default=encoder,
+                    # when logging to json we rename the "event" field to "message"
+                    "processor": rename_event_key_wrapper(
+                        structlog.processors.JSONRenderer(
+                            serializer=json.dumps,
+                            sort_keys=True,
+                            default=encoder,
+                        )
                     ),
                     "foreign_pre_chain": shared_processors,
                 },
