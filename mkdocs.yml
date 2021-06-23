@@ -1,5 +1,5 @@
 site_name: Cyber Range Kyoushi Simulation
-
+site_url: https://ait-aecid.github.io/kyoushi-simulation
 site_description: State machine based actor simulation framework for cyber range testbeds.
 strict: true
 
@@ -19,10 +19,10 @@ extra_javascript:
   - js/jquery-3.5.1.min.js
   - js/jquery.fancybox.min.js
 
-repo_name: kyoushi/simulation
-repo_url: https://git-service.ait.ac.at/sct-cyberrange/tools/kyoushi/simulation
+repo_name: kyoushi-simulation
+repo_url: https://github.com/ait-aecid/kyoushi-simulation
 # need to set manually since we use a private gitlab instance
-edit_uri: edit/master/docs/
+edit_uri: edit/main/docs/
 
 nav:
 - Overview: index.md
