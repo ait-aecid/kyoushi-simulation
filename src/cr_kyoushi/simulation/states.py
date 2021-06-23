@@ -283,7 +283,7 @@ class ProbabilisticState(State):
 
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
-            return np.random.choice(a=self.transitions, p=self.weights)
+            return np.random.choice(a=np.array(self.transitions), p=self.weights)
         return None
 
 
@@ -356,7 +356,9 @@ class AdaptiveProbabilisticState(ProbabilisticState):
     def next(self, log: BoundLogger, context: Context) -> Optional[Transition]:
         if len(self.transitions) > 0:
             self.adapt_before(log, context)
-            selected = np.random.choice(a=self.transitions, p=self.probabilities)
+            selected = np.random.choice(
+                a=np.array(self.transitions), p=self.probabilities
+            )
             self.adapt_after(log, context, selected)
             return selected
         return None

@@ -280,6 +280,7 @@ def get_seed() -> int:
         The seed value
     """
     # configure seed if not already done
+    global _SEED
     if _SEED is None:
         configure_seed()
 
