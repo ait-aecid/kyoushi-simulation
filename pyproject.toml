@@ -8,7 +8,7 @@ readme = 'README.md'  # Markdown files are supported
 repository = "https://ait-aecid.github.io/kyoushi-simulation/"
 homepage = "https://ait-aecid.github.io/kyoushi-simulation"
 packages = [
-  { include = "kyoushi", from = "src" }
+  { include = "cr_kyoushi", from = "src" }
 ]
 
 [tool.poetry.dependencies]
@@ -58,7 +58,7 @@ use_parentheses = true
 src_paths = ["src", "tests"]
 skip_glob = ["*/setup.py"]
 filter_files = true
-known_first_party = "kyoushi"
+known_first_party = "cr_kyoushi"
 
 
 [tool.black]
