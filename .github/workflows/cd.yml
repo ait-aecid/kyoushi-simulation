@@ -1,13 +1,10 @@
 name: Deploy Pages and Modules
-
-on: [ pull_request ]
-# on:
-#   release:
-#     tags:
-#       - v*
+on:
+  release:
+    types: [published]
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
