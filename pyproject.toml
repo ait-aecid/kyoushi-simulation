@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cr-kyoushi-simulation"
+name = "kyoushi-simulation"
 version = "0.3.7"
 description = ""
 authors = ["Maximilian Frank <maximilian.frank@ait.ac.at>"]
@@ -21,6 +21,7 @@ structlog = "^20.2.0"
 colorama = "^0.4.4"
 numpy = "^1.19.5"
 typing-extensions = {version = "^3.7.4", python = "<3.8"}
+livereload = "^2.6.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -80,7 +81,7 @@ exclude = '''
 '''
 
 [tool.poetry.scripts]
-cr-kyoushi-sim = "cr_kyoushi.simulation.cli:cli"
+kyoushi-sim = "kyoushi.simulation.cli:cli"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

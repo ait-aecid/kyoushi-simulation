@@ -7,6 +7,8 @@ from typing import (
 
 import pytest
 
+from numpy import array as np_array
+from numpy import testing as np_testing
 from pytest_mock import MockFixture
 
 from cr_kyoushi.simulation.logging import get_logger
@@ -290,11 +292,16 @@ def test_adaptive_next_calls(
     state.next(log, empty_context)
 
     # note that since all modifiers are 1 w=p is expected
-    assert mock.mock_calls == [
-        call.adapt_before(log, empty_context),
-        call.choice(a=four_mocked_transitions, p=weights),
-        call.adapt_after(log, empty_context, selected),
-    ]
+    calls = mock.mock_calls
+    # need to check manually since == does not work for np array args
+    assert len(calls) == 3
+
+    assert calls[0] == call.adapt_before(log, empty_context)
+
+    np_testing.assert_array_equal(calls[1][2]["a"], np_array(four_mocked_transitions))
+    assert calls[1][2]["p"] == weights
+
+    assert calls[2] == call.adapt_after(log, empty_context, selected)
 
 
 def test_adaptive_caluclates_and_returns_correctly(
@@ -327,7 +334,12 @@ def test_adaptive_caluclates_and_returns_correctly(
     # check calc called correctly
     assert calc_mock.mock_calls == [call(weights, modifiers)]
     # check choice called with calculated probs
-    assert np_mock.mock_calls == [call(a=four_mocked_transitions, p=mock_p)]
+    calls = np_mock.call_args_list
+
+    # need to check manually since == checks do not work for np array args
+    assert np_mock.call_count == 1
+    np_testing.assert_array_equal(calls[0][1]["a"], np_array(four_mocked_transitions))
+    assert calls[0][1]["p"] == mock_p
 
 
 def test_adaptive_reset(four_mocked_transitions: List[Transition]):
