@@ -1,0 +1,2062 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="State machine based actor simulation framework for cyber range testbeds.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://ait-aecid.github.io/kyoushi-simulation/reference/config/">
+      
+      <link rel="shortcut icon" href="../../images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Configuration - Cyber Range Kyoushi Simulation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/jquery.fancybox.min.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="ait" data-md-color-primary="" data-md-color-accent="">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#config-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" aria-label="Cyber Range Kyoushi Simulation">
+      
+  <img src="../../images/cr_icon.svg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" aria-label="Cyber Range Kyoushi Simulation">
+      
+  <img src="../../images/cr_icon.svg" alt="logo">
+
+    </a>
+    Cyber Range Kyoushi Simulation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+      
+      <label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/getting_started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/logging/" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        CLI Reference
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Examples" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/traveler/" class="md-nav__link">
+        Traveler
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/decorated_traveler/" class="md-nav__link">
+        Decorated Traveler
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+      
+      <label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Code Reference" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../states/" class="md-nav__link">
+        States
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transitions/" class="md-nav__link">
+        Transitions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sm/" class="md-nav__link">
+        State Machine
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../util/" class="md-nav__link">
+        Utility Functions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Exceptions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Configuration
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config" class="md-nav__link">
+    cr_kyoushi.simulation.config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler" class="md-nav__link">
+    FileLogHandler
+  </a>
+  
+    <nav class="md-nav" aria-label="FileLogHandler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.validate_log_path" class="md-nav__link">
+    validate_log_path()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat" class="md-nav__link">
+    LogFormat
+  </a>
+  
+    <nav class="md-nav" aria-label="LogFormat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.COLORED" class="md-nav__link">
+    COLORED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.JSON" class="md-nav__link">
+    JSON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.PLAIN" class="md-nav__link">
+    PLAIN
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig" class="md-nav__link">
+    LoggingConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="LoggingConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.console" class="md-nav__link">
+    console
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.file" class="md-nav__link">
+    file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.level" class="md-nav__link">
+    level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.timestamp" class="md-nav__link">
+    timestamp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler" class="md-nav__link">
+    LogHandler
+  </a>
+  
+    <nav class="md-nav" aria-label="LogHandler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler.enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp" class="md-nav__link">
+    LogTimestamp
+  </a>
+  
+    <nav class="md-nav" aria-label="LogTimestamp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.key" class="md-nav__link">
+    key
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.utc" class="md-nav__link">
+    utc
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig" class="md-nav__link">
+    PluginConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="PluginConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig.exclude_names" class="md-nav__link">
+    exclude_names
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig.include_names" class="md-nav__link">
+    include_names
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings" class="md-nav__link">
+    Settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.log" class="md-nav__link">
+    log
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.plugin" class="md-nav__link">
+    plugin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.seed" class="md-nav__link">
+    seed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.configure_seed" class="md-nav__link">
+    configure_seed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.get_seed" class="md-nav__link">
+    get_seed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_config_file" class="md-nav__link">
+    load_config_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_settings" class="md-nav__link">
+    load_settings()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_sm_config" class="md-nav__link">
+    load_sm_config()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logging/" class="md-nav__link">
+        Logging
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config" class="md-nav__link">
+    cr_kyoushi.simulation.config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler" class="md-nav__link">
+    FileLogHandler
+  </a>
+  
+    <nav class="md-nav" aria-label="FileLogHandler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.path" class="md-nav__link">
+    path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.FileLogHandler.validate_log_path" class="md-nav__link">
+    validate_log_path()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat" class="md-nav__link">
+    LogFormat
+  </a>
+  
+    <nav class="md-nav" aria-label="LogFormat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.COLORED" class="md-nav__link">
+    COLORED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.JSON" class="md-nav__link">
+    JSON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogFormat.PLAIN" class="md-nav__link">
+    PLAIN
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig" class="md-nav__link">
+    LoggingConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="LoggingConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.console" class="md-nav__link">
+    console
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.file" class="md-nav__link">
+    file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.level" class="md-nav__link">
+    level
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LoggingConfig.timestamp" class="md-nav__link">
+    timestamp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler" class="md-nav__link">
+    LogHandler
+  </a>
+  
+    <nav class="md-nav" aria-label="LogHandler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler.enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogHandler.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp" class="md-nav__link">
+    LogTimestamp
+  </a>
+  
+    <nav class="md-nav" aria-label="LogTimestamp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.format" class="md-nav__link">
+    format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.key" class="md-nav__link">
+    key
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.LogTimestamp.utc" class="md-nav__link">
+    utc
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig" class="md-nav__link">
+    PluginConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="PluginConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig.exclude_names" class="md-nav__link">
+    exclude_names
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.PluginConfig.include_names" class="md-nav__link">
+    include_names
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings" class="md-nav__link">
+    Settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.log" class="md-nav__link">
+    log
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.plugin" class="md-nav__link">
+    plugin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.Settings.seed" class="md-nav__link">
+    seed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.configure_seed" class="md-nav__link">
+    configure_seed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.get_seed" class="md-nav__link">
+    get_seed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_config_file" class="md-nav__link">
+    load_config_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_settings" class="md-nav__link">
+    load_settings()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cr_kyoushi.simulation.config.load_sm_config" class="md-nav__link">
+    load_sm_config()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/reference/config.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="config-module">Config module<a class="headerlink" href="#config-module" title="Permanent link">&para;</a></h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#cr_kyoushi.simulation.config" id="cr_kyoushi.simulation.config" style="visibility: hidden; position: absolute;">
+        <a class="headerlink" href="#cr_kyoushi.simulation.config" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents first">
+<div class="doc doc-children">
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.FileLogHandler">
+
+        <code>FileLogHandler</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.FileLogHandler" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configuration for a file log handler</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.FileLogHandler.enabled">
+
+        <code class="highlight">
+enabled: <span class="nb">bool</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.FileLogHandler.enabled" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>If the log handler should be enabled or not</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.FileLogHandler.format">
+
+        <code class="highlight">
+format: <span class="n">LogFormat</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.FileLogHandler.format" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The log format to use when logging to the console</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.FileLogHandler.path">
+
+        <code class="highlight">
+path: <span class="n">Path</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.FileLogHandler.path" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The file path to log to, must be set if the handler is enabled.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.FileLogHandler.validate_log_path">
+
+        <code class="highlight language-python">
+validate_log_path<span class="p">(</span><span class="n">path</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.FileLogHandler.validate_log_path" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>Validate that the given path is a file if it exists</p>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_log_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">"""Validate that the given path is a file if it exists"""</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Log file path </span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2"> is not a file!"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogFormat">
+
+        <code>LogFormat</code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogFormat" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Enum for log formatter styles</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogFormat.COLORED">
+
+        <code class="highlight">
+COLORED        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogFormat.COLORED" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The same as PLAIN, but colorized</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogFormat.JSON">
+
+        <code class="highlight">
+JSON        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogFormat.JSON" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The log events in JSON format</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogFormat.PLAIN">
+
+        <code class="highlight">
+PLAIN        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogFormat.PLAIN" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>Human readable structured text format</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.LoggingConfig">
+
+        <code>LoggingConfig</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LoggingConfig" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configuration options for the logging system.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LoggingConfig.console">
+
+        <code class="highlight">
+console: <span class="n">LogHandler</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LoggingConfig.console" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>Configuration for the console logger</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LoggingConfig.file">
+
+        <code class="highlight">
+file: <span class="n">FileLogHandler</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LoggingConfig.file" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>Configuration for the file logger</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LoggingConfig.level">
+
+        <code class="highlight">
+level: <span class="n">LogLevel</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LoggingConfig.level" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The log level to use for logging</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LoggingConfig.timestamp">
+
+        <code class="highlight">
+timestamp: <span class="n">LogTimestamp</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LoggingConfig.timestamp" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>Configuration options for modifying the log timestamps</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogHandler">
+
+        <code>LogHandler</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogHandler" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configuration for a log handler</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogHandler.enabled">
+
+        <code class="highlight">
+enabled: <span class="nb">bool</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogHandler.enabled" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>If the log handler should be enabled or not</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogHandler.format">
+
+        <code class="highlight">
+format: <span class="n">LogFormat</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogHandler.format" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The log format to use when logging to the console</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogTimestamp">
+
+        <code>LogTimestamp</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogTimestamp" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configuration for the log timestamp format and key</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogTimestamp.format">
+
+        <code class="highlight">
+format: <span class="nb">str</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogTimestamp.format" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The strftime string format to use for formating timestamps (e.g., <code>%Y-%m-%d %H:%M:%S</code>). If this is <code>None</code> a <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX timestamp</a> is used.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogTimestamp.key">
+
+        <code class="highlight">
+key: <span class="nb">str</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogTimestamp.key" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The key to use for the timestamp.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.LogTimestamp.utc">
+
+        <code class="highlight">
+utc: <span class="nb">bool</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.LogTimestamp.utc" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>If the timestamp should be in UTC or the local timezone.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.PluginConfig">
+
+        <code>PluginConfig</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.PluginConfig" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configuration options for the state machine factory plugin system.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.PluginConfig.exclude_names">
+
+        <code class="highlight">
+exclude_names: <span class="n">Pattern</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.PluginConfig.exclude_names" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>A list of regular expressions used to define         which plugins to explicitly exclude.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.PluginConfig.include_names">
+
+        <code class="highlight">
+include_names: <span class="n">Pattern</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.PluginConfig.include_names" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>A list of regular expressions used to define which plugins to include.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.Settings">
+
+        <code>Settings</code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.Settings" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Cyber Range Kyoushi Simulation settings</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.Settings.log">
+
+        <code class="highlight">
+log: <span class="n">LoggingConfig</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.Settings.log" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The logging configuration</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.Settings.plugin">
+
+        <code class="highlight">
+plugin: <span class="n">PluginConfig</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.Settings.plugin" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The plugin system configuration</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.config.Settings.seed">
+
+        <code class="highlight">
+seed: <span class="nb">int</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.Settings.seed" title="Permanent link">&para;</a></h3>
+<div class="doc doc-contents ">
+<p>The seed to use for random generators</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.configure_seed">
+
+        <code class="highlight language-python">
+configure_seed<span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.configure_seed" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Configure a seed for PRNG, if no seed is passed then one is generated.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seed</code></td>
+<td><code>Optional[int]</code></td>
+<td>
+<p>The seed to use for PRNG</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">configure_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Configure a seed for PRNG, if no seed is passed then one is generated.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        seed: The seed to use for PRNG</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># legacy global numpy requires seeds to be in</span>
+        <span class="c1"># [0, 2**32-1]</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">global</span> <span class="n">_SEED</span>
+    <span class="n">_SEED</span> <span class="o">=</span> <span class="n">seed</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.get_seed">
+
+        <code class="highlight language-python">
+get_seed<span class="p">()</span>        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.get_seed" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Get the global random seed value for the simulation library</p>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td>
+<p>The seed value</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">get_seed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">"""Get the global random seed value for the simulation library</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The seed value</span>
+<span class="sd">    """</span>
+    <span class="c1"># configure seed if not already done</span>
+    <span class="k">global</span> <span class="n">_SEED</span>
+    <span class="k">if</span> <span class="n">_SEED</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">configure_seed</span><span class="p">()</span>
+
+    <span class="c1"># return seed value</span>
+    <span class="k">return</span> <span class="n">_SEED</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.load_config_file">
+
+        <code class="highlight language-python">
+load_config_file<span class="p">(</span><span class="n">config_path</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.load_config_file" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Loads a given a config from the given path and returns a raw dictionary.</p>
+<p>Supported file formats are:
+    - YAML</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config_path</code></td>
+<td><code>Path</code></td>
+<td>
+<p>The file path to read the config from</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Dict[Any, Any]</code></td>
+<td>
+<p>The contents of the configuration file converted to a dictionary or <code>{}</code>
+if the file is empty or does not exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_config_file</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">"""Loads a given a config from the given path and returns a raw dictionary.</span>
+
+<span class="sd">    Supported file formats are:</span>
+<span class="sd">        - YAML</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config_path: The file path to read the config from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The contents of the configuration file converted to a dictionary or `{}`</span>
+<span class="sd">        if the file is empty or does not exist.</span>
+<span class="sd">    """</span>
+    <span class="n">yaml</span> <span class="o">=</span> <span class="n">YAML</span><span class="p">(</span><span class="n">typ</span><span class="o">=</span><span class="s2">"safe"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{}</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.load_settings">
+
+        <code class="highlight language-python">
+load_settings<span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.load_settings" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Loads the Cyber Range Kyoushi Simulation CLI settings</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settings_path</code></td>
+<td><code>Path</code></td>
+<td>
+<p>The path to load the settings file from</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>log_level</code></td>
+<td><code>Optional[cr_kyoushi.simulation.model.LogLevel]</code></td>
+<td>
+<p>The CLI log_level override. This supercedes the config
+       and environment variable values..</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConfigValidationError</code></td>
+<td>
+<p>If the config validation fails</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Settings</code></td>
+<td>
+<p>The validated settings object</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_settings</span><span class="p">(</span>
+    <span class="n">settings_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LogLevel</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Settings</span><span class="p">:</span>
+    <span class="sd">"""Loads the Cyber Range Kyoushi Simulation CLI settings</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        settings_path: The path to load the settings file from</span>
+<span class="sd">        log_level: The CLI log_level override. This supercedes the config</span>
+<span class="sd">                   and environment variable values..</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ConfigValidationError: If the config validation fails</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The validated settings object</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">settings_raw</span> <span class="o">=</span> <span class="n">load_config_file</span><span class="p">(</span><span class="n">settings_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">log_level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings_raw</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"log"</span><span class="p">,</span> <span class="p">{})[</span><span class="s2">"level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_level</span>
+
+        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings_raw</span><span class="p">[</span><span class="s2">"seed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+            <span class="n">_env_file</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">object</span><span class="p">),</span>
+            <span class="n">_env_file_encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">_secrets_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">settings_raw</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">settings</span>
+    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">val_err</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigValidationError</span><span class="p">(</span><span class="n">val_err</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.config.load_sm_config">
+
+        <code class="highlight language-python">
+load_sm_config<span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">sm_config_type</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#cr_kyoushi.simulation.config.load_sm_config" title="Permanent link">&para;</a></h2>
+<div class="doc doc-contents ">
+<p>Loads and validates the state machine configuration</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config_path</code></td>
+<td><code>Path</code></td>
+<td>
+<p>The path to load the configuration from</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>sm_config_type</code></td>
+<td><code>Type[~StatemachineConfig]</code></td>
+<td>
+<p>The state machine config class to convert to</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConfigValidationError</code></td>
+<td>
+<p>If the config validation fails</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~StatemachineConfig</code></td>
+<td>
+<p>The state machine configuration validated and converted
+to the given config class.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>simulation/config.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_sm_config</span><span class="p">(</span>
+    <span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">sm_config_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StatemachineConfig</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatemachineConfig</span><span class="p">:</span>
+    <span class="sd">"""Loads and validates the state machine configuration</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config_path: The path to load the configuration from</span>
+<span class="sd">        sm_config_type: The state machine config class to convert to</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ConfigValidationError: If the config validation fails</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The state machine configuration validated and converted</span>
+<span class="sd">        to the given config class.</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config_raw</span> <span class="o">=</span> <span class="n">load_config_file</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">sm_config_type</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">sm_config_type</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">config_raw</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">config_raw</span>
+
+    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">val_err</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigValidationError</span><span class="p">(</span><span class="n">val_err</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../errors/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Exceptions
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../logging/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Logging
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../../js/jquery-3.5.1.min.js"></script>
+      
+        <script src="../../js/jquery.fancybox.min.js"></script>
+      
+    
+  </body>
+</html>

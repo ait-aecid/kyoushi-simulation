@@ -1,0 +1,2447 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="State machine based actor simulation framework for cyber range testbeds." name="description"/>
+<link href="https://ait-aecid.github.io/kyoushi-simulation/reference/sm/" rel="canonical"/>
+<link href="../../images/favicon.ico" rel="shortcut icon"/>
+<meta content="mkdocs-1.2.2, mkdocs-material-6.2.8" name="generator"/>
+<title>State Machine - Cyber Range Kyoushi Simulation</title>
+<link href="../../assets/stylesheets/main.cb6bc1d0.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.39b8e14a.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<link href="../../stylesheets/jquery.fancybox.min.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="ait" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#statemachine-module">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+</div>
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            
+              State Machine
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+    Cyber Range Kyoushi Simulation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        Overview
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Usage" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/getting_started/">
+        Getting Started
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/configuration/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/logging/">
+        Logging
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/cli/">
+        CLI Reference
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/traveler/">
+        Traveler
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/decorated_traveler/">
+        Decorated Traveler
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Code Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model/">
+        Models
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../states/">
+        States
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transitions/">
+        Transitions
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          State Machine
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        State Machine
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm">
+    cr_kyoushi.simulation.sm
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine">
+    StartEndTimeStatemachine
+  </a>
+<nav aria-label="StartEndTimeStatemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine">
+    Statemachine
+  </a>
+<nav aria-label="Statemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory">
+    StatemachineFactory
+  </a>
+<nav aria-label="StatemachineFactory" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.config_class">
+    config_class
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.build">
+    build()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine">
+    WorkHoursStatemachine
+  </a>
+<nav aria-label="WorkHoursStatemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.work_schedule">
+    work_schedule
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._pause_work">
+    _pause_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work">
+    _resume_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work">
+    _wait_for_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../util/">
+        Utility Functions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../errors/">
+        Exceptions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../logging/">
+        Logging
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contributing/">
+        Contributing
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../license/">
+        License
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm">
+    cr_kyoushi.simulation.sm
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine">
+    StartEndTimeStatemachine
+  </a>
+<nav aria-label="StartEndTimeStatemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine">
+    Statemachine
+  </a>
+<nav aria-label="Statemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.Statemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory">
+    StatemachineFactory
+  </a>
+<nav aria-label="StatemachineFactory" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.config_class">
+    config_class
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.StatemachineFactory.build">
+    build()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine">
+    WorkHoursStatemachine
+  </a>
+<nav aria-label="WorkHoursStatemachine" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.context">
+    context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.log">
+    log
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.uuid">
+    uuid
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.work_schedule">
+    work_schedule
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._pause_work">
+    _pause_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work">
+    _resume_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work">
+    _wait_for_work()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.destroy_context">
+    destroy_context()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_machine">
+    execute_machine()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_step">
+    execute_step()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_transition">
+    execute_transition()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.run">
+    run()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.setup_context">
+    setup_context()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/reference/sm.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="statemachine-module">Statemachine module<a class="headerlink" href="#statemachine-module" title="Permanent link">¶</a></h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#cr_kyoushi.simulation.sm" id="cr_kyoushi.simulation.sm" style="visibility: hidden; position: absolute;">
+<a class="headerlink" href="#cr_kyoushi.simulation.sm" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents first">
+<p>State machine module</p>
+<p>This module contains all class and function defintions for creating and defining
+Cyber Range Kyoushi simulation machines.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine">
+<code>StartEndTimeStatemachine</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Special type of state machine that allows configuring a start and end time.</p>
+<p>The main stat machine execution loop will only start execution once it is
+the configured start time (starts immediately if none is configured). Similarly
+the state machine will stop once the current time is the end time even if there
+are still transitions left to execute. This is for example useful when you wish to
+configure a state machine to only run for the duration of an experiment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A state machine might end before its end time if it enters a final state.</p>
+</div>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.context">
+<code class="highlight">
+context: <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-writable"><code>writable</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The state machine execution context object.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.end_time">
+<code class="highlight">
+end_time: <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.end_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The <code>datetime</code> this state machine will end</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.log">
+<code class="highlight">
+log: <span class="n">BoundLogger</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.log" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Bound logger initialize with context information for this state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.start_time">
+<code class="highlight">
+start_time: <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.start_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The <code>datetime</code> this state machine will start execution</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.uuid">
+<code class="highlight">
+uuid: <span class="n">UUID</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.uuid" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>UUID for this state machine execution.</p>
+<p>For example used as unique run ID during when logging.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initial_state</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name of the initial state</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>states</code></td>
+<td><code>List[cr_kyoushi.simulation.states.State]</code></td>
+<td>
+<p>List of all states the state machine can enter</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td><code>Optional[datetime.datetime]</code></td>
+<td>
+<p>The <code>datetime</code> this state machine should start execution</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td><code>Optional[datetime.datetime]</code></td>
+<td>
+<p>The <code>datetime</code> this state machine should end execution</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_errors</code></td>
+<td><code>int</code></td>
+<td>
+<p>Maximum amount of errors the state machine is allowed to encounter
+        before it stops trying to recover by reseting to the initial state.</p>
+</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>state_time</code> or <code>end_time</code> are <code>None</code> then the state machine will
+start or end execution normally.</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">initial_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">states</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">State</span><span class="p">],</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        initial_state: The name of the initial state</span>
+<span class="sd">        states: List of all states the state machine can enter</span>
+<span class="sd">        start_time: The `datetime` this state machine should start execution</span>
+<span class="sd">        end_time: The `datetime` this state machine should end execution</span>
+<span class="sd">        max_errors: Maximum amount of errors the state machine is allowed to encounter</span>
+<span class="sd">                    before it stops trying to recover by reseting to the initial state.</span>
+
+<span class="sd">    !!! Note</span>
+<span class="sd">        If `state_time` or `end_time` are `None` then the state machine will</span>
+<span class="sd">        start or end execution normally.</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">initial_state</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="n">max_errors</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.destroy_context">
+<code class="highlight language-python">
+destroy_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.destroy_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Destroy and clean up the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override or extend this function if your state machine needs run some
+logic or free <code>Context</code> information after it has finished executing.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">destroy_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Destroy and clean up the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this function if your state machine needs run some</span>
+<span class="sd">        logic or free `Context` information after it has finished executing.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_machine">
+<code class="highlight language-python">
+execute_machine<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_machine" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>State machine main execution loop.</p>
+<p>This function executes state machine steps in a loop until either
+ - a end state is reached (i.e., current state is <code>None</code>)
+ - or the current time is &gt;= <code>end_time</code></p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""State machine main execution loop.</span>
+
+<span class="sd">    This function executes state machine steps in a loop until either</span>
+<span class="sd">     - a end state is reached (i.e., current state is `None`)</span>
+<span class="sd">     - or the current time is &gt;= `end_time`</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># state machine run main loop</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_end_time</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_step</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_step">
+<code class="highlight language-python">
+execute_step<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_step" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute a single state machine step.</p>
+<p>This function delegates transition execution to <code>execute_transition()</code>.
+All pre and post execution tasks such as retrieving the transition
+from the current state before the transition and handeling unexpected
+errors encountered during transition execution.</p>
+<details class="note"><summary>Note</summary><p>Override or extend this function if you whish to change pre-, post-execution
+and handling of all unexpected errors.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Execute a single state machine step.</span>
+
+<span class="sd">    This function delegates transition execution to `execute_transition()`.</span>
+<span class="sd">    All pre and post execution tasks such as retrieving the transition</span>
+<span class="sd">    from the current state before the transition and handeling unexpected</span>
+<span class="sd">    errors encountered during transition execution.</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this function if you whish to change pre-, post-execution</span>
+<span class="sd">        and handling of all unexpected errors.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="c1"># bind upcoming transition context to logger</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+        <span class="n">current_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span>
+        <span class="n">transition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">transition_id</span><span class="o">=</span><span class="n">uuid4</span><span class="p">(),</span>
+        <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">]</span><span class="o">.</span><span class="n">next</span><span class="p">(</span>
+            <span class="n">log</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">:</span>
+            <span class="c1"># bind selected transition and target to logger</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="n">transition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># execute transition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute_transition</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Empty transition received state machine will end"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"State machine execution failure"</span><span class="p">)</span>
+
+        <span class="c1"># try to recover from error by restarting state machine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_errors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">destroy_context</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Trying to recover statemachine from exception "</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_context</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_transition">
+<code class="highlight language-python">
+execute_transition<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.execute_transition" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute the current transition.</p>
+<p>The current transition is executed and the current state is
+updated on successful executions. This function also handles
+<a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+and sets the state machines current state to the errors fallback state.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="note"><summary>Note</summary><p>Override or extend this if you want to change how transitions are executed
+or how <a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+are handled.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">):</span>
+    <span class="sd">"""Execute the current transition.</span>
+
+<span class="sd">    The current transition is executed and the current state is</span>
+<span class="sd">    updated on successful executions. This function also handles</span>
+<span class="sd">    [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">    and sets the state machines current state to the errors fallback state.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The bound logger initialized with transition specific information</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this if you want to change how transitions are executed</span>
+<span class="sd">        or how [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">        are handled.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">"Executing transition </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="n">log</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Moved to new state"</span><span class="p">,</span> <span class="n">new_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">TransitionExecutionError</span> <span class="k">as</span> <span class="n">transition_error</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Encountered a transition error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">transition_error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Recovering to fallback state"</span><span class="p">,</span>
+                <span class="n">fallback</span><span class="o">=</span><span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.run">
+<code class="highlight language-python">
+run<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.run" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Starts the state machine execution.</p>
+<p>This will only start the state machine execution
+once the given start time is reached.</p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Starts the state machine execution.</span>
+
+<span class="sd">    This will only start the state machine execution</span>
+<span class="sd">    once the given start time is reached.</span>
+<span class="sd">    """</span>
+    <span class="c1"># wait for start time before actually starting the machine</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sleep_until</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StartEndTimeStatemachine.setup_context">
+<code class="highlight language-python">
+setup_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine.setup_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Initialize and setup the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override this function if your state machine needs run some
+logic or set <code>Context</code> information before it can be executed.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Initialize and setup the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override this function if your state machine needs run some</span>
+<span class="sd">        logic or set `Context` information before it can be executed.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine">
+<code>Statemachine</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Implements state control and transition logic</p>
+<p>This class implements basic state machine execution, i.e., execution
+starts at the configured initial state and continues until a end state
+(i.e., a state without outgoing transitions) is reached. A state machine
+can be started by calling the <a href="#cr_kyoushi.simulation.sm.Statemachine.run"><code>run()</code></a> function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also execute a state machine step wise using <code>execute_step()</code>
+function manually. If you choose to do so be care full to remember to call
+<code>setup_context()</code> before you start execution and <code>destroy_context()</code>
+after the state machine is finished.</p>
+</div>
+<p>Default state machine behavior can be extended or modified by creating
+a sub class and overriding the state machine functions
+<a href="#cr_kyoushi.simulation.sm.Statemachine.execute_machine"><code>execute_machine()</code></a>,
+<a href="#cr_kyoushi.simulation.sm.Statemachine.execute_step"><code>execute_step()</code></a>,
+<a href="#cr_kyoushi.simulation.sm.Statemachine.execute_transition"><code>execute_transition()</code></a>, etc.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.context">
+<code class="highlight">
+context: <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-writable"><code>writable</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The state machine execution context object.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.log">
+<code class="highlight">
+log: <span class="n">BoundLogger</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.log" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Bound logger initialize with context information for this state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.uuid">
+<code class="highlight">
+uuid: <span class="n">UUID</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.uuid" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>UUID for this state machine execution.</p>
+<p>For example used as unique run ID during when logging.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initial_state</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name of the initial state</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>states</code></td>
+<td><code>List[cr_kyoushi.simulation.states.State]</code></td>
+<td>
+<p>List of all states the state machine can enter</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>max_errors</code></td>
+<td><code>int</code></td>
+<td>
+<p>Maximum amount of errors the state machine is allowed to encounter
+        before it stops trying to recover by reseting to the initial state.</p>
+</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">initial_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">states</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">State</span><span class="p">],</span>
+    <span class="n">max_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        initial_state: The name of the initial state</span>
+<span class="sd">        states: List of all states the state machine can enter</span>
+<span class="sd">        max_errors: Maximum amount of errors the state machine is allowed to encounter</span>
+<span class="sd">                    before it stops trying to recover by reseting to the initial state.</span>
+
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span> <span class="o">=</span> <span class="n">initial_state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">State</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">state</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span> <span class="n">Context</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_errors</span> <span class="o">=</span> <span class="n">max_errors</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__uuid</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__log</span><span class="p">:</span> <span class="n">BoundLogger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Created state machine"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">get_seed</span><span class="p">())</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.destroy_context">
+<code class="highlight language-python">
+destroy_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.destroy_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Destroy and clean up the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override or extend this function if your state machine needs run some
+logic or free <code>Context</code> information after it has finished executing.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">destroy_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Destroy and clean up the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this function if your state machine needs run some</span>
+<span class="sd">        logic or free `Context` information after it has finished executing.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.execute_machine">
+<code class="highlight language-python">
+execute_machine<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.execute_machine" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>State machine main execution loop.</p>
+<p>This function executes state machine steps in a loop
+until a end state is reached (i.e., current state is <code>None</code>).</p>
+<details class="note"><summary>Note</summary><p>Override or extends this if you whish to change how your
+state machine does continues execution.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""State machine main execution loop.</span>
+
+<span class="sd">    This function executes state machine steps in a loop</span>
+<span class="sd">    until a end state is reached (i.e., current state is `None`).</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extends this if you whish to change how your</span>
+<span class="sd">        state machine does continues execution.</span>
+<span class="sd">    """</span>
+    <span class="c1"># state machine run main loop</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_step</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.execute_step">
+<code class="highlight language-python">
+execute_step<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.execute_step" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute a single state machine step.</p>
+<p>This function delegates transition execution to <code>execute_transition()</code>.
+All pre and post execution tasks such as retrieving the transition
+from the current state before the transition and handeling unexpected
+errors encountered during transition execution.</p>
+<details class="note"><summary>Note</summary><p>Override or extend this function if you whish to change pre-, post-execution
+and handling of all unexpected errors.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Execute a single state machine step.</span>
+
+<span class="sd">    This function delegates transition execution to `execute_transition()`.</span>
+<span class="sd">    All pre and post execution tasks such as retrieving the transition</span>
+<span class="sd">    from the current state before the transition and handeling unexpected</span>
+<span class="sd">    errors encountered during transition execution.</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this function if you whish to change pre-, post-execution</span>
+<span class="sd">        and handling of all unexpected errors.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="c1"># bind upcoming transition context to logger</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+        <span class="n">current_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span>
+        <span class="n">transition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">transition_id</span><span class="o">=</span><span class="n">uuid4</span><span class="p">(),</span>
+        <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">]</span><span class="o">.</span><span class="n">next</span><span class="p">(</span>
+            <span class="n">log</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">:</span>
+            <span class="c1"># bind selected transition and target to logger</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+                <span class="n">transition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># execute transition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute_transition</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Empty transition received state machine will end"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"State machine execution failure"</span><span class="p">)</span>
+
+        <span class="c1"># try to recover from error by restarting state machine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_errors</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">destroy_context</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Trying to recover statemachine from exception "</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_context</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.execute_transition">
+<code class="highlight language-python">
+execute_transition<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.execute_transition" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute the current transition.</p>
+<p>The current transition is executed and the current state is
+updated on successful executions. This function also handles
+<a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+and sets the state machines current state to the errors fallback state.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="note"><summary>Note</summary><p>Override or extend this if you want to change how transitions are executed
+or how <a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+are handled.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">):</span>
+    <span class="sd">"""Execute the current transition.</span>
+
+<span class="sd">    The current transition is executed and the current state is</span>
+<span class="sd">    updated on successful executions. This function also handles</span>
+<span class="sd">    [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">    and sets the state machines current state to the errors fallback state.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The bound logger initialized with transition specific information</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this if you want to change how transitions are executed</span>
+<span class="sd">        or how [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">        are handled.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">"Executing transition </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="n">log</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Moved to new state"</span><span class="p">,</span> <span class="n">new_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">TransitionExecutionError</span> <span class="k">as</span> <span class="n">transition_error</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Encountered a transition error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">transition_error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Recovering to fallback state"</span><span class="p">,</span>
+                <span class="n">fallback</span><span class="o">=</span><span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.run">
+<code class="highlight language-python">
+run<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.run" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Starts the state machine execution.</p>
+<p>The state machine execution context is setup before
+executing the state machine main loop and destroyed again
+after the main loop ends.</p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Starts the state machine execution.</span>
+
+<span class="sd">    The state machine execution context is setup before</span>
+<span class="sd">    executing the state machine main loop and destroyed again</span>
+<span class="sd">    after the main loop ends.</span>
+<span class="sd">    """</span>
+    <span class="c1"># prepare state machine before start</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting state machine"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setup_context</span><span class="p">()</span>
+
+    <span class="c1"># execute the state machine</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Entering state machine execution"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">execute_machine</span><span class="p">()</span>
+
+    <span class="c1"># clean up state machine</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">destroy_context</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"State machine finished"</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.Statemachine.setup_context">
+<code class="highlight language-python">
+setup_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.Statemachine.setup_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Initialize and setup the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override this function if your state machine needs run some
+logic or set <code>Context</code> information before it can be executed.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Initialize and setup the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override this function if your state machine needs run some</span>
+<span class="sd">        logic or set `Context` information before it can be executed.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StatemachineFactory">
+<code>StatemachineFactory</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StatemachineFactory" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Abstract class definition for factories generating state machines</p>
+<p>State machine factories are used by the CLI system to load dynamically load
+state machines from <a href="https://packaging.python.org/specifications/entry-points/">entrypoints</a>
+or python files.</p>
+<p>A state machine factory must have a <strong>name</strong> and a <strong>config class</strong>.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StatemachineFactory.config_class">
+<code class="highlight">
+config_class: <span class="n">Type</span><span class="p">[</span><span class="o">~</span><span class="n">StatemachineConfig</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StatemachineFactory.config_class" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The config class to use for the state machine.</p>
+<p>You can use the configuration class to define all required
+and optional configuration options for your state machine.
+e.g., to make it possible for users of your state machine to configure
+the probabilities for <a href="../states/#cr_kyoushi.simulation.states.ProbabilisticState"><code>ProbabilisticStates</code></a>.</p>
+<p>The CLI system dynamically loads and validates configuration for your
+state machine based on the config class.
+<a href="https://pydantic-docs.helpmanual.io/">Pydantic</a> is used for this so it is
+recommended to define your config class must be a pydantic model or any other field type
+pydantic can handle.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StatemachineFactory.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StatemachineFactory.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state machine factory.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.StatemachineFactory.build">
+<code class="highlight language-python">
+build<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.StatemachineFactory.build" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Builds the state machine instance.</p>
+<p>The build function must also create and initialize all states and transitions
+required by the state machine. This is called by the CLI system to create
+the state machine before executing it.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config</code></td>
+<td><code>~StatemachineConfig</code></td>
+<td>
+<p>Configuration for your state machine.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Statemachine</code></td>
+<td>
+<p>Statemachine: Statemachine instances created based on the given configuration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">StatemachineConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Statemachine</span><span class="p">:</span>
+    <span class="sd">"""Builds the state machine instance.</span>
+
+<span class="sd">    The build function must also create and initialize all states and transitions</span>
+<span class="sd">    required by the state machine. This is called by the CLI system to create</span>
+<span class="sd">    the state machine before executing it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: Configuration for your state machine.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Statemachine: Statemachine instances created based on the given configuration.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine">
+<code>WorkHoursStatemachine</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>State machine optionally allows the configuration of work hours.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This state machine extends
+<a href="#cr_kyoushi.simulation.sm.StartEndTimeStatemachine"><code>StartEndTimeStatemachine</code></a>
+and as such has all its features.</p>
+</div>
+<p>Work hours are defined through the configuration of a <a href="../model/#cr_kyoushi.simulation.model.ActivePeriod"><code>ActivePeriod</code></a>.
+Outside of its work hours this state machine will simply idle and do nothing. You can also configure</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.context">
+<code class="highlight">
+context: <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-writable"><code>writable</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The state machine execution context object.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.end_time">
+<code class="highlight">
+end_time: <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.end_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The <code>datetime</code> this state machine will end</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.log">
+<code class="highlight">
+log: <span class="n">BoundLogger</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.log" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Bound logger initialize with context information for this state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.start_time">
+<code class="highlight">
+start_time: <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.start_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The <code>datetime</code> this state machine will start execution</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.uuid">
+<code class="highlight">
+uuid: <span class="n">UUID</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.uuid" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>UUID for this state machine execution.</p>
+<p>For example used as unique run ID during when logging.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.work_schedule">
+<code class="highlight">
+work_schedule: <span class="n">Optional</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">WorkSchedule</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.work_schedule" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The work schedules for this state machine</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">work_schedule</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>initial_state</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name of the initial state</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>states</code></td>
+<td><code>List[cr_kyoushi.simulation.states.State]</code></td>
+<td>
+<p>List of all states the state machine can enter</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td><code>Optional[datetime.datetime]</code></td>
+<td>
+<p>The <code>datetime</code> this state machine should start execution</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td><code>Optional[datetime.datetime]</code></td>
+<td>
+<p>The <code>datetime</code> this state machine should end execution</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>work_schedule</code></td>
+<td><code>Optional[cr_kyoushi.simulation.model.WorkSchedule]</code></td>
+<td>
+<p>The state machines work schedule (days and times to work)</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_errors</code></td>
+<td><code>int</code></td>
+<td>
+<p>Maximum amount of errors the state machine is allowed to encounter
+        before it stops trying to recover by reseting to the initial state.</p>
+</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>state_time</code> or <code>end_time</code> are <code>None</code> then the state machine will
+start or end execution normally.</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">initial_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">states</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">State</span><span class="p">],</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">work_schedule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WorkSchedule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        initial_state: The name of the initial state</span>
+<span class="sd">        states: List of all states the state machine can enter</span>
+<span class="sd">        start_time: The `datetime` this state machine should start execution</span>
+<span class="sd">        end_time: The `datetime` this state machine should end execution</span>
+<span class="sd">        work_schedule: The state machines work schedule (days and times to work)</span>
+<span class="sd">        max_errors: Maximum amount of errors the state machine is allowed to encounter</span>
+<span class="sd">                    before it stops trying to recover by reseting to the initial state.</span>
+
+<span class="sd">    !!! Note</span>
+<span class="sd">        If `state_time` or `end_time` are `None` then the state machine will</span>
+<span class="sd">        start or end execution normally.</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">initial_state</span><span class="p">,</span>
+        <span class="n">states</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+        <span class="n">max_errors</span><span class="o">=</span><span class="n">max_errors</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__work_schedule</span> <span class="o">=</span> <span class="n">work_schedule</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine._pause_work">
+<code class="highlight language-python">
+_pause_work<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-private"><code>private</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._pause_work" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The pause work metho will be called before pausing the SM until the next work time.</p>
+<p>Use this method to destroy any resources that should not be active outside
+the work hours (e.g., the selenium browser). Also see <code>_resume_work</code></p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You could simply destroy your context and set the SM to the initial state:
+<div class="highlight">
+<pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state</span>
+<span class="c1"># reset context</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">destroy_context</span><span class="p">()</span>
+</code></pre>
+</div>
+</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">_pause_work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""The pause work metho will be called before pausing the SM until the next work time.</span>
+
+<span class="sd">    Use this method to destroy any resources that should not be active outside</span>
+<span class="sd">    the work hours (e.g., the selenium browser). Also see `_resume_work`</span>
+
+<span class="sd">    !!! Hint</span>
+<span class="sd">        You could simply destroy your context and set the SM to the initial state:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        self.current_state = self.initial_state</span>
+<span class="sd">        # reset context</span>
+<span class="sd">        self.destroy_context()</span>
+<span class="sd">        ```</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work">
+<code class="highlight language-python">
+_resume_work<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-private"><code>private</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The resume work method will be called before resuming work after sleeping.</p>
+<p>Use this method to prepare the state machine to resume after a potentially long
+pause. By default this method does nothing. Also see <code>_pause_work</code>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You could for example configure your state machine to recreate from the initial
+state before resuming work:</p>
+<div class="highlight">
+<pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">setup_context</span><span class="p">()</span>
+</code></pre>
+</div>
+</div>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">_resume_work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""The resume work method will be called before resuming work after sleeping.</span>
+
+<span class="sd">    Use this method to prepare the state machine to resume after a potentially long</span>
+<span class="sd">    pause. By default this method does nothing. Also see `_pause_work`.</span>
+
+<span class="sd">    !!! Hint</span>
+<span class="sd">        You could for example configure your state machine to recreate from the initial</span>
+<span class="sd">        state before resuming work:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        self.setup_context()</span>
+<span class="sd">        ```</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work">
+<code class="highlight language-python">
+_wait_for_work<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-private"><code>private</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Idle until it is time to work again.</p>
+<p>Before returning to the normal state machine flow this
+will also call <a href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work"><code>_resume_work</code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the next potential work time is after the machines end time
+it will not sleep, but instead set the current state to <code>None</code>
+and let the state machine flow end execution.</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">_wait_for_work</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Idle until it is time to work again.</span>
+
+<span class="sd">    Before returning to the normal state machine flow this</span>
+<span class="sd">    will also call [`_resume_work`][cr_kyoushi.simulation.sm.WorkHoursStatemachine._resume_work].</span>
+
+<span class="sd">    !!! Note</span>
+<span class="sd">        If the next potential work time is after the machines end time</span>
+<span class="sd">        it will not sleep, but instead set the current state to `None`</span>
+<span class="sd">        and let the state machine flow end execution.</span>
+<span class="sd">    """</span>
+    <span class="c1"># immediately return if there is no work schedule</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_schedule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">next_work</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_schedule</span><span class="o">.</span><span class="n">next_work_start</span><span class="p">(</span><span class="n">now</span><span class="p">())</span>
+
+    <span class="c1"># if there is no next work time or the machine will end</span>
+    <span class="c1"># before the next work we stop immediately</span>
+    <span class="k">if</span> <span class="n">next_work</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">&lt;=</span> <span class="n">next_work</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Pausing state machine"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_work</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Paused state machine"</span><span class="p">)</span>
+        <span class="c1"># wait til we have work again</span>
+        <span class="n">sleep_until</span><span class="p">(</span><span class="n">next_work</span><span class="p">)</span>
+        <span class="c1"># and then pre-pare to resume work</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Resuming state machine"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume_work</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Resumed state machine"</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.destroy_context">
+<code class="highlight language-python">
+destroy_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.destroy_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Destroy and clean up the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override or extend this function if your state machine needs run some
+logic or free <code>Context</code> information after it has finished executing.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">destroy_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Destroy and clean up the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this function if your state machine needs run some</span>
+<span class="sd">        logic or free `Context` information after it has finished executing.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_machine">
+<code class="highlight language-python">
+execute_machine<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_machine" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>State machine main execution loop.</p>
+<p>This function executes state machine steps in a loop until either
+ - a end state is reached (i.e., current state is <code>None</code>)
+ - or the current time is &gt;= <code>end_time</code></p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""State machine main execution loop.</span>
+
+<span class="sd">    This function executes state machine steps in a loop until either</span>
+<span class="sd">     - a end state is reached (i.e., current state is `None`)</span>
+<span class="sd">     - or the current time is &gt;= `end_time`</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># state machine run main loop</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_end_time</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_step</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_step">
+<code class="highlight language-python">
+execute_step<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_step" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute a single state machine step.</p>
+<p>This will only execute a step if the current time is within
+our work schedule. Outside the work time the state machine will
+<a href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work">wait until work</a> begins again.</p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Execute a single state machine step.</span>
+
+<span class="sd">    This will only execute a step if the current time is within</span>
+<span class="sd">    our work schedule. Outside the work time the state machine will</span>
+<span class="sd">    [wait until work][cr_kyoushi.simulation.sm.WorkHoursStatemachine._wait_for_work] begins again.</span>
+<span class="sd">    """</span>
+    <span class="c1"># when we are in work hours business as usual</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_work_hours</span><span class="p">():</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">execute_step</span><span class="p">()</span>
+    <span class="c1"># outside of work hours we idle</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_work</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_transition">
+<code class="highlight language-python">
+execute_transition<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.execute_transition" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Execute the current transition.</p>
+<p>The current transition is executed and the current state is
+updated on successful executions. This function also handles
+<a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+and sets the state machines current state to the errors fallback state.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="note"><summary>Note</summary><p>Override or extend this if you want to change how transitions are executed
+or how <a href="../errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>
+are handled.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">execute_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">):</span>
+    <span class="sd">"""Execute the current transition.</span>
+
+<span class="sd">    The current transition is executed and the current state is</span>
+<span class="sd">    updated on successful executions. This function also handles</span>
+<span class="sd">    [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">    and sets the state machines current state to the errors fallback state.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The bound logger initialized with transition specific information</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override or extend this if you want to change how transitions are executed</span>
+<span class="sd">        or how [`TransitionExecutionErrors`][cr_kyoushi.simulation.errors.TransitionExecutionError]</span>
+<span class="sd">        are handled.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">"Executing transition </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transition</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="n">log</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Moved to new state"</span><span class="p">,</span> <span class="n">new_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">TransitionExecutionError</span> <span class="k">as</span> <span class="n">transition_error</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Encountered a transition error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">transition_error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Recovering to fallback state"</span><span class="p">,</span>
+                <span class="n">fallback</span><span class="o">=</span><span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="n">transition_error</span><span class="o">.</span><span class="n">fallback_state</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.run">
+<code class="highlight language-python">
+run<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.run" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Starts the state machine execution.</p>
+<p>This will only start the state machine execution
+once the given start time is reached.</p>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Starts the state machine execution.</span>
+
+<span class="sd">    This will only start the state machine execution</span>
+<span class="sd">    once the given start time is reached.</span>
+<span class="sd">    """</span>
+    <span class="c1"># wait for start time before actually starting the machine</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sleep_until</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.sm.WorkHoursStatemachine.setup_context">
+<code class="highlight language-python">
+setup_context<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.sm.WorkHoursStatemachine.setup_context" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Initialize and setup the state machine execution context</p>
+<details class="note"><summary>Note</summary><p>Override this function if your state machine needs run some
+logic or set <code>Context</code> information before it can be executed.</p>
+</details>
+<details class="quote">
+<summary>Source code in <code>simulation/sm.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""Initialize and setup the state machine execution context</span>
+
+<span class="sd">    ??? Note</span>
+<span class="sd">        Override this function if your state machine needs run some</span>
+<span class="sd">        logic or set `Context` information before it can be executed.</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../transitions/" rel="prev">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Transitions
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../util/" rel="next">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Utility Functions
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+<script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+<script src="../../js/jquery-3.5.1.min.js"></script>
+<script src="../../js/jquery.fancybox.min.js"></script>
+</body>
+</html>

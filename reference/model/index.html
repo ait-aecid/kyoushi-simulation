@@ -1,0 +1,1909 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="State machine based actor simulation framework for cyber range testbeds." name="description"/>
+<link href="https://ait-aecid.github.io/kyoushi-simulation/reference/model/" rel="canonical"/>
+<link href="../../images/favicon.ico" rel="shortcut icon"/>
+<meta content="mkdocs-1.2.2, mkdocs-material-6.2.8" name="generator"/>
+<title>Models - Cyber Range Kyoushi Simulation</title>
+<link href="../../assets/stylesheets/main.cb6bc1d0.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.39b8e14a.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<link href="../../stylesheets/jquery.fancybox.min.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="ait" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#model-module">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+</div>
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            
+              Models
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+    Cyber Range Kyoushi Simulation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        Overview
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Usage" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/getting_started/">
+        Getting Started
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/configuration/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/logging/">
+        Logging
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/cli/">
+        CLI Reference
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/traveler/">
+        Traveler
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/decorated_traveler/">
+        Decorated Traveler
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Code Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        Models
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model">
+    cr_kyoushi.simulation.model
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.Context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.StatemachineConfig">
+    StatemachineConfig
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ActivePeriod">
+    ActivePeriod
+  </a>
+<nav aria-label="ActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat">
+    ApproximateFloat
+  </a>
+<nav aria-label="ApproximateFloat" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.max">
+    max
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.min">
+    min
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.value">
+    value
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.convert">
+    convert()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.validate_min_le_max">
+    validate_min_le_max()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod">
+    ComplexActivePeriod
+  </a>
+<nav aria-label="ComplexActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.week_days">
+    week_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.LogLevel">
+    LogLevel
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod">
+    SimpleActivePeriod
+  </a>
+<nav aria-label="SimpleActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.time_period">
+    time_period
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.week_days">
+    week_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod">
+    TimePeriod
+  </a>
+<nav aria-label="TimePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.in_period">
+    in_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.Weekday">
+    Weekday
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod">
+    WeekdayActivePeriod
+  </a>
+<nav aria-label="WeekdayActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.time_period">
+    time_period
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.week_day">
+    week_day
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__eq__">
+    __eq__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__hash__">
+    __hash__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkHours">
+    WorkHours
+  </a>
+<nav aria-label="WorkHours" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkHours.validate_start_before_end">
+    validate_start_before_end()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule">
+    WorkSchedule
+  </a>
+<nav aria-label="WorkSchedule" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.work_days">
+    work_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_day">
+    is_work_day()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_time">
+    is_work_time()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.next_work_start">
+    next_work_start()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../states/">
+        States
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transitions/">
+        Transitions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../sm/">
+        State Machine
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../util/">
+        Utility Functions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../errors/">
+        Exceptions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../logging/">
+        Logging
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contributing/">
+        Contributing
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../license/">
+        License
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model">
+    cr_kyoushi.simulation.model
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.Context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.StatemachineConfig">
+    StatemachineConfig
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ActivePeriod">
+    ActivePeriod
+  </a>
+<nav aria-label="ActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat">
+    ApproximateFloat
+  </a>
+<nav aria-label="ApproximateFloat" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.max">
+    max
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.min">
+    min
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.value">
+    value
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.convert">
+    convert()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ApproximateFloat.validate_min_le_max">
+    validate_min_le_max()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod">
+    ComplexActivePeriod
+  </a>
+<nav aria-label="ComplexActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.week_days">
+    week_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.LogLevel">
+    LogLevel
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod">
+    SimpleActivePeriod
+  </a>
+<nav aria-label="SimpleActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.time_period">
+    time_period
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.week_days">
+    week_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod">
+    TimePeriod
+  </a>
+<nav aria-label="TimePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.end_time">
+    end_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.start_time">
+    start_time
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.TimePeriod.in_period">
+    in_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.Weekday">
+    Weekday
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod">
+    WeekdayActivePeriod
+  </a>
+<nav aria-label="WeekdayActivePeriod" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.time_period">
+    time_period
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.week_day">
+    week_day
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__eq__">
+    __eq__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__hash__">
+    __hash__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.in_active_period">
+    in_active_period()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkHours">
+    WorkHours
+  </a>
+<nav aria-label="WorkHours" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkHours.validate_start_before_end">
+    validate_start_before_end()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule">
+    WorkSchedule
+  </a>
+<nav aria-label="WorkSchedule" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.work_days">
+    work_days
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_day">
+    is_work_day()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_time">
+    is_work_time()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.model.WorkSchedule.next_work_start">
+    next_work_start()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/reference/model.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="model-module">Model module<a class="headerlink" href="#model-module" title="Permanent link">¶</a></h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#cr_kyoushi.simulation.model" id="cr_kyoushi.simulation.model" style="visibility: hidden; position: absolute;">
+<a class="headerlink" href="#cr_kyoushi.simulation.model" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents first">
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.Context">
+<code class="highlight">
+Context        </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.Context" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Contexts are used to store the state machine execution context.</p>
+<p>They can either be a custom defined pydantic model or <code>Dict[str, Any]</code>.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.StatemachineConfig">
+<code class="highlight">
+StatemachineConfig        </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.StatemachineConfig" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Placeholder generic type for state machine configurations.</p>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.ActivePeriod">
+<code>ActivePeriod</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ActivePeriod" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Active period union type.</p>
+<p>This class can be used in pydantic models to allow
+loading of <a href="#cr_kyoushi.simulation.model.ComplexActivePeriod"><code>ComplexActivePeriod</code></a>
+or <a href="#cr_kyoushi.simulation.model.SimpleActivePeriod"><code>SimpleActivePeriod</code></a>.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ActivePeriod.in_active_period">
+<code class="highlight language-python">
+in_active_period<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ActivePeriod.in_active_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given datetime is within this active period.</p>
+<p>The actual check is delegated to the underlying sub types own
+checking logic.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>bool: <code>True</code> if inside the active period <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">in_active_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given datetime is within this active period.</span>
+
+<span class="sd">    The actual check is delegated to the underlying sub types own</span>
+<span class="sd">    checking logic.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check (datetime): The datetime to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: `True` if inside the active period `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__root__</span><span class="o">.</span><span class="n">in_active_period</span><span class="p">(</span><span class="n">to_check</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat">
+<code>ApproximateFloat</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Approximate float value within a given open interval</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat.max">
+<code class="highlight">
+max: <span class="nb">float</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat.max" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The upper boundary for the float value</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat.min">
+<code class="highlight">
+min: <span class="nb">float</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat.min" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The lower boundary for the float value</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat.value">
+<code class="highlight">
+value: <span class="nb">float</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat.value" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Gets a random float within the approximate float range</p>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>float</code></td>
+<td>
+<p>A float x for which <code>min &lt;= x &lt;= max</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat.convert">
+<code class="highlight language-python">
+convert<span class="p">(</span><span class="n">value</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat.convert" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Coerces a single float value to its ApproximateFloat equivalent.</p>
+<p>i.e., value = min = max</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>value</code></td>
+<td><code>float</code></td>
+<td>
+<p>The float value to convert</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApproximateFloat</code></td>
+<td>
+<p><code>Approximate(min=value, max=value)</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ApproximateFloat"</span><span class="p">:</span>
+    <span class="sd">"""Coerces a single float value to its ApproximateFloat equivalent.</span>
+
+<span class="sd">    i.e., value = min = max</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: The float value to convert</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `Approximate(min=value, max=value)`</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">ApproximateFloat</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ApproximateFloat.validate_min_le_max">
+<code class="highlight language-python">
+validate_min_le_max<span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ApproximateFloat.validate_min_le_max" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Custom validator to ensure min &lt;= max</p>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">"max"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_min_le_max</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">"""Custom validator to ensure min &lt;= max"""</span>
+    <span class="k">assert</span> <span class="n">values</span><span class="p">[</span><span class="s2">"min"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"Invalid boundaries must be min &lt;= max"</span>
+    <span class="k">return</span> <span class="n">v</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.ComplexActivePeriod">
+<code>ComplexActivePeriod</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ComplexActivePeriod" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A <code>ComplexActivePeriod</code> is defined by a set of
+<a href="#cr_kyoushi.simulation.model.WeekdayActivePeriod"><code>WeekdayActivePeriod</code></a>.</p>
+<p>This makes it possible to configure active times for each week day separately.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ComplexActivePeriod.week_days">
+<code class="highlight">
+week_days: <span class="n">WeekdayActivePeriod</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.week_days" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Set of active periods, each week day can only have one configuration</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.ComplexActivePeriod.in_active_period">
+<code class="highlight language-python">
+in_active_period<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.ComplexActivePeriod.in_active_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given datetime is within this active period.</p>
+<p>This is <code>True</code> if the datetime is within the scope of <strong>one</strong> of
+   the <a href="#cr_kyoushi.simulation.model.WeekdayActivePeriod"><code>WeekdayActivePeriods</code></a>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>bool: <code>True</code> if inside the active period <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">in_active_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given datetime is within this active period.</span>
+
+<span class="sd">       This is `True` if the datetime is within the scope of **one** of</span>
+<span class="sd">       the [`WeekdayActivePeriods`][cr_kyoushi.simulation.model.WeekdayActivePeriod].</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check (datetime): The datetime to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: `True` if inside the active period `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">in_active_period</span><span class="p">(</span><span class="n">to_check</span><span class="p">)</span> <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_days</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.LogLevel">
+<code>LogLevel</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.LogLevel" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>An enumeration.</p>
+<div class="doc doc-children">
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.SimpleActivePeriod">
+<code>SimpleActivePeriod</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.SimpleActivePeriod" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Similar to <a href="#cr_kyoushi.simulation.model.ComplexActivePeriod"><code>ComplexActivePeriod</code></a>,
+but each week day has the same active time period.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.SimpleActivePeriod.time_period">
+<code class="highlight">
+time_period: <span class="n">TimePeriod</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.time_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The daylie active time period         (if this is not set the whole days are considered active).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.SimpleActivePeriod.week_days">
+<code class="highlight">
+week_days: <span class="n">Weekday</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.week_days" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>A set of active week days.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.SimpleActivePeriod.in_active_period">
+<code class="highlight language-python">
+in_active_period<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.SimpleActivePeriod.in_active_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given datetime is within this active period.</p>
+<p>This is <code>True</code> if the datetime matches <strong>one</strong> of the active week days
+   and the active time period.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>bool: <code>True</code> if inside the active period <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">in_active_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given datetime is within this active period.</span>
+
+<span class="sd">       This is `True` if the datetime matches **one** of the active week days</span>
+<span class="sd">       and the active time period.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check (datetime): The datetime to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: `True` if inside the active period `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">Weekday</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_days</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_period</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_period</span><span class="o">.</span><span class="n">in_period</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.TimePeriod">
+<code>TimePeriod</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.TimePeriod" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A time period as defined by a start and end time.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.TimePeriod.end_time">
+<code class="highlight">
+end_time: <span class="n">time</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.TimePeriod.end_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The end time of the period</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.TimePeriod.start_time">
+<code class="highlight">
+start_time: <span class="n">time</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.TimePeriod.start_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The start time of the period</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.TimePeriod.in_period">
+<code class="highlight language-python">
+in_period<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.TimePeriod.in_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given time of the day is within the scope of this time period.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>time</code></td>
+<td>
+<p>The time of the day to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>bool: <code>True</code> if within the time period <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">in_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given time of the day is within the scope of this time period.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check (time): The time of the day to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: `True` if within the time period `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">&lt;=</span> <span class="n">to_check</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">&gt;</span> <span class="n">to_check</span>
+    <span class="c1"># start &gt; end means our time period is between two days</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">&lt;=</span> <span class="n">to_check</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">&gt;</span> <span class="n">to_check</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.Weekday">
+<code>Weekday</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.Weekday" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Enumeration for representing the days of the week.</p>
+<p>Weekdays are represented as the integers 0-6 and can
+be constructed from either their int representations or
+their english names.</p>
+<div class="doc doc-children">
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod">
+<code>WeekdayActivePeriod</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A <code>WeekdayActivePeriod</code> defines its active time based on the configure week day
+and time period.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod.time_period">
+<code class="highlight">
+time_period: <span class="n">TimePeriod</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.time_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The active time period (if this is not set the whole day is considered active)</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod.week_day">
+<code class="highlight">
+week_day: <span class="n">Weekday</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.week_day" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The active day of the week</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod.__eq__">
+<code class="highlight language-python">
+__eq__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__eq__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Return self==value.</p>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_day</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">week_day</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod.__hash__">
+<code class="highlight language-python">
+__hash__<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.__hash__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Return hash(self).</p>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">week_day</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WeekdayActivePeriod.in_active_period">
+<code class="highlight language-python">
+in_active_period<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WeekdayActivePeriod.in_active_period" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given datetime is within the scope of this active period.</p>
+<p>This will be True if the week day matches and given time of the day is
+   within the time period.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>bool: <code>True</code> if inside the active period <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">in_active_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given datetime is within the scope of this active period.</span>
+
+<span class="sd">       This will be True if the week day matches and given time of the day is</span>
+<span class="sd">       within the time period.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check (datetime): The datetime to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: `True` if inside the active period `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">Weekday</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_day</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_period</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_period</span><span class="o">.</span><span class="n">in_period</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkHours">
+<code>WorkHours</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkHours" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A special type of time period that does not allow over night periods</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkHours.validate_start_before_end">
+<code class="highlight language-python">
+validate_start_before_end<span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkHours.validate_start_before_end" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Validates that the start time is before the end time.</p>
+<p>This restricts work hours to be within a single day i.e., work hours
+can not be defined to start on one day and end on the following day.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v</code></td>
+<td><code>time</code></td>
+<td>
+<p>The parsed end time to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td><code>Dict[str, Any]</code></td>
+<td>
+<p>A dictionary containing previously parsed and validated fields.
+    See <a href="https://pydantic-docs.helpmanual.io/usage/validators/">Pydantic</a> for details.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>time</code></td>
+<td>
+<p>The end time if it is valid</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">"end_time"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_start_before_end</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">v</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">time</span><span class="p">:</span>
+    <span class="sd">"""Validates that the start time is before the end time.</span>
+
+<span class="sd">    This restricts work hours to be within a single day i.e., work hours</span>
+<span class="sd">    can not be defined to start on one day and end on the following day.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v: The parsed end time to check</span>
+<span class="sd">        values: A dictionary containing previously parsed and validated fields.</span>
+<span class="sd">                See [Pydantic](https://pydantic-docs.helpmanual.io/usage/validators/) for details.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The end time if it is valid</span>
+<span class="sd">    """</span>
+    <span class="c1"># if start time is not in values it failed to validate</span>
+    <span class="c1"># so we skip the check and let validation fail</span>
+    <span class="k">if</span> <span class="s2">"start_time"</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">values</span><span class="p">[</span><span class="s2">"start_time"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"End time must be after start time"</span>
+
+    <span class="k">return</span> <span class="n">v</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkSchedule">
+<code>WorkSchedule</code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkSchedule" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A weekly work schedule represented by the week days and work hours for each day</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkSchedule.work_days">
+<code class="highlight">
+work_days: <span class="n">WorkHours</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<small class="doc doc-property doc-property-required"><code>required</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkSchedule.work_days" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Dictionary containing the work hours for each weekday</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkSchedule.is_work_day">
+<code class="highlight language-python">
+is_work_day<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weekday</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_day" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given weekday is a work day.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>weekday</code></td>
+<td><code>Weekday</code></td>
+<td>
+<p>The weekday to check encoded as integer (0-6)</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p><code>True</code> if it is a work day <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">is_work_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weekday</span><span class="p">:</span> <span class="n">Weekday</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given weekday is a work day.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        weekday: The weekday to check encoded as integer (0-6)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `True` if it is a work day `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">weekday</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_days</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkSchedule.is_work_time">
+<code class="highlight language-python">
+is_work_time<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkSchedule.is_work_time" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Checks wether the given datetime is work time.</p>
+<p>Something is considered to be work time if it is a work day
+and the time is within the work hours of that work day.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to check</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p><code>True</code> if the given datetime is work time <code>False</code> otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">is_work_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""Checks wether the given datetime is work time.</span>
+
+<span class="sd">    Something is considered to be work time if it is a work day</span>
+<span class="sd">    and the time is within the work hours of that work day.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check: The datetime to check</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `True` if the given datetime is work time `False` otherwise</span>
+<span class="sd">    """</span>
+    <span class="n">weekday</span><span class="p">:</span> <span class="n">Weekday</span> <span class="o">=</span> <span class="n">Weekday</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span>
+    <span class="c1"># check if the datetime is on a work day</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_work_day</span><span class="p">(</span><span class="n">weekday</span><span class="p">):</span>
+        <span class="c1"># if its on a workday check if its with the days work hours</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_days</span><span class="p">[</span><span class="n">weekday</span><span class="p">]</span><span class="o">.</span><span class="n">in_period</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.model.WorkSchedule.next_work_start">
+<code class="highlight language-python">
+next_work_start<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.model.WorkSchedule.next_work_start" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Gets the next work time, relative to the given datetime.</p>
+<p>If the given datetime is within work hours the start time
+of that work day is returned.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_check</code></td>
+<td><code>datetime</code></td>
+<td>
+<p>The datetime to find the next work time for</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[datetime.datetime]</code></td>
+<td>
+<p>The next work time or <code>None</code> if there is no work time</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/model.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next_work_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_check</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="sd">"""Gets the next work time, relative to the given datetime.</span>
+
+<span class="sd">    If the given datetime is within work hours the start time</span>
+<span class="sd">    of that work day is returned.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_check: The datetime to find the next work time for</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The next work time or `None` if there is no work time</span>
+<span class="sd">    """</span>
+
+    <span class="n">weekday</span><span class="p">:</span> <span class="n">Weekday</span> <span class="o">=</span> <span class="n">Weekday</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="c1"># if the given datetime is a workday</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_work_day</span><span class="p">(</span><span class="n">weekday</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="p">(</span>
+            <span class="c1"># and work has not begun yet</span>
+            <span class="n">to_check</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_days</span><span class="p">[</span><span class="n">weekday</span><span class="p">]</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="c1"># or if we are still within work time</span>
+            <span class="c1"># we return the given days start time</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_work_time</span><span class="p">(</span><span class="n">to_check</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">to_check</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_days</span><span class="p">[</span><span class="n">weekday</span><span class="p">]</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+
+    <span class="c1"># otherwise next work start must be some day after</span>
+    <span class="c1"># the given day so we check the next 7 days</span>
+    <span class="c1"># (we might only work once a week)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="c1"># increment weekday and be sure to start from 0 once we pass sunday (int: 6)</span>
+        <span class="n">weekday</span> <span class="o">=</span> <span class="n">Weekday</span><span class="p">((</span><span class="n">weekday</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_work_day</span><span class="p">(</span><span class="n">weekday</span><span class="p">):</span>
+            <span class="c1"># add the days till the next work day to the given date</span>
+            <span class="n">next_work</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">to_check</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="c1"># get the start time for that day</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_days</span><span class="p">[</span><span class="n">weekday</span><span class="p">]</span><span class="o">.</span><span class="n">start_time</span>
+
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">next_work</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">start_time</span><span class="p">)</span>
+
+    <span class="c1"># if we got here then no workday is set so we will never start</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../../examples/decorated_traveler/" rel="prev">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Decorated Traveler
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../states/" rel="next">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                States
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+<script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+<script src="../../js/jquery-3.5.1.min.js"></script>
+<script src="../../js/jquery.fancybox.min.js"></script>
+</body>
+</html>

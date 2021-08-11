@@ -1,0 +1,3344 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="State machine based actor simulation framework for cyber range testbeds." name="description"/>
+<link href="https://ait-aecid.github.io/kyoushi-simulation/reference/states/" rel="canonical"/>
+<link href="../../images/favicon.ico" rel="shortcut icon"/>
+<meta content="mkdocs-1.2.2, mkdocs-material-6.2.8" name="generator"/>
+<title>States - Cyber Range Kyoushi Simulation</title>
+<link href="../../assets/stylesheets/main.cb6bc1d0.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.39b8e14a.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<link href="../../stylesheets/jquery.fancybox.min.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="ait" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#states-module">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+</div>
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            
+              States
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+    Cyber Range Kyoushi Simulation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        Overview
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Usage" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/getting_started/">
+        Getting Started
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/configuration/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/logging/">
+        Logging
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/cli/">
+        CLI Reference
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/traveler/">
+        Traveler
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/decorated_traveler/">
+        Decorated Traveler
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Code Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../model/">
+        Models
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          States
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        States
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states">
+    cr_kyoushi.simulation.states
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState">
+    AdaptiveProbabilisticState
+  </a>
+<nav aria-label="AdaptiveProbabilisticState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.modifiers">
+    modifiers
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.probabilities">
+    probabilities
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_after">
+    adapt_after()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_before">
+    adapt_before()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.next">
+    next()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.reset">
+    reset()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState">
+    ChoiceState
+  </a>
+<nav aria-label="ChoiceState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.no">
+    no
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.yes">
+    yes
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState">
+    EquallyRandomState
+  </a>
+<nav aria-label="EquallyRandomState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState">
+    FinalState
+  </a>
+<nav aria-label="FinalState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState">
+    ProbabilisticState
+  </a>
+<nav aria-label="ProbabilisticState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState">
+    RoundRobinState
+  </a>
+<nav aria-label="RoundRobinState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState">
+    SequentialState
+  </a>
+<nav aria-label="SequentialState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State">
+    State
+  </a>
+<nav aria-label="State" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transitions/">
+        Transitions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../sm/">
+        State Machine
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../util/">
+        Utility Functions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../errors/">
+        Exceptions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../logging/">
+        Logging
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contributing/">
+        Contributing
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../license/">
+        License
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states">
+    cr_kyoushi.simulation.states
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState">
+    AdaptiveProbabilisticState
+  </a>
+<nav aria-label="AdaptiveProbabilisticState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.modifiers">
+    modifiers
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.probabilities">
+    probabilities
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_after">
+    adapt_after()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_before">
+    adapt_before()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.next">
+    next()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.reset">
+    reset()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState">
+    ChoiceState
+  </a>
+<nav aria-label="ChoiceState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.no">
+    no
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.yes">
+    yes
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ChoiceState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState">
+    EquallyRandomState
+  </a>
+<nav aria-label="EquallyRandomState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.EquallyRandomState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState">
+    FinalState
+  </a>
+<nav aria-label="FinalState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.FinalState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState">
+    ProbabilisticState
+  </a>
+<nav aria-label="ProbabilisticState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.weights">
+    weights
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.ProbabilisticState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState">
+    RoundRobinState
+  </a>
+<nav aria-label="RoundRobinState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.RoundRobinState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState">
+    SequentialState
+  </a>
+<nav aria-label="SequentialState" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.SequentialState.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State">
+    State
+  </a>
+<nav aria-label="State" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name">
+    name
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name_only">
+    name_only
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.name_prefix">
+    name_prefix
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.transitions">
+    transitions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.transitions_map">
+    transitions_map
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cr_kyoushi.simulation.states.State.next">
+    next()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/reference/states.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="states-module">States module<a class="headerlink" href="#states-module" title="Permanent link">¶</a></h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#cr_kyoushi.simulation.states" id="cr_kyoushi.simulation.states" style="visibility: hidden; position: absolute;">
+<a class="headerlink" href="#cr_kyoushi.simulation.states" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents first">
+<div class="doc doc-children">
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState">
+<code>AdaptiveProbabilisticState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Special probabilistic state that allows modifaction of weights.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.modifiers">
+<code class="highlight">
+modifiers: <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.modifiers" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The weight modifiers assigned to the transitions.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.probabilities">
+<code class="highlight">
+probabilities: <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.probabilities" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The propabilities based on the weights and modifiers</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.weights">
+<code class="highlight">
+weights: <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.weights" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The weight assigned to the transitions.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">modifiers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name of the state</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td><code>List[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The list of transitions</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>Sequence[float]</code></td>
+<td>
+<p>The list of weights to assign to the transitions in propability notation</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>modifiers</code></td>
+<td><code>Optional[Sequence[float]]</code></td>
+<td>
+<p>List of multiplicative modifiers for each weight.
+       Will default to all 1 if not set.</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transitions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">modifiers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The name of the state</span>
+<span class="sd">        transitions: The list of transitions</span>
+<span class="sd">        weights: The list of weights to assign to the transitions in propability notation</span>
+<span class="sd">        modifiers: List of multiplicative modifiers for each weight.</span>
+<span class="sd">                   Will default to all 1 if not set.</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">modifiers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">modifiers</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_modifiers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">transitions</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">modifiers</span><span class="p">)))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">__modifiers_org</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modifiers</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_after">
+<code class="highlight language-python">
+adapt_after<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">selected</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_after" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Hook to update the weight modifiers after the transition selection.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The logger for the sm context</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>The state machine context</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>selected</code></td>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The transition selected in this next call</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">adapt_after</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
+    <span class="n">selected</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+<span class="p">):</span>
+    <span class="sd">"""Hook to update the weight modifiers after the transition selection.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The logger for the sm context</span>
+<span class="sd">        context: The state machine context</span>
+<span class="sd">        selected: The transition selected in this next call</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_before">
+<code class="highlight language-python">
+adapt_before<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.adapt_before" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Hook to update the weight modifiers before the transition selection.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The logger for the sm context</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>The state machine context</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">adapt_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">):</span>
+    <span class="sd">"""Hook to update the weight modifiers before the transition selection.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The logger for the sm context</span>
+<span class="sd">        context: The state machine context</span>
+<span class="sd">    """</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adapt_before</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">probabilities</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adapt_after</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">selected</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">selected</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.AdaptiveProbabilisticState.reset">
+<code class="highlight language-python">
+reset<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.AdaptiveProbabilisticState.reset" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Resets the modifiers to their original state</p>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Resets the modifiers to their original state"""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_modifiers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modifiers_org</span><span class="p">))</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState">
+<code>ChoiceState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Simple boolean choice state decides between two transitions</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.no">
+<code class="highlight">
+no: <span class="n">Transition</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.no" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The transition that is returned when the decision function returns <code>False</code></p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.yes">
+<code class="highlight">
+yes: <span class="n">Transition</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.yes" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The transition that is returned when the decision function returns <code>True</code></p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">decision_function</span><span class="p">,</span> <span class="n">yes</span><span class="p">,</span> <span class="n">no</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>decision_function</code></td>
+<td><code>Callable[[structlog.stdlib.BoundLogger, Union[pydantic.main.BaseModel, Dict[str, Any]]], bool]</code></td>
+<td>
+<p>Context function that decides a yes/no question.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>yes</code></td>
+<td><code>Transition</code></td>
+<td>
+<p>The transition to return when the decision function returns <code>True</code></p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>no</code></td>
+<td><code>Transition</code></td>
+<td>
+<p>The transition to return when the decision function returns <code>False</code></p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">decision_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">BoundLogger</span><span class="p">,</span> <span class="n">Context</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span>
+    <span class="n">yes</span><span class="p">:</span> <span class="n">Transition</span><span class="p">,</span>
+    <span class="n">no</span><span class="p">:</span> <span class="n">Transition</span><span class="p">,</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        decision_function: Context function that decides a yes/no question.</span>
+<span class="sd">        yes: The transition to return when the decision function returns `True`</span>
+<span class="sd">        no: The transition to return when the decision function returns `False`</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">yes</span><span class="p">,</span> <span class="n">no</span><span class="p">],</span> <span class="n">name_prefix</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__decision_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">BoundLogger</span><span class="p">,</span> <span class="n">Context</span><span class="p">],</span> <span class="nb">bool</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">decision_function</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ChoiceState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ChoiceState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">yes</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decision_function</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">no</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState">
+<code>EquallyRandomState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Special type of probabilistic state using an equal random distribution for all transitions</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.weights">
+<code class="highlight">
+weights: <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.weights" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The weight assigned to the transitions.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td><code>List[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The list of transitions</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If there are transitions with duplicate names</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transitions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        transitions: The list of transitions</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are transitions with duplicate names</span>
+<span class="sd">    """</span>
+    <span class="c1"># create even random distribution</span>
+    <span class="n">probability</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">probability</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">))]</span>
+    <span class="c1"># initialize using super</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.EquallyRandomState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.EquallyRandomState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState">
+<code>FinalState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>State with not further transitions which can be used as final state of a state machine</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[],</span> <span class="n">name_prefix</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.FinalState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.FinalState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState">
+<code>ProbabilisticState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A state that uses a propability table to select its successor</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.weights">
+<code class="highlight">
+weights: <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.weights" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The weight assigned to the transitions.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td><code>List[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The list of transitions</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>weights</code></td>
+<td><code>Sequence[float]</code></td>
+<td>
+<p>The list of weights to assign to the transitions in probability notation.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If there are transitions with duplicate names</p>
+</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If the weights and transitions list lengths do not match</p>
+</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If the given weights do not sum up to 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transitions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        transitions: The list of transitions</span>
+<span class="sd">        weights: The list of weights to assign to the transitions in probability notation.</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are transitions with duplicate names</span>
+<span class="sd">        ValueError: If the weights and transitions list lengths do not match</span>
+<span class="sd">        ValueError: If the given weights do not sum up to 1</span>
+<span class="sd">    """</span>
+    <span class="c1"># initial base properties</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">)</span>
+
+    <span class="c1"># convert weights to cumulative weights</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__weights</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="c1"># verify that given weights and transitions are sound</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__verify_weights</span><span class="p">()</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.ProbabilisticState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.ProbabilisticState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState">
+<code>RoundRobinState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td><code>List[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>List of transitions to cycle through</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If there are transitions with duplicate names</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transitions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The state name</span>
+<span class="sd">        transitions (List[Transition]): List of transitions to cycle through</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are transitions with duplicate names</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">transition_cycle</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.RoundRobinState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.RoundRobinState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_cycle</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState">
+<code>SequentialState</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>Simple sequential state only having one possible transition</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transition</code></td>
+<td><code>Transition</code></td>
+<td>
+<p>The target transition</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If transition is None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transition</span><span class="p">:</span> <span class="n">Transition</span><span class="p">,</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        transition: The target transition</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If transition is None</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">transition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Transition must not be None"</span><span class="p">)</span>
+
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">transition</span><span class="p">],</span> <span class="n">name_prefix</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__transition</span> <span class="o">=</span> <span class="n">transition</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.SequentialState.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.SequentialState.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transition</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="cr_kyoushi.simulation.states.State">
+<code>State</code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State" title="Permanent link">¶</a></h2>
+<div class="doc doc-contents">
+<p>A State contains various transitions to other states</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.name">
+<code class="highlight">
+name: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.name" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name (including the prefix) of the state instance</p>
+<p>Names must be unique within a state machine.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.name_only">
+<code class="highlight">
+name_only: <span class="nb">str</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.name_only" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name of the state instance (names must be uniq within a state machine).</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.name_prefix">
+<code class="highlight">
+name_prefix: <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.name_prefix" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>The name prefix of the state instance.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.transitions">
+<code class="highlight">
+transitions: <span class="n">List</span><span class="p">[</span><span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.transitions" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.transitions_map">
+<code class="highlight">
+transitions_map: <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">cr_kyoushi</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.transitions_map" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>List of all possible <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a>
+originating from this state</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.__init__" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The state name</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td><code>List[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>List of possible transitions</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>name_prefix</code></td>
+<td><code>Optional[str]</code></td>
+<td>
+<p>A prefix for the state name</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>
+<p>If there are transitions with duplicate names</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">transitions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Transition</span><span class="p">],</span>
+    <span class="n">name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: The state name</span>
+<span class="sd">        transitions: List of possible transitions</span>
+<span class="sd">        name_prefix: A prefix for the state name</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If there are transitions with duplicate names</span>
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_name_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_prefix</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Transition names must be unique"</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="cr_kyoushi.simulation.states.State.next">
+<code class="highlight language-python">
+next<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#cr_kyoushi.simulation.states.State.next" title="Permanent link">¶</a></h3>
+<div class="doc doc-contents">
+<p>Selects the next state transition.</p>
+<p>The selection logic depends on the state implementation. It might
+   rely on the <a href="../sm/#cr_kyoushi.simulation.sm.Statemachine.context"><code>state machine context</code></a>
+   and/or execution environment information to select transitions based on complex conditions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log</code></td>
+<td><code>BoundLogger</code></td>
+<td>
+<p>The bound logger initialized with transition specific information</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>Union[pydantic.main.BaseModel, Dict[str, Any]]</code></td>
+<td>
+<p>State machine context which can be used for complex selection logic</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optional[cr_kyoushi.simulation.transitions.Transition]</code></td>
+<td>
+<p>The selected <a href="../transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a>
+or None if no transition is available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>simulation/states.py</code></summary>
+<div class="highlight">
+<pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+    <span class="sd">"""Selects the next state transition.</span>
+
+<span class="sd">       The selection logic depends on the state implementation. It might</span>
+<span class="sd">       rely on the [`state machine context`][cr_kyoushi.simulation.sm.Statemachine.context]</span>
+<span class="sd">       and/or execution environment information to select transitions based on complex conditions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log: The bound logger initialized with transition specific information</span>
+<span class="sd">        context (Context): State machine context which can be used for complex selection logic</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The selected [`Transition`][cr_kyoushi.simulation.transitions.Transition]</span>
+<span class="sd">        or None if no transition is available.</span>
+
+<span class="sd">    """</span>
+    <span class="o">...</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../model/" rel="prev">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Models
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../transitions/" rel="next">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Transitions
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+<script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+<script src="../../js/jquery-3.5.1.min.js"></script>
+<script src="../../js/jquery.fancybox.min.js"></script>
+</body>
+</html>

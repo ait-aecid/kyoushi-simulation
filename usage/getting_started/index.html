@@ -1,0 +1,667 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="State machine based actor simulation framework for cyber range testbeds." name="description"/>
+<link href="https://ait-aecid.github.io/kyoushi-simulation/usage/getting_started/" rel="canonical"/>
+<link href="../../images/favicon.ico" rel="shortcut icon"/>
+<meta content="mkdocs-1.2.2, mkdocs-material-6.2.8" name="generator"/>
+<title>Getting Started - Cyber Range Kyoushi Simulation</title>
+<link href="../../assets/stylesheets/main.cb6bc1d0.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.39b8e14a.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<link href="../../stylesheets/jquery.fancybox.min.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="ait" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#statemachine">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+</div>
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            
+              Getting Started
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+    Cyber Range Kyoushi Simulation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        Overview
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Usage" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        Getting Started
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statemachine">
+    Statemachine
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state">
+    State
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transitions-and-transition-functions">
+    Transitions and Transition Functions
+  </a>
+<nav aria-label="Transitions and Transition Functions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateless-vs-stateful-transition-functions">
+    Stateless vs Stateful Transition Functions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-transition-instances">
+    Creating Transition Instances
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statemachine-factories">
+    Statemachine Factories
+  </a>
+<nav aria-label="Statemachine Factories" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#plugin-system">
+    Plugin System
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../configuration/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../logging/">
+        Logging
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../cli/">
+        CLI Reference
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/traveler/">
+        Traveler
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../examples/decorated_traveler/">
+        Decorated Traveler
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Code Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/model/">
+        Models
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/states/">
+        States
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/transitions/">
+        Transitions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/sm/">
+        State Machine
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/util/">
+        Utility Functions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/errors/">
+        Exceptions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/config/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/logging/">
+        Logging
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contributing/">
+        Contributing
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../license/">
+        License
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statemachine">
+    Statemachine
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#state">
+    State
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transitions-and-transition-functions">
+    Transitions and Transition Functions
+  </a>
+<nav aria-label="Transitions and Transition Functions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateless-vs-stateful-transition-functions">
+    Stateless vs Stateful Transition Functions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-transition-instances">
+    Creating Transition Instances
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statemachine-factories">
+    Statemachine Factories
+  </a>
+<nav aria-label="Statemachine Factories" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#plugin-system">
+    Plugin System
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/usage/getting_started.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1>Getting Started</h1>
+<p>Cyber Range Kyoushi Simulation provides and API and CLI for developing and running state machines
+for simulating various actors in cyber ranges.</p>
+<p>The development API revolves around 6 major components</p>
+<ul>
+<li><a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine"><code>Statemachine</code></a></li>
+<li><a href="../../reference/model/#cr_kyoushi.simulation.model.Context"><code>Context</code></a></li>
+<li><a href="../../reference/states/#cr_kyoushi.simulation.states.State"><code>State</code></a></li>
+<li><a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a></li>
+<li><a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction</code></a></li>
+<li><a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory"><code>StatemachineFactory</code></a></li>
+</ul>
+<p>Simulation state machines are defined by combining these 6 components.</p>
+<h2 id="statemachine">Statemachine<a class="headerlink" href="#statemachine" title="Permanent link">¶</a></h2>
+<p>The <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine"><code>Statemachine</code></a> base class provides the high level state machine
+execution logic for state machines. In its most basic form it is initialized with a <strong>initial state</strong> and a <strong>list of states</strong>.
+After initialization a state machine can either be executed autonomously via <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.run"><code>Statemachine.run()</code></a>
+or manually via <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.execute_step"><code>Statemachine.execute_step(...)</code></a>.</p>
+<p>State machines will execute according to the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.Transition"><code>transitions</code></a> defined in
+its <a href="../../reference/states/#cr_kyoushi.simulation.states.State"><code>states</code></a>. When using <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.run"><code>Statemachine.run()</code></a> execution
+will keep executing state transitions until either an end state is reached (defined as <code>None</code>) or the current state has no outgoing
+transitions (i.e., <a href="../../reference/states/#cr_kyoushi.simulation.states.State.next"><code>State.next(...)</code></a> returns <code>None</code>).</p>
+<p>Other thant the base <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine"><code>Statemachine</code></a> the API also provides other state machine classes which modify
+normal state machine behavior. See the <a href="../../reference/sm/">sm module</a> code reference for all available state machine types.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you wish to change or extend high basic state machine execution flow you can extend
+<a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine"><code>Statemachine</code></a> or one of its sub classes.</p>
+</div>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The state machine execution context is used to pass information between the various states and transitions.
+Allowed context types are <code class="highlight"><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code> or <a href="https://pydantic-docs.helpmanual.io/">Pydantic Models</a>.
+A state machine execution context can be helpful when you complex a state machine for which some of the states
+or transitions depend on some shared information or objects. For example if you are working with <a href="https://www.selenium.dev/">Selenium</a>
+you might want to store your Selenium <code>driver</code> in the context so that your transitions and states can all access the same Browser instance.</p>
+<p>The <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine"><code>Statemachine</code></a> also implements simple context life cycle through the
+<a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.setup_context"><code>Statemachine.setup_context</code></a> and
+<a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.destroy_context"><code>Statemachine.destroy_context</code></a> methods. You can use extend this
+methods to ensure that your custom context is properly initialized and destroyed in accordance with the state machine execution flow.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you do not use <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.run"><code>Statemachine.run()</code></a>
+and instead choose to manually execute your state machine you have to call the setup and destroy
+methods yourself before starting and stopping execution.</p>
+</div>
+<p>While you could also achieve something similar to the context by initializing custom State or Transition classes with
+e.g., a shared <code>driver</code> object it is preferred to use the context for such things as it helps keep your code simple.
+Also life cycle management for such custom solutions would have to be implemented and integrated with the state machine as well.</p>
+<h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">¶</a></h2>
+<p>A <a href="../../reference/states/#cr_kyoushi.simulation.states.State"><code>State</code></a> has zero or more out going transitions and implements the
+method <a href="../../reference/states/#cr_kyoushi.simulation.states.State.next"><code>State.next(...)</code></a>. Each state also must have a unique
+<a href="../../reference/states/#cr_kyoushi.simulation.states.State.name"><code>name</code></a> property so it can be stored in a dictionary (<code>name -&gt; State</code>).</p>
+<p>The <code>next(..)</code> method used in the state machine execution flow to determine the next transition to execute.
+It is important to select the <code>State</code> type that fits your state machines definition e.g., if you want to implement a
+probabilistic finite state machine the <a href="../../reference/states/#cr_kyoushi.simulation.states.ProbabilisticState"><code>ProbabilisticState</code></a> might be a good fit.</p>
+<p>See the <a href="../../reference/states/">states module</a> for all the provided state types.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You can also always implement a custom <code>State</code> if you need a more specific transition selection
+e.g., based on some of your context information.</p>
+</div>
+<h2 id="transitions-and-transition-functions">Transitions and Transition Functions<a class="headerlink" href="#transitions-and-transition-functions" title="Permanent link">¶</a></h2>
+<p>While states define the flow of the state machine transitions and transition functions define its actions.
+A <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a> always has a name, target state and transition function.</p>
+<div class="admonition reminder">
+<p class="admonition-title">Reminder</p>
+<p>A target state of <code>None</code> indicates the final state i.e., end of execution.
+Alternatively you can also use <a href="../../reference/states/#cr_kyoushi.simulation.states.FinalState"><code>FinalState</code></a>
+if you wish to define end states more explicitly.</p>
+</div>
+<p>The <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction</code></a> is what ultimately contains your custom code.
+What actually is executed depends on your state machine e.g., your transition function could use a Selenium <code>driver</code>
+to navigate from one page (<strong>current state</strong>) to another page (<strong>target state</strong>).</p>
+<p>The <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.Transition"><code>Transition</code></a> object that wraps your transition function
+determines how your transition function is executed and handles all state machine related actions (e.g., returning the target state).
+You can extend the base transition class if you whish to change this behavior, for example,
+the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.DelayedTransition"><code>DelayedTransition</code></a> class makes it possible the define
+a pre or post transition function execution delay. This might be useful when simulating human behavior
+as humans tend to think before or after they do something. Alternatively you could also implement a custom transition class
+that executes a different transition function depending on the <em>current state</em> or <em>context</em>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While the API does not enforce it its recommend that a single transition instance
+only has one target state. This is recommend to keep state machine implementations
+as understandable as possible. Divergence from normal behavior due to errors are an
+exception to this and are made possible through
+<a href="../../reference/errors/#cr_kyoushi.simulation.errors.TransitionExecutionError"><code>TransitionExecutionErrors</code></a>.</p>
+</div>
+<h3 id="stateless-vs-stateful-transition-functions">Stateless vs Stateful Transition Functions<a class="headerlink" href="#stateless-vs-stateful-transition-functions" title="Permanent link">¶</a></h3>
+<p>Transition functions can be defined as either functions (stateless) or as callable objects (stateful).
+They only need to implement the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction protocol</code></a>.</p>
+<p>For example the following would be a stateless transition function</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">goto_city_transition</span><span class="p">(</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+    <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The weather is ok so I am going to </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2"> now ..."</span><span class="p">)</span>
+</code></pre></div>
+<p>We call this a stateless transition function, because it does not have its own internal state, i.e., variables that persist across
+multiple executions. Stateless transition functions can only use the context object to store and read information.</p>
+<p>Sometimes this is not enough as you might have many transition functions that require their own state variables
+e.g., a transition function that increases a count and prints it out. If you have many such functions your context object
+might contain many many fields that are only ever used by a single transition function and do not necessarily need to be shared
+with other states and transitions. In such cases you might prefer to store this information outside the context object to avoid
+this clutter. Another use case for stateful transition functions would be functions that can be configured to do something a specific way
+depending on the state machine configuration.</p>
+<p>As such stateful transition functions can simply be defined as callable objects where the <code>__call__</code> method
+implements the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction protocol</code></a>.
+As objects they can then be initialized based on the configuration and they can also store their own state
+as attributes.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SayHello</span><span class="p">:</span>
+    <span class="sd">"""Transition function for the initial hello world message"""</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traveler_name</span><span class="p">:</span> <span class="n">StrictStr</span><span class="p">,</span> <span class="n">desired_weather</span><span class="p">:</span> <span class="n">Weather</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span> <span class="o">=</span> <span class="n">traveler_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span> <span class="o">=</span> <span class="n">desired_weather</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Hi I am </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="sa">f</span><span class="s2">"I like to travel to cities that have </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span><span class="si">}</span><span class="s2"> weather."</span>
+        <span class="p">)</span>
+</code></pre></div>
+<h3 id="creating-transition-instances">Creating Transition Instances<a class="headerlink" href="#creating-transition-instances" title="Permanent link">¶</a></h3>
+<p>The API provides to ways to create transition objects either by simply constructing one of the transition types
+with a transition function as its argument e.g.,</p>
+<div class="highlight"><pre><span></span><code><span class="n">hello</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"hello"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">say_hello</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"selecting_city"</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>or in case of stateless transitions you can also use a <em>transition decorator</em>
+(e.g., <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.transition"><code>transition</code></a>) that can directly
+wrap a transition function definition into a transition object.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@transitions</span><span class="o">.</span><span class="n">transition</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">"selecting_city"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Hi I am </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">traveler</span><span class="si">}</span><span class="s2">. "</span>
+        <span class="sa">f</span><span class="s2">"I like to travel to cities that have </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">desired_weather</span><span class="si">}</span><span class="s2"> weather."</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Using transition decorators for stateless transitions can save you some extra code and also
+makes it very clear which transition executes which transition function. As stateful transition functions
+are classes and only become actual functions after they have been initialized you cannot use transition decorators with them.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The API provides transition decorators for all its transition types.
+The decorator name is usually just camel case of the transition types class name.</p>
+</div>
+<h2 id="statemachine-factories">Statemachine Factories<a class="headerlink" href="#statemachine-factories" title="Permanent link">¶</a></h2>
+<p>Cyber Range Kyoushi Simulation also provides a CLI script for executing user defined state machines.
+For this it provides the concept of <a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory"><code>StatemachineFactories</code></a> to allow
+users to make their state machine implementations available to the CLI script. A state machine factory must have a human
+readable name, a config class and a <a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory.build">build method</a> that can be called
+by the CLI to create the state machine instance. The CLI will also load and initialize your config class based on the
+user supplied state machine configuration file on run time.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CLI supports config <code>dict</code> or <a href="https://pydantic-docs.helpmanual.io/">Pydantic models</a> as config classes.
+It is recommend to use Pydantic as Pydantic models are automatically validated by the CLI.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>See the <a href="../configuration/">configuration section</a> for more details on CLI and state machine configuration.</p>
+</div>
+<p>The build method is the most important part of a state machine factory. The CLI will automatically call this function
+to initialize the state machine instance as such you have to ensure that all the state, transition setup is done here
+and the final state machine object is returned. To keep your code a bit more structured you could also want define
+a few helper methods (e.g., <code>build_transitions(..)</code>) that handle specific parts of the build process and are called
+from within the main build method. A simple factory might look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">StatemachineFactory</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">StatemachineFactory</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"GettingStartedStatemachineFactory"</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">config_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+
+        <span class="c1"># setup the states</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"initial"</span><span class="p">,</span> <span class="n">init_transition</span><span class="p">)</span>
+        <span class="n">example_state</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"example_state"</span><span class="p">,</span> <span class="n">example_transition</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">FinalState</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the state machine</span>
+        <span class="k">return</span> <span class="n">GettingStartedStatemachine</span><span class="p">(</span>
+            <span class="s2">"initial"</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">initial</span><span class="p">,</span> <span class="n">example_state</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span>
+        <span class="p">)</span>
+
+<span class="o">...</span>
+</code></pre></div>
+<p>See the <a href="../examples">examples section</a> for complete example state machine implementations.</p>
+<h3 id="plugin-system">Plugin System<a class="headerlink" href="#plugin-system" title="Permanent link">¶</a></h3>
+<p>There are two ways for a user to make their state machine factory accessible for the CLI system. Either through i
+n the form of an entry point plugin using the entry point <code>cr_kyoushi.simulation</code> or through a self contained python
+file that declares a <code>StatemachineFactory</code> class. Both approaches have their advantages and disadvantages.</p>
+<p>Entry point plugins only work if the state machine code is installed as a proper python package, but by using this approach
+you can use multiple python files (modules) to define your state machine. This can potential make your code more readable
+and manageable.</p>
+<p>Python script plugins have the advantage that they can be used as is not package config etc. required, but you
+will have to keep all your in a single file or have to ensure that imports for your custom modules are resolvable
+via the python path (e.g., relative imports will cause exceptions). Also with a pythons script plugin you can only
+provide a single state machine while you could expose multiple entry point plugins using a single package.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Regardless which plugin type you use your StatemachineFactory <strong>must</strong> have a default
+no arguments <code>__init__</code> method so the plugin system can create an instance of your factory.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../.." rel="prev">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../configuration/" rel="next">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Configuration
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+<script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+<script src="../../js/jquery-3.5.1.min.js"></script>
+<script src="../../js/jquery.fancybox.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,869 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="State machine based actor simulation framework for cyber range testbeds." name="description"/>
+<link href="https://ait-aecid.github.io/kyoushi-simulation/examples/traveler/" rel="canonical"/>
+<link href="../../images/favicon.ico" rel="shortcut icon"/>
+<meta content="mkdocs-1.2.2, mkdocs-material-6.2.8" name="generator"/>
+<title>Traveler - Cyber Range Kyoushi Simulation</title>
+<link href="../../assets/stylesheets/main.cb6bc1d0.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.39b8e14a.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<link href="../../stylesheets/jquery.fancybox.min.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="" data-md-color-primary="" data-md-color-scheme="ait" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#traveler-example">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-header-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            Cyber Range Kyoushi Simulation
+          </span>
+</div>
+<div class="md-header-nav__topic">
+<span class="md-ellipsis">
+            
+              Traveler
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Cyber Range Kyoushi Simulation" class="md-nav__button md-logo" href="https://ait-aecid.github.io/kyoushi-simulation/" title="Cyber Range Kyoushi Simulation">
+<img alt="logo" src="../../images/cr_icon.svg"/>
+</a>
+    Cyber Range Kyoushi Simulation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/ait-aecid/kyoushi-simulation/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    kyoushi-simulation
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+        Overview
+      </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+        Usage
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Usage" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/getting_started/">
+        Getting Started
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/configuration/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/logging/">
+        Logging
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../usage/cli/">
+        CLI Reference
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+        Examples
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Examples" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+<span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+          Traveler
+          <span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+        Traveler
+      </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration">
+    Configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transition-functions">
+    Transition Functions
+  </a>
+<nav aria-label="Transition Functions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateless-transition-functions">
+    Stateless Transition Functions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateful-transition-functions">
+    Stateful Transition Functions
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-state-and-context-setup">
+    Custom State and Context Setup
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transition-and-state-configuration">
+    Transition and State Configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#running-the-example">
+    Running the Example
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../decorated_traveler/">
+        Decorated Traveler
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Code Reference" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/model/">
+        Models
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/states/">
+        States
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/transitions/">
+        Transitions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/sm/">
+        State Machine
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/util/">
+        Utility Functions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/errors/">
+        Exceptions
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/config/">
+        Configuration
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../reference/logging/">
+        Logging
+      </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contributing/">
+        Contributing
+      </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../license/">
+        License
+      </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration">
+    Configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#context">
+    Context
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transition-functions">
+    Transition Functions
+  </a>
+<nav aria-label="Transition Functions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateless-transition-functions">
+    Stateless Transition Functions
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#stateful-transition-functions">
+    Stateful Transition Functions
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-state-and-context-setup">
+    Custom State and Context Setup
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#transition-and-state-configuration">
+    Transition and State Configuration
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#running-the-example">
+    Running the Example
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/ait-aecid/kyoushi-simulation/edit/main/docs/examples/traveler.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1 id="traveler-example">Traveler Example<a class="headerlink" href="#traveler-example" title="Permanent link">¶</a></h1>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>See the <a href="https://github.com/ait-aecid/kyoushi-simulation/-/tree/master/examples/traveler">examples directory</a> for the full code example.</p>
+</div>
+<p>This example implements the following basic state machine that simulates a choosy traveler. The traveler in this example likes to travel to various cities, but only if the current weather there is the weather they like. Also sometimes the traveler gets tired and will go to sleep in the city they are currently in.</p>
+<figure>
+<a data-fancybox="gallery" href="https://ait-aecid.github.io/kyoushi-simulation/images/traveler.svg">
+<img alt="Traveler state machine" src="https://ait-aecid.github.io/kyoushi-simulation/images/traveler.svg">
+<figcaption>Traveler state machine</figcaption>
+</img></a>
+</figure>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
+<p>For the traveler 3 things need to be configured:</p>
+<ul>
+<li>The travelers name so they can say hello</li>
+<li>The type of weather they like</li>
+<li>The weather map</li>
+</ul>
+<p>This is achieved by defining a Pydantic Model containing all the fields and type definitions for the configuration.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TravelerConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">traveler</span><span class="p">:</span> <span class="n">StrictStr</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">StrictStr</span><span class="p">(</span><span class="s2">"Bob"</span><span class="p">),</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The travelers name"</span><span class="p">)</span>
+    <span class="n">cities</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">,</span> <span class="n">Weather</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"A dictionary of cities mapped to their current weather"</span>
+    <span class="p">)</span>
+    <span class="n">desired_weather</span><span class="p">:</span> <span class="n">Weather</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"The weather the traveler likes"</span><span class="p">)</span>
+</code></pre></div>
+<details class="hint"><summary>Weather Enum</summary><p>In the traveler example the weather is defined in the form of an <code>Enum</code>.
+The enum uses a custom pydantic validate method to allow case insensitive configuration input.
+For example any of the following would be valid <code>Weather</code>:</p>
+<ul>
+<li><code>heavy rain</code></li>
+<li><code>HEAVY RAIN</code></li>
+<li><code>heAVY raIN</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Weather</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">)</span>
+    <span class="n">SNOW</span> <span class="o">=</span> <span class="s2">"SNOW"</span>
+    <span class="n">SLEET</span> <span class="o">=</span> <span class="s2">"SLEET"</span>
+    <span class="n">HAIL</span> <span class="o">=</span> <span class="s2">"HAIL"</span>
+    <span class="n">THUNDERSTORM</span> <span class="o">=</span> <span class="s2">"THUNDERSTORM"</span>
+    <span class="n">HEAVY_RAIN</span> <span class="o">=</span> <span class="s2">"HEAVY RAIN"</span>
+    <span class="n">LIGHT_RAIN</span> <span class="o">=</span> <span class="s2">"LIGHT RAIN"</span>
+    <span class="n">SHOWERS</span> <span class="o">=</span> <span class="s2">"SHOWERS"</span>
+    <span class="n">HEAVY_CLOUD</span> <span class="o">=</span> <span class="s2">"HEAVY CLOUD"</span>
+    <span class="n">LIGHT_CLOUD</span> <span class="o">=</span> <span class="s2">"LIGHT CLOUD"</span>
+    <span class="n">CLEAR</span> <span class="o">=</span> <span class="s2">"CLEAR"</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__get_validators__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Weather"</span><span class="p">:</span>
+        <span class="sd">"""Custom case insensitive value enum validator"""</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Weather</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">val</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">enum_v</span> <span class="o">=</span> <span class="n">Weather</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">EnumMemberError</span><span class="p">(</span><span class="n">enum_values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">Weather</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">enum_v</span>
+        <span class="k">raise</span> <span class="n">EnumMemberError</span><span class="p">(</span><span class="n">enum_values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">Weather</span><span class="p">))</span>
+</code></pre></div>
+</details>
+<p>Using custom validators we can also define additional validation e.g., to ensure that there is at least one city configured
+and there is at least one city with weather the traveler likes.</p>
+<div class="highlight"><pre><span></span><code>    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"cities"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_cities</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">,</span> <span class="n">Weather</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">,</span> <span class="n">Weather</span><span class="p">]:</span>
+        <span class="sd">"""Custom validation method for checking that at least **one** city was configured"""</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"too few cities, must at least have 1 city"</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"desired_weather"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_desired_weather_exists</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">"""Custom validation method for checking that at lease one city has the weather the traveler likes"""</span>
+        <span class="c1"># if cities is not in values then it failed to validate</span>
+        <span class="c1"># so we do nothing</span>
+        <span class="k">if</span> <span class="s2">"cities"</span> <span class="ow">in</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">"cities"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Impossible no city with the desired weather </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>Similarly to the configuration we also define a Pydantic Model for out state machine context.
+Here we store context information that is used in multiple transitions.
+In theory we could use the context to store <strong>all</strong> information, but for the purposes of this example we will
+also show case how to create stateful transition functions that do not rely on the state machine context.
+Such stateful transition functions can be useful if you have want your transition functions to behave differently depending on
+the passed configuration options. They can also be a useful to prevent the context from growing to large due large amount of
+fields which are only used by a single transition function.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TravelerContext</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">current_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The current location of the traveler."</span>
+    <span class="p">)</span>
+    <span class="n">chosen_city</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The city the traveler as chosen as potential travel destination."</span>
+    <span class="p">)</span>
+    <span class="n">weather</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Weather</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The weather in the chosen city according to the travelers research."</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>For the traveler state machine we use the context to share the <strong>current location</strong>, <strong>city</strong> and
+the <strong>weather</strong> in the city across multiple transitions.</p>
+<h2 id="transition-functions">Transition Functions<a class="headerlink" href="#transition-functions" title="Permanent link">¶</a></h2>
+<p>Now that we have prepared our state machine config and context models we have to prepare our transition functions.
+If you refer to the state machine diagram above you can see that we need 7 functions in total.
+We need functions for the following transitions:</p>
+<ol>
+<li><code>hello</code>: For this transition we will print the <strong>name</strong> of our traveler and what kind of <strong>weather</strong> they like.</li>
+<li><code>select_city</code>: Here our traveler will randomly choose a potential travel destination from the list of cities.</li>
+<li><code>check_weather</code>: After choosing a destination they will have to check the weather in the city.</li>
+<li><code>going_to_city</code>: Should the weather be to our travelers liking they will tell us so and that they are going to the city.</li>
+<li><code>not_going</code>: Should it not be to their liking then the traveler will inform us that they changed their mind.</li>
+<li><code>arrive</code>: Once the traveler has arrived the city they again will inform us.</li>
+<li><code>going_to_sleep</code>: Finally should the traveler have grown tiered of traveling for the day they will let us know and then go to sleep.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transition functions below do not adhere to the order of the list above. Instead they are grouped based
+on function type to show case the difference between stateless and stateful transition functions</p>
+</div>
+<h3 id="stateless-transition-functions">Stateless Transition Functions<a class="headerlink" href="#stateless-transition-functions" title="Permanent link">¶</a></h3>
+<p>Stateless transition functions are simply functions that follow the function signature provided by
+the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction</code></a> protocol.
+For the sake of the example we will keep the actual implementation of our transitions simple.
+Our traveler will mostly just print their current actions to the terminal.</p>
+<p>4. To print the city we are going to we simply the to read the passed <code>TravelerContext</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">goto_city_transition</span><span class="p">(</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+    <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The weather is ok so I am going to </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2"> now ..."</span><span class="p">)</span>
+</code></pre></div>
+<p>5. When the traveler decides to not go to the choses city we also have to reset the <strong>city</strong> and <strong>weather</strong> context attributes.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">do_not_go_transition</span><span class="p">(</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+    <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"I don't like the weather in </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2"> so I am not going ..."</span><span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">weather</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<p>6. Similarly when we arrive in a city we have to set it in the context and reset our selection information.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">arrive_transition</span><span class="p">(</span>
+    <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+    <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"I have arrived in </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2"> the weather"</span> <span class="o">+</span>
+        <span class="sa">f</span><span class="s2">" is </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">weather</span><span class="si">}</span><span class="s2"> just how I like it."</span>
+    <span class="p">)</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">current_location</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">weather</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<h3 id="stateful-transition-functions">Stateful Transition Functions<a class="headerlink" href="#stateful-transition-functions" title="Permanent link">¶</a></h3>
+<p>Stateful transition functions implement the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.TransitionFunction"><code>TransitionFunction</code></a>
+protocol through callable objects instead of using simple functions. To define such a callable objects one has only define a
+<a href="https://docs.python.org/3/reference/datamodel.html#object.__call__"><code>__call__(self[, args...])</code></a> method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since stateful transition functions are classes you have to create an object instance to use one.</p>
+</div>
+<p>1. For our hello transition function we create a stateful transition function so that we can initialize
+    it with the travelers name and desired weather.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SayHello</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traveler_name</span><span class="p">:</span> <span class="n">StrictStr</span><span class="p">,</span> <span class="n">desired_weather</span><span class="p">:</span> <span class="n">Weather</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span> <span class="o">=</span> <span class="n">traveler_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span> <span class="o">=</span> <span class="n">desired_weather</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Hi I am </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"I like to travel to cities that have </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span><span class="si">}</span><span class="s2"> weather."</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>2. To select a random city we have to initialize our function with a list of cities obtained from the weather map.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SelectRandomCity</span><span class="p">:</span>
+    <span class="sd">"""Transition function that randomly selects a city from the configured list"""</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cities</span> <span class="o">=</span> <span class="n">cities</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span> <span class="o">=</span> <span class="n">StrictStr</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cities</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Maybe I will travel to somewhere in </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</code></pre></div>
+<p>3. To check the weather we need access to the whole weather map.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CheckWeatherMap</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weather_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">,</span> <span class="n">Weather</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weather_map</span> <span class="o">=</span> <span class="n">weather_map</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">weather</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weather_map</span><span class="p">[</span><span class="n">StrictStr</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="p">)]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The weather is </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">weather</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">chosen_city</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>7. Similarly to the hello function for the message we need the travelers name in addition to the their current location.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SleepInCity</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">traveler_name</span><span class="p">:</span> <span class="n">StrictStr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span> <span class="o">=</span> <span class="n">traveler_name</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">current_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"I </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">traveler_name</span><span class="si">}</span><span class="s2"> have travelled enough for now."</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"I am going to sleep in </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">current_location</span><span class="si">}</span><span class="s2"> ..."</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"... zzzZZZzz ..."</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="custom-state-and-context-setup">Custom State and Context Setup<a class="headerlink" href="#custom-state-and-context-setup" title="Permanent link">¶</a></h2>
+<p>As shown in the state machine diagram above we have a state which selects the successor transition
+based on the weather the user likes and the chosen cities weather. Such a conditional can be implemented
+by extending the base state and implementing a custom <a href="../../reference/states/#cr_kyoushi.simulation.states.State.next"><code>State.next(...)</code></a>
+method.</p>
+<p>The below custom state is initialized with the two possible transitions and the desired weather.
+The <code>next(...)</code> function then simply checks if the desired weather matches the currently chosen cities weather.</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DecidingState</span><span class="p">(</span><span class="n">states</span><span class="o">.</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">going</span><span class="p">:</span> <span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">,</span>
+        <span class="n">not_going</span><span class="p">:</span> <span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">,</span>
+        <span class="n">desired_weather</span><span class="p">:</span> <span class="n">Weather</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="n">going</span><span class="p">,</span> <span class="n">not_going</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">going</span> <span class="o">=</span> <span class="n">going</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">not_going</span> <span class="o">=</span> <span class="n">not_going</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span> <span class="o">=</span> <span class="n">desired_weather</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="n">BoundLogger</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TravelerContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">weather</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">desired_weather</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">going</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_going</span>
+</code></pre></div>
+In addition to our custom state class we also need to extend the base state machine class so we can
+extend the default state machine <a href="../../reference/sm/#cr_kyoushi.simulation.sm.Statemachine.setup_context">context setup</a> method.
+For our example state machine it is enough to simply initialize the traveler context with its default values.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TravelerStatemachine</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">Statemachine</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setup_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Initialize traveler context with default values"""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">TravelerContext</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="transition-and-state-configuration">Transition and State Configuration<a class="headerlink" href="#transition-and-state-configuration" title="Permanent link">¶</a></h2>
+<p>The final step is to define the state machine factory and implement the <a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory.build">build</a> method.</p>
+<p>To define the factory we need to set the factory <a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory.name">name</a> and the
+<a href="../../reference/sm/#cr_kyoushi.simulation.sm.StatemachineFactory.config_class">config class</a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The config class must be set to our config type <code>TravelerConfig</code></p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Also note that for python file state machine factory plugins the factory class
+<strong>must</strong> be named <strong>StatemachineFactory</strong> for the plugin system to detect it correctly!</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StatemachineFactory</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">StatemachineFactory</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"TravelerStatemachineFactory"</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">config_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TravelerConfig</span>
+
+    <span class="o">...</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you wish you can also define multiple helper functions for your various build steps.
+For the purposes of this example we decided to put everything in the main build method.</p>
+</div>
+<p>The first thing we will have to do is initialize all our stateful transition functions using the
+traveler config object that is passed to the build method.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">TravelerConfig</span><span class="p">):</span>
+
+        <span class="c1"># Stateful transition functions init</span>
+        <span class="c1"># ----------------------------------</span>
+
+        <span class="n">say_hello</span> <span class="o">=</span> <span class="n">SayHello</span><span class="p">(</span>
+            <span class="n">traveler_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">traveler</span><span class="p">,</span>
+            <span class="n">desired_weather</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">desired_weather</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">select_random_city</span> <span class="o">=</span> <span class="n">SelectRandomCity</span><span class="p">(</span><span class="n">cities</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+        <span class="n">check_weather_on_map</span> <span class="o">=</span> <span class="n">CheckWeatherMap</span><span class="p">(</span><span class="n">weather_map</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">cities</span><span class="p">)</span>
+
+        <span class="n">sleep_in_city</span> <span class="o">=</span> <span class="n">SleepInCity</span><span class="p">(</span><span class="n">traveler_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">traveler</span><span class="p">)</span>
+
+        <span class="o">...</span>
+</code></pre></div>
+<p>Next create our transition objects by initializing them with their <strong>unique names</strong>, <strong>transition functions</strong>
+and their <strong>target state names</strong>. We decided to use the <a href="../../reference/transitions/#cr_kyoushi.simulation.transitions.DelayedTransition"><code>DelayedTransition</code></a>
+for some of our transitions. This special transition type allows us to set pre- and/or post transition execution delays.
+For our example this will simulate our travelers thought process and the time it takes them to execute some of their actions.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>As you can see in the code below we use hardcoded strings for the transition and state names.
+For bigger state machines this can lead to mistakes quickly so we suggest to use centrally defined
+string constants or enums instead.</p>
+</div>
+<div class="highlight"><pre><span></span><code>        <span class="o">...</span>
+
+        <span class="n">hello</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"hello"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">say_hello</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"selecting_city"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">select_city</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">DelayedTransition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"select_city"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">select_random_city</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"researching"</span><span class="p">,</span>
+            <span class="n">delay_after</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">check_weather</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">DelayedTransition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"check_weather"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">check_weather_on_map</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"deciding"</span><span class="p">,</span>
+            <span class="n">delay_before</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">delay_after</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">going_to_city</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">DelayedTransition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"going_to_city"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">goto_city_transition</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"traveling"</span><span class="p">,</span>
+            <span class="n">delay_after</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">not_going</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">DelayedTransition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"not_going"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">do_not_go_transition</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"selecting_city"</span><span class="p">,</span>
+            <span class="n">delay_before</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">arrive_in_city</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">Transition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"arrive"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">arrive_transition</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"in_city"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">going_to_sleep</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">DelayedTransition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"going_to_sleep"</span><span class="p">,</span>
+            <span class="n">transition_function</span><span class="o">=</span><span class="n">sleep_in_city</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="s2">"sleeping"</span><span class="p">,</span>
+            <span class="n">delay_before</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="o">...</span>
+</code></pre></div>
+<p>As final step we have to create our states and initialize the state machine with them.
+Our traveler state machine uses four different types of states.</p>
+<ul>
+<li><a href="../../reference/states/#cr_kyoushi.simulation.states.SequentialState"><code>SequentialState</code></a>: This is a simple state that only has one outgoing transition making
+  it easy to define a fixed sequence of states.</li>
+<li><a href="../../reference/states/#cr_kyoushi.simulation.states.ProbabilisticState"><code>ProbabilisticState</code></a>: This state type allows us to assign a probability to each outgoing transition, it is very
+  useful for defining probabilistic state machines and simulating seemingly random behavior.</li>
+<li><a href="../../reference/states/#cr_kyoushi.simulation.states.FinalState"><code>FinalState</code></a>: As the name states this is a final state with no outgoing transitions, entering this state will stop
+  the state machine.</li>
+<li>and our custom <code>DecidingState</code> we defined above.</li>
+</ul>
+<p>We use a <a href="../../reference/states/#cr_kyoushi.simulation.states.ProbabilisticState"><code>ProbabilisticState</code></a> to simulate our traveler getting tired.
+Each time they reach a new city there is 30% chance of them going to sleep instead of continuing their travels.</p>
+<div class="highlight"><pre><span></span><code>        <span class="o">...</span>
+
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"initial"</span><span class="p">,</span> <span class="n">hello</span><span class="p">)</span>
+        <span class="n">selecting_city</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"selecting_city"</span><span class="p">,</span> <span class="n">select_city</span><span class="p">)</span>
+        <span class="n">researching</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"researching"</span><span class="p">,</span> <span class="n">check_weather</span><span class="p">)</span>
+        <span class="n">deciding</span> <span class="o">=</span> <span class="n">DecidingState</span><span class="p">(</span>
+            <span class="s2">"deciding"</span><span class="p">,</span>
+            <span class="n">going</span><span class="o">=</span><span class="n">going_to_city</span><span class="p">,</span>
+            <span class="n">not_going</span><span class="o">=</span><span class="n">not_going</span><span class="p">,</span>
+            <span class="n">desired_weather</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">desired_weather</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">traveling</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">SequentialState</span><span class="p">(</span><span class="s2">"traveling"</span><span class="p">,</span> <span class="n">arrive_in_city</span><span class="p">)</span>
+        <span class="n">in_city</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">ProbabilisticState</span><span class="p">(</span>
+            <span class="s2">"in_city"</span><span class="p">,</span> <span class="p">[</span><span class="n">going_to_sleep</span><span class="p">,</span> <span class="n">select_city</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">sleeping</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">FinalState</span><span class="p">(</span><span class="s2">"sleeping"</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the state machine</span>
+        <span class="k">return</span> <span class="n">TravelerStatemachine</span><span class="p">(</span>
+            <span class="s2">"initial"</span><span class="p">,</span>
+            <span class="p">[</span>
+                <span class="n">initial</span><span class="p">,</span>
+                <span class="n">selecting_city</span><span class="p">,</span>
+                <span class="n">researching</span><span class="p">,</span>
+                <span class="n">deciding</span><span class="p">,</span>
+                <span class="n">traveling</span><span class="p">,</span>
+                <span class="n">in_city</span><span class="p">,</span>
+                <span class="n">sleeping</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+</code></pre></div>
+<h2 id="running-the-example">Running the Example<a class="headerlink" href="#running-the-example" title="Permanent link">¶</a></h2>
+<p>To run the example state machine you can simply use the Cyber Range Kyoushi CLI.</p>
+<p><div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> examples/traveler
+$ cr-kyoushi-sim -c config.yml run -f traveler.py
+</code></pre></div>
+<a data-fancybox="gallery" href="https://ait-aecid.github.io/kyoushi-simulation/images/traveler-demo.gif">
+<img alt="Traveler State Machine Demo" src="https://ait-aecid.github.io/kyoushi-simulation/images/traveler-demo.gif">
+</img></a></p>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../../usage/cli/" rel="prev">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                CLI Reference
+              </div>
+</div>
+</a>
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../decorated_traveler/" rel="next">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Decorated Traveler
+              </div>
+</div>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+<script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+<script src="../../js/jquery-3.5.1.min.js"></script>
+<script src="../../js/jquery.fancybox.min.js"></script>
+</body>
+</html>
