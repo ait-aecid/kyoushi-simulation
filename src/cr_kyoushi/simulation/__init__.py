@@ -1,2 +1,2 @@
-__version__ = "0.3.8"
-FACTORY_ENTRYPOINT = "cr_kyoushi.simulation"
+__version__ = "0.3.10"
+FACTORY_ENTRYPOINT = "kyoushi.simulation"
